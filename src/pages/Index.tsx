@@ -112,35 +112,35 @@ const promoSlides = [
 const brands = [
   {
     name: "Apple",
-    logo: "public/apple.svg",
+    logo: "/apple.svg",
   },
   {
     name: "Samsung",
-    logo: "public/samsung.svg",
+    logo: "/samsung.svg",
   },
   {
     name: "Google",
-    logo: "public/google.svg",
+    logo: "/google.svg",
   },
   {
     name: "HP",
-    logo: "public/hp.svg",
+    logo: "/hp.svg",
   },
   {
     name: "Dell",
-    logo: "public/dell.svg",
+    logo: "/dell.svg",
   },
   {
     name: "Lenovo",
-    logo: "public/lenovo.avif",
+    logo: "/lenovo.avif",
   },
   {
     name: "Sony",
-    logo: "public/sony.svg",
+    logo: "/sony.svg",
   },
   {
     name: "JBL",
-    logo: "public/jbl.svg",
+    logo: "/jbl.svg",
   },
 ];
 

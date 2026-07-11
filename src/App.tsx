@@ -29,6 +29,7 @@ import AdminProducts from "./pages/Admin/Products";
 import AdminRequest from "./pages/Admin/AdminRequest";
 import Requests from "./pages/SuperAdmin/Requests";
 import Countries from "./pages/SuperAdmin/Countries";
+import Analytics from "./pages/SuperAdmin/Analytics";
 import States from "./pages/SuperAdmin/States";
 
 const queryClient = new QueryClient();
@@ -72,6 +73,9 @@ const App = () => (
             <Route path="/superadmin/countries" element={<SuperAdminRoute><Countries /></SuperAdminRoute>}/>
             <Route path="/superadmin/states" element={<SuperAdminRoute><States /></SuperAdminRoute>}/>
             <Route path="/superadmin/pickup-locations" element={<SuperAdminRoute><PickupLocations /></SuperAdminRoute>}/>
+
+            <Route path="/superadmin/analytics" element={<SuperAdminRoute><Analytics /></SuperAdminRoute>}/>
+
             {/* <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/> */}
             {/* <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/> */}
 

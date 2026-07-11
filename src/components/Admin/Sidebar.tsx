@@ -96,7 +96,7 @@ const sidebarItems = [
   {
     label: "Analytics",
     icon: BarChart3,
-    path: "/admin/analytics",
+    path: "/superadmin/analytics",
     roles: ["admin", "super_admin"],
   },
 ];

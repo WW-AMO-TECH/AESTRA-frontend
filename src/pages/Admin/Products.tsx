@@ -475,19 +475,30 @@ const AdminProducts = () => {
     <div className="min-h-screen bg-background lg:flex">
       <Sidebar user={user} />
 
-      <div className="flex-1 p-4 lg:p-10 mt-14 lg:mt-0">
+      <div className="flex-1 p-4 lg:p-5 mt-14 lg:mt-0">
 
         {/* HEADER */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-2xl font-bold">Manage Products</h1>
-
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="bg-primary text-white px-4 py-2 rounded-lg"
-            >
-              + Add Product
-            </button>
+            <h1 className="lg:text-2xl text-lg font-bold">Manage Products</h1>
+            <div className="flex gap-4">
+              <button
+                className=" text-primary"
+              >
+                Import
+              </button>
+              <button
+                className="text-primary"
+              >
+                Export
+              </button>
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="bg-primary text-white px-3 py-2 rounded-lg"
+              >
+                +<span className="hidden md:inline"> Add Product</span>
+              </button>
+            </div>
           </div>
 
           <div className="flex gap-2 items-center">
