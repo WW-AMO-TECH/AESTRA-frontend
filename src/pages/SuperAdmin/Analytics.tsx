@@ -111,7 +111,7 @@ const Analytics = () => {
   ];
 
   return (
-    <div className="flex min-h-screen w-full bg-slate-50">
+    <div className="flex min-h-screen w-full bg-slate-100">
       <Sidebar user={user} />
 
       <main className="flex-1 mx-1 h-screen overflow-y-auto lg:ml-2 bg-slate-50">

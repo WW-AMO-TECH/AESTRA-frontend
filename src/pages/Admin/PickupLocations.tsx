@@ -190,7 +190,7 @@ const PickupLocations = () => {
 
   // ---------------- UI ----------------
   return (
-    <div className="min-h-screen bg-background lg:flex">
+    <div className="min-h-screen bg-slate-100 lg:flex">
       <Sidebar user={user} />
 
       <div className="flex-1 p-6 pt-20 lg:pt-6">

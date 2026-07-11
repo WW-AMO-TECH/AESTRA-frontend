@@ -7,7 +7,6 @@ import {
 } from "react";
 import { toast } from "sonner";
 import api from "@/api/axios";
-import axios from "axios";
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +47,7 @@ interface AuthContextType {
   fetchCart: () => Promise<void>;
   removeFromCart: (cartId: number) => Promise<void>;
   updateQuantity: (cartId: number, quantity: number) => Promise<void>;
-  clearCart: () => void;
+  clearCart: () => Promise<void>;
 
   logout: () => Promise<void>;
 }
@@ -261,9 +260,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     toast.success("Removed from cart");
   };
 
-  const clearCart = () => {
-    setCart([]);
-    localStorage.removeItem("cart");
+  const clearCart = async () => {
+    try {
+      console.log("Sending DELETE request...");
+
+      const response = await api.delete("/cart/clear");
+
+      console.log("Clear cart response:", response.data);
+
+      setCart([]);
+      localStorage.removeItem("cart");
+
+    } catch (error) {
+      console.error("Failed to clear cart:", error);
+    }
   };
 
   /*

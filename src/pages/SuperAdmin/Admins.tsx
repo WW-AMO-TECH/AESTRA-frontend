@@ -46,7 +46,7 @@ const Admins = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-slate-100 flex">
       <Sidebar user={user} />
 
       <main className="flex-1 pt-20 lg:pt-6 p-6">

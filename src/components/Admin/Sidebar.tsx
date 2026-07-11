@@ -150,18 +150,7 @@ const Sidebar = ({ user }: SidebarProps) => {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b">
-          <Link
-            to="/"
-            className="font-display text-lg font-bold tracking-tight flex items-center gap-2"
-          >
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground text-xs font-black">
-                A
-              </span>
-            </div>
-
-            AESTRA-TECH
-          </Link>
+            <img className="lg:h-8 lg:w-25 h-5" src="/AESTRA LOGO-navbar.png" alt=""/>
 
           <button
             onClick={() => setSidebarOpen(false)}

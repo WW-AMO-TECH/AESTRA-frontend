@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
-import { Eye, Pencil, Trash2, X } from "lucide-react";
+import { Eye, Pencil, Trash2, X, Upload, Download } from "lucide-react";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import Sidebar from "@/components/Admin/Sidebar";
@@ -472,10 +472,10 @@ const AdminProducts = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background lg:flex">
+    <div className="min-h-screen bg-slate-100 lg:flex">
       <Sidebar user={user} />
 
-      <div className="flex-1 p-4 lg:p-5 mt-14 lg:mt-0">
+      <div className="flex-1 p-4 lg:p-5 mt-14 lg:mt-0 h-screen overflow-y-auto">
 
         {/* HEADER */}
         <div className="mb-4">
@@ -483,20 +483,20 @@ const AdminProducts = () => {
             <h1 className="lg:text-2xl text-lg font-bold">Manage Products</h1>
             <div className="flex gap-4">
               <button
-                className=" text-primary"
+                className="bg-primary text-white px-3 py-2 rounded-lg"
               >
-                Import
+                <span className="flex gap-2"><Download/> Import</span>
               </button>
               <button
-                className="text-primary"
+                className="bg-primary text-white px-3 py-2 rounded-lg"
               >
-                Export
+                <span className="flex gap-2"><Upload/> Export</span>
               </button>
               <button
                 onClick={() => setShowAddModal(true)}
                 className="bg-primary text-white px-3 py-2 rounded-lg"
               >
-                +<span className="hidden md:inline"> Add Product</span>
+                +<span className="hidden md:inline pl-2"> Add Product</span>
               </button>
             </div>
           </div>

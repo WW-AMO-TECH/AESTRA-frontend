@@ -390,7 +390,7 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen  overflow-x-hidden bg-background">
       <Navbar />
 
       {/* HERO */}
@@ -694,12 +694,13 @@ const Index = () => {
         </section>
 
       {/* FOOTER */}
-      <footer className="border-t mt-4 bg-secondary/20">
+      <footer className="border-t mx-[-15px] mt-8 bg-secondary/20">
         <div className="container mx-auto py-5">
-          <div className="grid md:grid-cols-5 gap-2">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="flex md:grid-cols-2 gap-5">
             <div>
               <h3>
-                <img className="h-8 w-25" src="src/assets/AESTRA LOGO-navbar.png" alt=""/>
+                <img className="h-8 w-25" src="public/AESTRA LOGO-navbar.png" alt=""/>
               </h3>
 
               <p className="text-muted-foreground mt-3">
@@ -707,51 +708,56 @@ const Index = () => {
                 premium gadgets and smart
                 devices.
               </p>
-            </div>
 
-            <div>
-              <h4 className="font-semibold mb-3">
-                Shop
-              </h4>
+              <div className="pt-5">
+                <h4 className="font-semibold lg:mb-2">
+                  Contact
+                </h4>
 
-              <div className="flex flex-col gap-2">
-                <Link to="/products">
-                  Products
-                </Link>
-
-                <Link to="/cart">
-                  Cart
-                </Link>
+                <p className="text-muted-foreground text-sm">
+                  help@aestra-tech.com
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  +234 812 345 6789
+                </p>
               </div>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-3">
-                Account
-              </h4>
+              <div className="pt-5 lg:pt-0">
+                <h4 className="font-semibold mb-3">
+                  Shop
+                </h4>
 
-              <div className="flex flex-col gap-2">
-                <Link to="/dashboard">
-                  Dashboard
-                </Link>
+                <div className="flex flex-col gap-2 text-primary">
+                  <Link to="/products">
+                    Products
+                  </Link>
 
-                <Link to="/wishlist">
-                  Wishlist
-                </Link>
+                  <Link to="/cart">
+                    Cart
+                  </Link>
+                </div>
+              </div>
+
+              <div className="pt-5 lg:pt-0">
+                <h4 className="font-semibold mb-3">
+                  Account
+                </h4>
+
+                <div className="flex flex-col gap-2 text-primary">
+                  <Link to="/dashboard">
+                    Dashboard
+                  </Link>
+
+                  <Link to="/wishlist">
+                    Wishlist
+                  </Link>
+                </div>
               </div>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-3">
-                Contact
-              </h4>
-
-              <p>help@aestra-tech.com</p>
-              <p>+234 812 345 6789</p>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">
+            <div className="lg:mx-5 pt-7 pb-5 lg:pt-0 text-center">
+              <h4 className="font-semibold lg:mb-4">
                 Stay Updated
               </h4>
 
@@ -785,7 +791,7 @@ const Index = () => {
 
           </div>
 
-          <div className="border-t mt-10 pt-6 text-center text-sm text-muted-foreground">
+          <div className="border-t lg:mt-10 lg:py-5 py-3 text-center text-sm text-muted-foreground">
             © 2026 AESTRA TECH. All rights reserved.
           </div>
 

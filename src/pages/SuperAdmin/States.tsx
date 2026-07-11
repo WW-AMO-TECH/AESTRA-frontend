@@ -156,7 +156,7 @@ const States = () => {
   };
 
   return (
-    <div className="min-h-screen lg:flex bg-background">
+    <div className="min-h-screen lg:flex bg-slate-100">
       <Sidebar user={user} />
 
       <div className="flex-1 p-6 pt-20 lg:pt-6">

@@ -7,8 +7,7 @@ import axios from "axios";
 | This is the single connection point between React and Laravel backend
 */
 const api = axios.create({
-  // baseURL: "http://127.0.0.1:8000/api",
-  baseURL: "https://excess-macaw-sassy.ngrok-free.dev/api",
+  baseURL: "http://127.0.0.1:8000/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

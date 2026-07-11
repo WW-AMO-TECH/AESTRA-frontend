@@ -22,7 +22,7 @@ const PaymentSuccess = () => {
         const token = localStorage.getItem("token");
 
         // 🔥 VERIFY PAYMENT WITH BACKEND (Paystack check optional but good safety)
-        const res = await axios.get(
+        const response = await axios.get(
           `/payments/verify?reference=${reference}`,
           {
             headers: {
@@ -32,8 +32,10 @@ const PaymentSuccess = () => {
         );
 
         // Only clear cart if payment is confirmed
-        if (res.data?.status === "success") {
-          clearCart();
+        if (response.data.success) {
+          console.log("Calling clearCart...");
+          await clearCart();
+          console.log("clearCart completed");
         }
 
       } catch (err) {
@@ -84,7 +86,7 @@ const PaymentSuccess = () => {
           </button>
 
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/products")}
             className="flex-1 border border-input px-4 py-2 rounded-xl text-sm font-medium hover:bg-muted transition"
           >
             Continue Shopping

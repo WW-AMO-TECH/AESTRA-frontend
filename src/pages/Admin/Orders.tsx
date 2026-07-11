@@ -143,7 +143,7 @@ const AdminOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background lg:flex">
+    <div className="min-h-screen bg-slate-100 lg:flex">
       <Sidebar user={user} />
 
       {/* MAIN */}

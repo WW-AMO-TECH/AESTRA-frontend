@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import Sidebar from "@/components/Admin/Sidebar";
 
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
   <div className="min-h-screen bg-slate-100 flex">
     <Sidebar user={user} />
 
-    <main className="mx-2 h-screen overflow-y-auto">
+    <main className="flex-1 lg:px-4 h-screen overflow-y-auto">
       <div className="p-6 pt-20 lg:pt-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
           <div>
@@ -148,7 +148,9 @@ const AdminDashboard = () => {
             </div>
             <div className="hidden md:block text-left">
               <p className="font-semibold text-sm"> {user.name} </p>
-              <p className="text-xs text-slate-500"> Administrator </p>
+              <p className="text-xs text-slate-500">
+                {user?.role === "super_admin" ? "Super Admin" : "Admin"}
+              </p>
             </div>
 
             <button className="relative bg-white w-11 h-11 rounded-xl shadow-sm flex items-center justify-center">
@@ -373,9 +375,9 @@ const AdminDashboard = () => {
 
       </div>
 
-      <button className="text-primary font-medium text-sm">
+      <Link to="/admin/orders" className="text-primary font-medium text-sm">
         View All
-      </button>
+      </Link>
 
     </div>
 
@@ -459,46 +461,29 @@ const AdminDashboard = () => {
 
   {/* SALES CATEGORY */}
 
-  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
 
     <h2 className="text-xl font-semibold mb-6">
       Sales Summary
     </h2>
-
     <div className="space-y-5">
-
       <div>
-
         <div className="flex justify-between mb-2">
-
           <span>Phones</span>
-
           <span className="font-semibold">72%</span>
-
         </div>
-
         <div className="w-full h-3 rounded-full bg-slate-200 overflow-hidden">
-
           <div className="w-[72%] h-full bg-primary rounded-full"></div>
-
         </div>
-
       </div>
 
       <div>
-
         <div className="flex justify-between mb-2">
-
           <span>Laptops</span>
-
           <span className="font-semibold">61%</span>
-
         </div>
-
         <div className="w-full h-3 rounded-full bg-slate-200 overflow-hidden">
-
           <div className="w-[61%] h-full bg-green-500 rounded-full"></div>
-
         </div>
 
       </div>

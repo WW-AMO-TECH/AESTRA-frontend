@@ -40,12 +40,12 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 lg:h-16 h-12 flex items-center justify-between">
 
         {/* LOGO */}
         <Link to="/" className="">
           <div>
-            <img className="lg:h-8 lg:w-25 h-5" src="src/assets/AESTRA LOGO-navbar.png" alt=""/>
+            <img className="lg:h-8 lg:w-25 h-5" src="/AESTRA LOGO-navbar.png" alt=""/>
           </div>
         </Link>
 
@@ -134,7 +134,7 @@ const Navbar = () => {
             <SheetHeader className="mb-6">
               <SheetTitle className="flex items-center gap-2">
                 <div>
-                  <img className="lg:h-8 lg:w-25 h-5" src="src/assets/AESTRA LOGO-navbar.png" alt=""/>
+                  <img className="lg:h-8 lg:w-25 h-5" src="/AESTRA LOGO-navbar.png" alt=""/>
                 </div>
               </SheetTitle>
             </SheetHeader>
