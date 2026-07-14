@@ -11,7 +11,8 @@ import { toast } from "sonner";
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
-  "http://127.0.0.1:8000/api";
+  // "http://127.0.0.1:8000/api";
+  "https://aestra-backend-production-426b.up.railway.app/api";
 
 const BASE_URL = API_URL.replace("/api", "");
 

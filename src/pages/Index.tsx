@@ -700,9 +700,9 @@ const Index = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <div className="flex md:grid-cols-2 gap-5">
               <div>
-                <h3>
-                  <img className="h-8 w-25" src="public/AESTRA LOGO-navbar.png" alt=""/>
-                </h3>
+                <div>
+                  <img className="lg:h-8 lg:w-25 h-5" src="/AESTRA LOGO-navbar.png" alt=""/>
+                </div>
 
                 <p className="text-muted-foreground mt-3">
                   Your trusted destination for
