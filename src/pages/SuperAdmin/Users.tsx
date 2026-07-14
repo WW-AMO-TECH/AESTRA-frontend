@@ -33,7 +33,7 @@ const Users = () => {
   const fetchUsers = async () => {
     try {
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/superadmin/users",
+        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/users",
         config
       );
 

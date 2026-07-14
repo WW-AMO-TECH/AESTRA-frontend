@@ -321,7 +321,7 @@ const Index = () => {
           tag: product.tag,
 
           image: product.images?.length
-            ? `http://127.0.0.1:8000${product.images[0].image_url}`
+            ? `https://aestra-backend-production-426b.up.railway.app${product.images[0].image_url}`
             : "/placeholder.png",
 
           brand: {

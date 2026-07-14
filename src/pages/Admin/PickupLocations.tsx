@@ -42,7 +42,7 @@ const PickupLocations = () => {
   const fetchLocations = async () => {
     try {
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/superadmin/pickup-locations",
+        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/pickup-locations",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ const PickupLocations = () => {
   const fetchCountries = async () => {
     try {
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/superadmin/countries",
+        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/countries",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ const PickupLocations = () => {
 
     try {
       const res = await axios.get(
-        `http://127.0.0.1:8000/api/superadmin/countries/${id}/states`,
+        `https://aestra-backend-production-426b.up.railway.app/api/superadmin/countries/${id}/states`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -145,7 +145,7 @@ const PickupLocations = () => {
     try {
       if (editingId) {
         await axios.put(
-          `http://127.0.0.1:8000/api/superadmin/pickup-locations/${editingId}`,
+          `https://aestra-backend-production-426b.up.railway.app/api/superadmin/pickup-locations/${editingId}`,
           payload,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -153,7 +153,7 @@ const PickupLocations = () => {
         );
       } else {
         await axios.post(
-          "http://127.0.0.1:8000/api/superadmin/pickup-locations",
+          "https://aestra-backend-production-426b.up.railway.app/api/superadmin/pickup-locations",
           payload,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -190,7 +190,7 @@ const PickupLocations = () => {
 
     try {
       await axios.delete(
-        `http://127.0.0.1:8000/api/superadmin/pickup-locations/${id}`,
+        `https://aestra-backend-production-426b.up.railway.app/api/superadmin/pickup-locations/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

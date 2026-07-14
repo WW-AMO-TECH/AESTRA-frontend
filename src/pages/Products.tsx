@@ -8,7 +8,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { formatPrice } from "@/lib/utils";
 
-const API = "http://127.0.0.1:8000/api";
+const API = "https://aestra-backend-production-426b.up.railway.app/api";
 
 type Product = {
   id: number;
@@ -75,7 +75,7 @@ const ProductsFlashDeals = ({ products }: { products: Product[] }) => {
                 <img
                   src={
                     p.images?.[0]?.image_url
-                      ? `http://127.0.0.1:8000${p.images[0].image_url}`
+                      ? `https://aestra-backend-production-426b.up.railway.app${p.images[0].image_url}`
                       : "/placeholder.png"
                   }
                   className="w-16 h-16 object-cover rounded"
@@ -255,7 +255,7 @@ const Products = () => {
                 name: p.name,
                 price: p.price,
                 image: p.images?.[0]?.image_url
-                  ? `http://127.0.0.1:8000${p.images[0].image_url}`
+                  ? `https://aestra-backend-production-426b.up.railway.app${p.images[0].image_url}`
                   : "/placeholder.png",
               }}
               index={i}

@@ -22,7 +22,7 @@ const States = () => {
   const fetchStates = async () => {
     try {
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/superadmin/states",
+        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/states",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ const States = () => {
   const fetchCountries = async () => {
     try {
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/superadmin/countries",
+        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/countries",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ const States = () => {
 
       if (editingId) {
         await axios.put(
-          `http://127.0.0.1:8000/api/superadmin/states/${editingId}`,
+          `https://aestra-backend-production-426b.up.railway.app/api/superadmin/states/${editingId}`,
           payload,
           {
             headers: {
@@ -95,7 +95,7 @@ const States = () => {
         );
       } else {
         await axios.post(
-          `http://127.0.0.1:8000/api/superadmin/states`,
+          `https://aestra-backend-production-426b.up.railway.app/api/superadmin/states`,
           payload,
           {
             headers: {
@@ -131,7 +131,7 @@ const States = () => {
 
     try {
       await axios.delete(
-        `http://127.0.0.1:8000/api/superadmin/states/${id}`,
+        `https://aestra-backend-production-426b.up.railway.app/api/superadmin/states/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

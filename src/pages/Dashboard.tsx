@@ -287,7 +287,7 @@ const Dashboard = () => {
                       className="flex items-center gap-2 mt-3"
                     >
                       <img
-                        src={`http://127.0.0.1:8000${
+                        src={`https://aestra-backend-production-426b.up.railway.app${
                           item.product?.images?.[0]?.image_url
                         }`}
                         alt={item.product?.name}
@@ -342,7 +342,7 @@ const Dashboard = () => {
                 <div className="text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2">
                     <img
-                      src={`http://127.0.0.1:8000${
+                      src={`https://aestra-backend-production-426b.up.railway.app${
                         item.product?.images?.[0]?.image_url
                       }`}
                       alt={item.product?.name}
