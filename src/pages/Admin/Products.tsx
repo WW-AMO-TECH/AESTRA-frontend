@@ -5,6 +5,8 @@ import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import Sidebar from "@/components/Admin/Sidebar";
 import { grades, warranties, tags } from "@/data/productOptions";
+import { toast } from "sonner";
+import api from "@/api/axios";
 
 type Product = {
   id: number;
@@ -133,6 +135,52 @@ const AdminProducts = () => {
       setNewProduct((prev) => ({ ...prev, price: String(finalPrice) }));
     }
   }, [newProduct.original_price, newProduct.discount_percentage]);
+
+  const exportProducts = async () => {
+    const response = await api.get("/admin/products/export", {
+        responseType: "blob",
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+
+    const link = document.createElement("a");
+    link.href = url;
+    
+    // Set the desired filename for the downloaded file
+    link.download = "products.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
+  const importProducts = async (
+      e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+      if (!e.target.files?.length) return;
+
+      const formData = new FormData();
+      formData.append("file", e.target.files[0]);
+
+      try {
+          const response = await api.post(
+              "/admin/products/import",
+              formData,
+              {
+                  headers: {
+                      "Content-Type": "multipart/form-data",
+                  },
+              }
+          );
+
+          console.log(response.data);
+          toast.success("Import Successful");
+
+      } catch (error: any) {
+          console.log(error.response);
+          toast.error("Import Failed");
+      }
+  };
 
   const fetchProducts = async (pageNumber = 1, searchValue = "") => {
     try {
@@ -475,20 +523,26 @@ const AdminProducts = () => {
     <div className="min-h-screen bg-slate-100 lg:flex">
       <Sidebar user={user} />
 
-      <div className="flex-1 p-4 lg:p-5 mt-14 lg:mt-0 h-screen overflow-y-auto">
+      <div className="flex-1 p-3 lg:p-5 mt-14 lg:mt-0 h-screen overflow-y-auto">
 
         {/* HEADER */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
             <h1 className="lg:text-2xl text-lg font-bold">Manage Products</h1>
             <div className="flex gap-4">
+              <label className="bg-green-600 text-white px-4 py-2 rounded-lg cursor-pointer">
+                Import
+
+                <input
+                    type="file"
+                    accept=".xlsx,.csv"
+                    className="hidden"
+                    onChange={importProducts}
+                />
+              </label>
               <button
-                className="bg-primary text-white px-3 py-2 rounded-lg"
-              >
-                <span className="flex gap-2"><Download/> Import</span>
-              </button>
-              <button
-                className="bg-primary text-white px-3 py-2 rounded-lg"
+                onClick={exportProducts}
+                className="bg-blue-600 text-white px-3 py-2 rounded-lg"
               >
                 <span className="flex gap-2"><Upload/> Export</span>
               </button>
@@ -569,7 +623,7 @@ const AdminProducts = () => {
                     <td className="p-3">{p.brand?.name || "-"}</td>
                     <td className="p-3">₦{p.price}</td>
                     <td className="p-3">{p.tag}</td>
-                    <td className="p-3 text-right space-x-2">
+                    <td className="p-3 text-right lg:space-x-2 space-x-1 flex justify-end">
                       <button onClick={() => openView(p)} className="p-2 rounded-lg hover:bg-gray-100" ><Eye size={16} /></button>
                       <button onClick={() => openEdit(p)} className="p-2 rounded-lg hover:bg-blue-100 text-blue-600" ><Pencil size={16} /></button>
                       <button onClick={() => handleDelete(p.id)} className="p-2 rounded-lg hover:bg-red-100 text-red-600" ><Trash2 size={16} /></button>

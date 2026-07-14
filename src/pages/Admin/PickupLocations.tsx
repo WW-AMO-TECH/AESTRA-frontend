@@ -65,13 +65,24 @@ const PickupLocations = () => {
       const res = await axios.get(
         "http://127.0.0.1:8000/api/superadmin/countries",
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
-      setCountries(res.data.data || []);
-    } catch (err) {
-      console.log("FETCH COUNTRIES ERROR:", err);
+      setCountries(
+        Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data.data)
+          ? res.data.data
+          : []
+      );
+    } catch (err: any) {
+      console.log(
+        "FETCH COUNTRIES ERROR:",
+        err.response?.data || err
+      );
     }
   };
 
@@ -103,6 +114,9 @@ const PickupLocations = () => {
     fetchLocations();
     fetchCountries();
   }, []);
+  useEffect(() => {
+  console.log("Countries:", countries);
+}, [countries]);
 
   // ---------------- VALIDATION + SAVE ----------------
   const handleSave = async () => {
@@ -257,7 +271,7 @@ const PickupLocations = () => {
 
             {/* MODAL */}
             {showModal && (
-              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <div className="fixed inset-0 lg-px-0 px-3 bg-black/50 flex items-center justify-center z-50">
                 <div className="bg-white p-6 m-2 rounded-xl w-[500px]">
 
                   <div className="flex justify-between mb-4">

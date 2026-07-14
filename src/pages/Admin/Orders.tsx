@@ -147,11 +147,13 @@ const AdminOrders = () => {
       <Sidebar user={user} />
 
       {/* MAIN */}
-      <div className="flex-1 p-4 space-y-4">
+      <div className="flex-1 p-3 lg:p-5 mt-14 lg:mt-0 h-screen overflow-y-auto">
 
         {/* FILTERS */}
         {tab === "orders" && !viewOrder && (
           <div className="space-y-4">
+            
+            <h1 className="lg:text-2xl text-lg font-bold">Manage Orders</h1>
 
             <div className="flex flex-wrap gap-2">
               <select

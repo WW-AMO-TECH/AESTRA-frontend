@@ -42,12 +42,12 @@ const categories = [
     img: "/hero-watch.png",
   },
   {
-    name: "Phones",
+    name: "Accessories",
     icon: Smartphone,
     img: "/hero-phone.png",
   },
   {
-    name: "Laptops",
+    name: "Speakers",
     icon: Laptop,
     img: "/hero-laptop.png",
   },
@@ -85,7 +85,7 @@ const promoSlides = [
     link: "/products?sort=deals",
     bg: "bg-black",
     text: "text-white",
-    image: "/images/banners/hot-deals.png",
+    image: "public/16 pro var.png",
   },
   {
     title: "Hot Deals",
@@ -95,7 +95,7 @@ const promoSlides = [
     link: "/products?sort=deals",
     bg: "bg-black",
     text: "text-white",
-    image: "/images/banners/hot-deals.png",
+    image: "public/16 pro var.png",
   },
   {
     title: "Hot Deals",
@@ -105,7 +105,7 @@ const promoSlides = [
     link: "/products?sort=deals",
     bg: "bg-black",
     text: "text-white",
-    image: "/images/banners/hot-deals.png",
+    image: "public/16 pro var.png",
   },
 ];
 
@@ -390,41 +390,42 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen  overflow-x-hidden bg-background">
+    <div className="min-h-screen bg-background">
       <Navbar />
+      <div className="overflow-x-hidden">
 
-      {/* HERO */}
-      <HeroCarousel />
+        {/* HERO */}
+        <HeroCarousel />
 
-      {/* PERKS */}
-      <section className="border mx-5 rounded-2xl border-primary bg-primary/10 shadow-xl">
-        <div className="container mx-auto px-4 py-5">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* PERKS */}
+        <section className="border mx-5 rounded-2xl border-primary bg-primary/10 shadow-xl">
+          <div className="container mx-auto px-4 py-5">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
 
-            {perks.map((perk) => (
-              <div
-                key={perk.title}
-                className="flex gap-4 items-center"
-              >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <perk.icon className="text-primary" />
+              {perks.map((perk) => (
+                <div
+                  key={perk.title}
+                  className="flex gap-4 items-center"
+                >
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <perk.icon className="text-primary" />
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold">
+                      {perk.title}
+                    </h4>
+
+                    <p className="text-sm text-muted-foreground">
+                      {perk.desc}
+                    </p>
+                  </div>
                 </div>
+              ))}
 
-                <div>
-                  <h4 className="font-semibold">
-                    {perk.title}
-                  </h4>
-
-                  <p className="text-sm text-muted-foreground">
-                    {perk.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
         {/* BRANDS */}
         <section className="py-14 overflow-hidden">
@@ -548,9 +549,9 @@ const Index = () => {
               {promoSlides.map((slide, index) => (
                 <div key={index} className="min-w-full">
                   <div
-                      className={`${slide.bg} ${slide.text} px-6 py-6 md:py-8`}
+                      className={`${slide.bg} ${slide.text} lg:px-6 px-5 py-6 md:py-8`}
                   >
-                    <div className="grid lg:grid-cols-2 gap-10 items-center">
+                    <div className="lg:grid lg:grid-cols-2 flex gap-10 items-center lg:px-10">
 
                       {/* LEFT */}
                       <div>
@@ -575,7 +576,7 @@ const Index = () => {
                       </div>
 
                       {/* RIGHT */}
-                      <div className="flex justify-center lg:justify-end">
+                      <div className="flex justify-center lg:justify-start">
                         <img
                           src={slide.image}
                           alt={slide.title}
@@ -693,110 +694,111 @@ const Index = () => {
 
         </section>
 
-      {/* FOOTER */}
-      <footer className="border-t mx-[-15px] mt-8 bg-secondary/20">
-        <div className="container mx-auto py-5">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="flex md:grid-cols-2 gap-5">
-            <div>
-              <h3>
-                <img className="h-8 w-25" src="public/AESTRA LOGO-navbar.png" alt=""/>
-              </h3>
+        {/* FOOTER */}
+        <footer className="border-t mx-[-15px] mt-8 bg-secondary/20">
+          <div className="container mx-auto py-5">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="flex md:grid-cols-2 gap-5">
+              <div>
+                <h3>
+                  <img className="h-8 w-25" src="public/AESTRA LOGO-navbar.png" alt=""/>
+                </h3>
 
-              <p className="text-muted-foreground mt-3">
-                Your trusted destination for
-                premium gadgets and smart
-                devices.
-              </p>
-
-              <div className="pt-5">
-                <h4 className="font-semibold lg:mb-2">
-                  Contact
-                </h4>
-
-                <p className="text-muted-foreground text-sm">
-                  help@aestra-tech.com
+                <p className="text-muted-foreground mt-3">
+                  Your trusted destination for
+                  premium gadgets and smart
+                  devices.
                 </p>
-                <p className="text-muted-foreground text-sm">
-                  +234 812 345 6789
-                </p>
-              </div>
-            </div>
 
-              <div className="pt-5 lg:pt-0">
-                <h4 className="font-semibold mb-3">
-                  Shop
-                </h4>
+                <div className="pt-5">
+                  <h4 className="font-semibold lg:mb-2">
+                    Contact
+                  </h4>
 
-                <div className="flex flex-col gap-2 text-primary">
-                  <Link to="/products">
-                    Products
-                  </Link>
-
-                  <Link to="/cart">
-                    Cart
-                  </Link>
+                  <p className="text-muted-foreground text-sm">
+                    help@aestra-tech.com
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    +234 812 345 6789
+                  </p>
                 </div>
               </div>
 
-              <div className="pt-5 lg:pt-0">
-                <h4 className="font-semibold mb-3">
-                  Account
-                </h4>
+                <div className="pt-5 lg:pt-0">
+                  <h4 className="font-semibold mb-3">
+                    Shop
+                  </h4>
 
-                <div className="flex flex-col gap-2 text-primary">
-                  <Link to="/dashboard">
-                    Dashboard
-                  </Link>
+                  <div className="flex flex-col gap-2 text-primary">
+                    <Link to="/products">
+                      Products
+                    </Link>
 
-                  <Link to="/wishlist">
-                    Wishlist
-                  </Link>
+                    <Link to="/cart">
+                      Cart
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="pt-5 lg:pt-0">
+                  <h4 className="font-semibold mb-3">
+                    Account
+                  </h4>
+
+                  <div className="flex flex-col gap-2 text-primary">
+                    <Link to="/dashboard">
+                      Dashboard
+                    </Link>
+
+                    <Link to="/wishlist">
+                      Wishlist
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="lg:mx-5 pt-7 pb-5 lg:pt-0 text-center">
-              <h4 className="font-semibold lg:mb-4">
-                Stay Updated
-              </h4>
+              <div className="lg:mx-5 pt-7 pb-5 lg:pt-0 text-center">
+                <h4 className="font-semibold lg:mb-4">
+                  Stay Updated
+                </h4>
 
-              <p className="text-sm text-muted-foreground mb-4">
-                Subscribe for exclusive offers, new arrivals
-                and tech updates.
-              </p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Subscribe for exclusive offers, new arrivals
+                  and tech updates.
+                </p>
 
-              <div className="flex flex-col gap-3">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="
-                    w-full
-                    rounded-xl
-                    border
-                    px-4
-                    py-3
-                    bg-background
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-primary
-                  "
-                />
+                <div className="flex flex-col gap-3">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="
+                      w-full
+                      rounded-xl
+                      border
+                      px-4
+                      py-3
+                      bg-background
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-primary
+                    "
+                  />
 
-                <button className="btn-primary-glow">
-                  Subscribe
-                </button>
+                  <button className="btn-primary-glow">
+                    Subscribe
+                  </button>
+                </div>
               </div>
+
+            </div>
+
+            <div className="border-t lg:mt-10 lg:py-5 py-3 text-center text-sm text-muted-foreground">
+              © 2026 AESTRA TECH. All rights reserved.
             </div>
 
           </div>
-
-          <div className="border-t lg:mt-10 lg:py-5 py-3 text-center text-sm text-muted-foreground">
-            © 2026 AESTRA TECH. All rights reserved.
-          </div>
-
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 };

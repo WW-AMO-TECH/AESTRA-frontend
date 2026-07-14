@@ -46,10 +46,10 @@ const Admins = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex">
+    <div className="min-h-screen bg-slate-100 lg:flex">
       <Sidebar user={user} />
 
-      <main className="flex-1 pt-20 lg:pt-6 p-6">
+      <main className="flex-1 p-3 lg:p-4 lg:py-0 mt-12 lg:mt-0 h-screen overflow-y-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold">

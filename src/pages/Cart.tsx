@@ -28,7 +28,7 @@ const Cart = () => {
       <Navbar />
 
       <div className="container mx-auto px-3 lg:px-4 py-5 lg:py-8">
-        <h1 className="text-2xl font-bold mb-6">
+        <h1 className="lg:text-2xl text-xl font-bold mb-6">
           Shopping Cart
         </h1>
 

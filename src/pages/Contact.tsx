@@ -144,7 +144,7 @@ const Contact = () => {
             <h2 className="font-display text-lg font-bold mb-6 text-center">Why Trust AESTRA-TECH?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
               {trustPoints.map(t => (
-                <div key={t.title} className="glass-card p-5 rounded-2xl text-center">
+                <div key={t.title} className="glass-card p-5 rounded-2xl hover:shadow-xl border-1.5 border-primary text-center">
                   <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                     <t.icon className="w-6 h-6 text-primary" />
                   </div>
@@ -154,7 +154,7 @@ const Contact = () => {
               ))}
             </div>
 
-            <div className="glass-card p-5 md:p-8 rounded-2xl max-w-2xl mx-auto text-center">
+            <div className="glass-card p-5 md:p-8 rounded-2xl border border-primary max-w-2xl mx-auto text-center">
               <h3 className="font-display font-bold text-base mb-2">Our Commitment</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 At AESTRA-TECH, customer satisfaction is our top priority. We ensure every product is genuine, every transaction is secure, and every customer is supported. With over 10,000 happy customers across Nigeria, we're building the most trusted tech marketplace in West Africa.

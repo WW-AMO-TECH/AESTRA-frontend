@@ -36,6 +36,11 @@ const Navbar = () => {
     { to: "/contact", label: "Contact" },
   ];
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
+
   if (loading) return null; // prevents flicker
 
   return (
@@ -71,7 +76,7 @@ const Navbar = () => {
             onSubmit={handleSearch}
             className="hidden lg:flex items-center w-full max-w-md xl:max-w-lg"
           >
-            <div className="flex items-center w-full bg-background border border-border rounded-xl shadow-sm hover:shadow-md focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary transition-all duration-300 overflow-hidden">
+            <div className="flex items-center w-full bg-background border border-border rounded-xl shadow-sm hover:shadow-md focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary transition-all duration-300">
 
               <input
                 type="text"
@@ -109,7 +114,7 @@ const Navbar = () => {
               </Link>
 
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="text-sm text-muted-foreground hover:text-red-500"
               >
                 Logout

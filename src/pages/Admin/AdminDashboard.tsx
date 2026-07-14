@@ -128,11 +128,11 @@ const AdminDashboard = () => {
   }
 
   return (
-  <div className="min-h-screen bg-slate-100 flex">
+  <div className="min-h-screen bg-slate-100 lg:flex">
     <Sidebar user={user} />
 
-    <main className="flex-1 lg:px-4 h-screen overflow-y-auto">
-      <div className="p-6 pt-20 lg:pt-6">
+    <main className="flex-1 p-3 lg:p-4 lg:py-0 mt-12 lg:mt-0 h-screen overflow-y-auto">
+      <div className="p-4 lg:pt-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">
