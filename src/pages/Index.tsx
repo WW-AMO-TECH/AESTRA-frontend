@@ -85,7 +85,7 @@ const promoSlides = [
     link: "/products?sort=deals",
     bg: "bg-black",
     text: "text-white",
-    image: "public/16 pro var.png",
+    image: "/16 pro var.png",
   },
   {
     title: "Hot Deals",
@@ -95,7 +95,7 @@ const promoSlides = [
     link: "/products?sort=deals",
     bg: "bg-black",
     text: "text-white",
-    image: "public/16 pro var.png",
+    image: "/16 pro var.png",
   },
   {
     title: "Hot Deals",
@@ -105,7 +105,7 @@ const promoSlides = [
     link: "/products?sort=deals",
     bg: "bg-black",
     text: "text-white",
-    image: "public/16 pro var.png",
+    image: "/16 pro var.png",
   },
 ];
 
