@@ -13,7 +13,7 @@ const api = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true
+  withCredentials: false, // Set to true if you want to send cookies with requests
 });
 
 /*
