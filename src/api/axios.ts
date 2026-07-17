@@ -8,11 +8,12 @@ import axios from "axios";
 */
 const api = axios.create({
   // baseURL: "https://aestra-backend-production-426b.up.railway.app/api",
-  baseURL: import.meta.env.VITE_API_URL || "https://aestra-backend-production-426b.up.railway.appapi",
+  baseURL: import.meta.env.VITE_API_URL || "https://aestra-backend-production-426b.up.railway.app/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
+  withCredentials: true
 });
 
 /*
