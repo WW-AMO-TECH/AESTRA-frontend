@@ -187,7 +187,7 @@ const AdminProducts = () => {
       setLoading(true);
 
       const res = await axios.get(
-        "https://aestra-backend-production-426b.up.railway.app/api/admin/products",
+        "https://aestra.onrender.com/api/admin/products",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -221,14 +221,14 @@ const AdminProducts = () => {
   };
 
   const fetchCategories = async () => {
-    const res = await axios.get("https://aestra-backend-production-426b.up.railway.app/api/admin/products/categories", {
+    const res = await axios.get("https://aestra.onrender.com/api/admin/products/categories", {
       headers: { Authorization: `Bearer ${token}` }
     });
     setCategories(res.data || []);
   };
 
   const fetchBrands = async () => {
-    const res = await axios.get("https://aestra-backend-production-426b.up.railway.app/api/admin/products/brands", {
+    const res = await axios.get("https://aestra.onrender.com/api/admin/products/brands", {
       headers: { Authorization: `Bearer ${token}` }
     });
     setBrands(res.data || []);
@@ -248,7 +248,7 @@ const AdminProducts = () => {
   }, [search, filters]);
 
   const handleDelete = async (id: number) => {
-    await axios.delete(`https://aestra-backend-production-426b.up.railway.app/api/admin/products/${id}`, {
+    await axios.delete(`https://aestra.onrender.com/api/admin/products/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     fetchProducts();
@@ -276,7 +276,7 @@ const AdminProducts = () => {
       }
 
       await axios.post(
-        "https://aestra-backend-production-426b.up.railway.app/api/admin/products",
+        "https://aestra.onrender.com/api/admin/products",
         formData,
         {
           headers: {
@@ -357,7 +357,7 @@ const AdminProducts = () => {
       }
 
       await axios.post(
-        `https://aestra-backend-production-426b.up.railway.app/api/admin/products/${selected.id}`,
+        `https://aestra.onrender.com/api/admin/products/${selected.id}`,
         formData,
         {
           headers: {
@@ -614,7 +614,7 @@ const AdminProducts = () => {
                       <img
                         src={
                           p.images?.[0]?.image_url
-                            ? `https://aestra-backend-production-426b.up.railway.app${p.images[0].image_url}`
+                            ? `https://aestra.onrender.com${p.images[0].image_url}`
                             : "/placeholder.png"
                         }
                         className="w-12 h-12 object-cover rounded"
@@ -1379,7 +1379,7 @@ const AdminProducts = () => {
                   <img
                     src={
                       selected.images?.[0]?.image_url
-                        ? `https://aestra-backend-production-426b.up.railway.app${selected.images[0].image_url}`
+                        ? `https://aestra.onrender.com${selected.images[0].image_url}`
                         : "/placeholder.png"
                     }
                     alt={selected.name}

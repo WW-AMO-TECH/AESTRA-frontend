@@ -42,7 +42,7 @@ const PickupLocations = () => {
   const fetchLocations = async () => {
     try {
       const res = await axios.get(
-        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/pickup-locations",
+        "https://aestra.onrender.com/api/superadmin/pickup-locations",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ const PickupLocations = () => {
   const fetchCountries = async () => {
     try {
       const res = await axios.get(
-        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/countries",
+        "https://aestra.onrender.com/api/superadmin/countries",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ const PickupLocations = () => {
 
     try {
       const res = await axios.get(
-        `https://aestra-backend-production-426b.up.railway.app/api/superadmin/countries/${id}/states`,
+        `https://aestra.onrender.com/api/superadmin/countries/${id}/states`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -145,7 +145,7 @@ const PickupLocations = () => {
     try {
       if (editingId) {
         await axios.put(
-          `https://aestra-backend-production-426b.up.railway.app/api/superadmin/pickup-locations/${editingId}`,
+          `https://aestra.onrender.com/api/superadmin/pickup-locations/${editingId}`,
           payload,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -153,7 +153,7 @@ const PickupLocations = () => {
         );
       } else {
         await axios.post(
-          "https://aestra-backend-production-426b.up.railway.app/api/superadmin/pickup-locations",
+          "https://aestra.onrender.com/api/superadmin/pickup-locations",
           payload,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -190,7 +190,7 @@ const PickupLocations = () => {
 
     try {
       await axios.delete(
-        `https://aestra-backend-production-426b.up.railway.app/api/superadmin/pickup-locations/${id}`,
+        `https://aestra.onrender.com/api/superadmin/pickup-locations/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

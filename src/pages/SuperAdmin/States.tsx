@@ -22,7 +22,7 @@ const States = () => {
   const fetchStates = async () => {
     try {
       const res = await axios.get(
-        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/states",
+        "https://aestra.onrender.com/api/superadmin/states",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ const States = () => {
   const fetchCountries = async () => {
     try {
       const res = await axios.get(
-        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/countries",
+        "https://aestra.onrender.com/api/superadmin/countries",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ const States = () => {
 
       if (editingId) {
         await axios.put(
-          `https://aestra-backend-production-426b.up.railway.app/api/superadmin/states/${editingId}`,
+          `https://aestra.onrender.com/api/superadmin/states/${editingId}`,
           payload,
           {
             headers: {
@@ -95,7 +95,7 @@ const States = () => {
         );
       } else {
         await axios.post(
-          `https://aestra-backend-production-426b.up.railway.app/api/superadmin/states`,
+          `https://aestra.onrender.com/api/superadmin/states`,
           payload,
           {
             headers: {
@@ -131,7 +131,7 @@ const States = () => {
 
     try {
       await axios.delete(
-        `https://aestra-backend-production-426b.up.railway.app/api/superadmin/states/${id}`,
+        `https://aestra.onrender.com/api/superadmin/states/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

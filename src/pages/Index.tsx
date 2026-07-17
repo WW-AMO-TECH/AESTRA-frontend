@@ -321,7 +321,7 @@ const Index = () => {
           tag: product.tag,
 
           image: product.images?.length
-            ? `https://aestra-backend-production-426b.up.railway.app${product.images[0].image_url}`
+            ? `https://aestra.onrender.com${product.images[0].image_url}`
             : "/placeholder.png",
 
           brand: {

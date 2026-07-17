@@ -7,8 +7,8 @@ import axios from "axios";
 | This is the single connection point between React and Laravel backend
 */
 const api = axios.create({
-  // baseURL: "https://aestra-backend-production-426b.up.railway.app/api",
-  baseURL: import.meta.env.VITE_API_URL || "https://aestra-backend-production-426b.up.railway.app/api",
+  // baseURL: "https://aestra.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL || "https://aestra.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

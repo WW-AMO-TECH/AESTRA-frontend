@@ -17,15 +17,8 @@ Wi-FI, cords, etc is part of accessories
 
 
 
-
-
-
-
-
-
-
 I replaced all 
 http://127.0.0.1:8000
 with
-https://aestra-backend-production-426b.up.railway.app
+https://aestra.onrender.com
 ProductDetail.tsx and axios.ts too

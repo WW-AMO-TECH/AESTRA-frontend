@@ -317,7 +317,7 @@ const Checkout = () => {
                           if (selectedStateObj?.id) {
                             try {
                               const res = await axios.get(
-                                `https://aestra-backend-production-426b.up.railway.app/api/superadmin/states/${selectedStateObj.id}/locations`
+                                `https://aestra.onrender.com/api/superadmin/states/${selectedStateObj.id}/locations`
                               );
 
                               setLocations(res.data);

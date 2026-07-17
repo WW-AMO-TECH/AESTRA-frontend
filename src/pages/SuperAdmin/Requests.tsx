@@ -47,7 +47,7 @@ const Requests = () => {
       setLoading(true);
 
       const res = await axios.get(
-        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/admin-requests",
+        "https://aestra.onrender.com/api/superadmin/admin-requests",
         config
       );
 
@@ -71,7 +71,7 @@ const Requests = () => {
       setProcessingId(id);
 
       await axios.post(
-        `https://aestra-backend-production-426b.up.railway.app/api/superadmin/admin-request/${id}/approve`,
+        `https://aestra.onrender.com/api/superadmin/admin-request/${id}/approve`,
         {},
         config
       );
@@ -101,7 +101,7 @@ const Requests = () => {
       setProcessingId(id);
 
       await axios.delete(
-        `https://aestra-backend-production-426b.up.railway.app/api/superadmin/admin-request/${id}`,
+        `https://aestra.onrender.com/api/superadmin/admin-request/${id}`,
         config
       );
 

@@ -11,8 +11,7 @@ import { toast } from "sonner";
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
-  // "https://aestra-backend-production-426b.up.railway.app/api";
-  "https://aestra-backend-production-426b.up.railway.appapi";
+  "https://aestra.onrender.com/api";
 
 const BASE_URL = API_URL.replace("/api", "");
 

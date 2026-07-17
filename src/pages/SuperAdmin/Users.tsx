@@ -33,7 +33,7 @@ const Users = () => {
   const fetchUsers = async () => {
     try {
       const res = await axios.get(
-        "https://aestra-backend-production-426b.up.railway.app/api/superadmin/users",
+        "https://aestra.onrender.com/api/superadmin/users",
         config
       );
 

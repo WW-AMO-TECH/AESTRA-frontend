@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import Sidebar from "@/components/Admin/Sidebar";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
 
-const API = "https://aestra-backend-production-426b.up.railway.app/api";
+const API = "https://aestra.onrender.com/api";
 
 const Countries = () => {
   const { user } = useAuth();
