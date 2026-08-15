@@ -38,7 +38,7 @@ const sidebarItems = [
     roles: ["admin", "super_admin"],
   },
   {
-    label: "Reviews",
+    label: "Reviews & Ratings",
     icon: Star,
     path: "/admin/reviews",
     roles: ["admin", "super_admin"],
@@ -97,6 +97,12 @@ const sidebarItems = [
     label: "Analytics",
     icon: BarChart3,
     path: "/superadmin/analytics",
+    roles: ["admin", "super_admin"],
+  },
+  {
+    label: "Blog",
+    icon: BarChart3,
+    path: "/superadmin/blog",
     roles: ["admin", "super_admin"],
   },
 ];

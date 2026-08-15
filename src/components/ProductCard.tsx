@@ -16,7 +16,8 @@ type Product = {
     name?: string;
     logo_url?: string;
   };
-  rating?: number;
+  rating?: number | null;
+  reviews_count?: number;
   condition?: "Original" | "Refurbished";
   grade?: "New" | "A" | "B" | "C"
   discount_percentage?: number;
@@ -227,9 +228,35 @@ const ProductCard = ({
           </Link>
 
           {/* RATING */}
-          <p className="text-[10px] md:text-sm text-yellow-500 font-medium mb-2 md:mb-0">
-            ⭐ {product.rating ?? 0}
-          </p>
+          {product.rating !== null &&
+          product.rating !== undefined &&
+          product.reviews_count &&
+          product.reviews_count > 0 ? (
+            <div className="mb-2 flex items-center gap-1 md:mb-0">
+
+              <div className="flex items-center">
+                {Array.from({
+                  length: Math.round(product.rating),
+                }).map((_, index) => (
+                  <span
+                    key={index}
+                    className="text-[11px] leading-none text-yellow-400 md:text-sm"
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+
+              <span className="text-[10px] font-medium text-slate-500 md:text-xs">
+                ({product.reviews_count})
+              </span>
+
+            </div>
+          ) : (
+            <p className="mb-2 text-[10px] font-medium text-slate-400 md:mb-0">
+              No ratings
+            </p>
+          )}
 
           {/* PRICE */}
           <p className="text-[14px] md:text-[16px] font-bold text-gray-900 md:mt-1">

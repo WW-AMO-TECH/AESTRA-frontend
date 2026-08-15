@@ -7,14 +7,24 @@ import axios from "axios";
 | This is the single connection point between React and Laravel backend
 */
 const api = axios.create({
-  // baseURL: "https://aestra.onrender.com/api",
-  baseURL: import.meta.env.VITE_API_URL || "https://aestra.onrender.com/api",
+  baseURL: "https://aestra.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: false, // Set to true if you want to send cookies with requests
+  withCredentials: false,
 });
+
+// This is the single connection point between React and Render backend
+// const api = axios.create({
+//   // baseURL: "https://aestra.onrender.com/api",
+//   baseURL: import.meta.env.VITE_API_URL || "https://aestra.onrender.com/api",
+//   headers: {
+//     "Content-Type": "application/json",
+//     Accept: "application/json",
+//   },
+//   withCredentials: false, // Set to true if you want to send cookies with requests
+// });
 
 /*
 |--------------------------------------------------

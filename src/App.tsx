@@ -31,6 +31,7 @@ import Requests from "./pages/SuperAdmin/Requests";
 import Countries from "./pages/SuperAdmin/Countries";
 import Analytics from "./pages/SuperAdmin/Analytics";
 import States from "./pages/SuperAdmin/States";
+import Reviews from "./pages/Admin/Reviews";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}/>
             <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>}/>
             <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>}/>
+            <Route path="/admin/reviews" element={<AdminRoute><Reviews /></AdminRoute>}/>
 
             {/* SUPER-ADMIN ROUTES */}
             {/* ADMIN ACCESS */}

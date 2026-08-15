@@ -222,6 +222,7 @@ const AdminProducts = () => {
 
   const fetchCategories = async () => {
     const res = await axios.get("https://aestra.onrender.com/api/admin/products/categories", {
+    // const res = await axios.get("https://aestra.onrender.com/api/admin/products/categories", {
       headers: { Authorization: `Bearer ${token}` }
     });
     setCategories(res.data || []);
@@ -229,6 +230,7 @@ const AdminProducts = () => {
 
   const fetchBrands = async () => {
     const res = await axios.get("https://aestra.onrender.com/api/admin/products/brands", {
+    // const res = await axios.get("https://aestra.onrender.com/api/admin/products/brands", {
       headers: { Authorization: `Bearer ${token}` }
     });
     setBrands(res.data || []);
@@ -249,6 +251,7 @@ const AdminProducts = () => {
 
   const handleDelete = async (id: number) => {
     await axios.delete(`https://aestra.onrender.com/api/admin/products/${id}`, {
+    // await axios.delete(`https://aestra.onrender.com/api/admin/products/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     fetchProducts();
@@ -277,6 +280,7 @@ const AdminProducts = () => {
 
       await axios.post(
         "https://aestra.onrender.com/api/admin/products",
+        // "https://aestra.onrender.com/api/admin/products",
         formData,
         {
           headers: {
@@ -358,6 +362,7 @@ const AdminProducts = () => {
 
       await axios.post(
         `https://aestra.onrender.com/api/admin/products/${selected.id}`,
+        // `https://aestra.onrender.com/api/admin/products/${selected.id}`,
         formData,
         {
           headers: {
@@ -527,7 +532,7 @@ const AdminProducts = () => {
 
         {/* HEADER */}
         <div className="mb-4">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between py-2 lg:pt-0 mb-2">
             <h1 className="lg:text-2xl text-lg font-bold">Manage Products</h1>
             <div className="flex gap-4">
               <label className="bg-green-600 text-white px-4 py-2 rounded-lg cursor-pointer">
@@ -614,7 +619,8 @@ const AdminProducts = () => {
                       <img
                         src={
                           p.images?.[0]?.image_url
-                            ? `https://aestra.onrender.com${p.images[0].image_url}`
+                          ? `https://aestra.onrender.com${p.images[0].image_url}`
+                            // ? `https://aestra.onrender.com${p.images[0].image_url}`
                             : "/placeholder.png"
                         }
                         className="w-12 h-12 object-cover rounded"
@@ -1380,6 +1386,7 @@ const AdminProducts = () => {
                     src={
                       selected.images?.[0]?.image_url
                         ? `https://aestra.onrender.com${selected.images[0].image_url}`
+                        // ? `https://aestra.onrender.com${selected.images[0].image_url}`
                         : "/placeholder.png"
                     }
                     alt={selected.name}

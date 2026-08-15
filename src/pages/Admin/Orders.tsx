@@ -401,6 +401,7 @@ const AdminOrders = () => {
                   <div key={item.id} className="flex items-center gap-2 text-xs">
                     <img
                       src={`https://aestra.onrender.com${item.product?.images?.[0]?.image_url}`}
+                      // src={`https://aestra.onrender.com${item.product?.images?.[0]?.image_url}`}
                       className="w-8 h-8 rounded"
                     />
                     <span>{item.product?.name} x{item.quantity}</span>

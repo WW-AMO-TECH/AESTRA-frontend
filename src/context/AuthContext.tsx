@@ -238,7 +238,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
 
     setCart(res.data.cart);
-    toast.success("Added to cart");
   };
 
   const updateQuantity = async (cartId: number, quantity: number) => {
