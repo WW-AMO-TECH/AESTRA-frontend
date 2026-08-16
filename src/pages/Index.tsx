@@ -2,29 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  BatteryCharging,
-  Camera,
-  CheckCircle2,
-  ChevronRight,
-  CreditCard,
-  Gamepad2,
-  Headphones,
-  Headset,
-  Laptop,
-  Mail,
-  Search,
-  ShieldCheck,
-  Smartphone,
-  Sparkles,
-  Tag,
-  Truck,
-  Watch,
-  X,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, BatteryCharging, Camera, CheckCircle2, ChevronRight, CreditCard, Gamepad2, Headphones, Headset, Laptop, Mail, Search, ShieldCheck, Smartphone, Sparkles, Tag, Truck, Watch, X, Zap, } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
@@ -35,50 +13,34 @@ const categories = [
   {
     name: "Phones",
     image: "/hero-phone.png",
-    icon: Smartphone,
-    description: "Smartphones & more",
   },
   {
     name: "Laptops",
     image: "/hero-laptop.png",
-    icon: Laptop,
-    description: "Power & productivity",
   },
   {
     name: "Audio",
     image: "/hero-headphones.png",
-    icon: Headphones,
-    description: "Sound that moves you",
   },
   {
     name: "Smart Watches",
     image: "/hero-watch.png",
-    icon: Watch,
-    description: "Stay connected",
   },
   {
     name: "Gaming",
     image: "/hero-phone.png",
-    icon: Gamepad2,
-    description: "Level up your game",
   },
   {
     name: "Accessories",
     image: "/hero-headphones.png",
-    icon: BatteryCharging,
-    description: "Power & accessories",
   },
   {
     name: "Cameras",
     image: "/hero-phone.png",
-    icon: Camera,
-    description: "Capture every moment",
   },
   {
     name: "Speakers",
     image: "/hero-laptop.png",
-    icon: Headphones,
-    description: "Big sound",
   },
 ];
 
@@ -704,7 +666,6 @@ const CategorySection = () => {
         "
       >
         {categories.map((category, index) => {
-          const Icon = category.icon;
 
           return (
             <Link
@@ -724,7 +685,7 @@ const CategorySection = () => {
                 transition
                 duration-300
                 hover:-translate-y-1
-                hover:border-primary/30
+                hover:border-primary/10
                 hover:shadow-xl
                 lg:min-w-0
                 lg:p-4
@@ -780,39 +741,9 @@ const CategorySection = () => {
               {/* Details */}
 
               <div className="mt-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold">
-                    {category.name}
-                  </h3>
-
-                  <div
-                    className="
-                      flex
-                      h-6
-                      w-6
-                      items-center
-                      justify-center
-                      rounded-full
-                      bg-secondary
-                      transition
-                      group-hover:bg-primary
-                      group-hover:text-primary-foreground
-                    "
-                  >
-                    <ChevronRight size={13} />
-                  </div>
-                </div>
-
-                <div className="mt-1 flex items-center gap-1.5">
-                  <Icon
-                    size={12}
-                    className="text-primary"
-                  />
-
-                  <span className="text-[10px] text-muted-foreground">
-                    {category.description}
-                  </span>
-                </div>
+                <h3 className="text-sm font-semibold text-center">
+                  {category.name}
+                </h3>
               </div>
             </Link>
           );

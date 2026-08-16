@@ -44,8 +44,7 @@ const Signup = () => {
       const success = await signup(name, email, phone, password);
 
       if (success) {
-        toast.success("Account created successfully");
-        nav("/"); // 🔥 navbar updates instantly now
+        nav("/");
       }
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Registration failed");

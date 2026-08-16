@@ -7,29 +7,16 @@ Card expiry — auto-inserts / between MM and YY as you type
 Features page — created at /features listing every feature (Home, Products, Admin panels, Auth, etc.) with a clean card grid layout, added to navbar and footer.
 
 To create  categories and brands in the db
-php artisan:tinker
+php artisan tinker
 \App\Models\Category::create(['name' => 'Phones']);
 \App\Models\Category::create(['name' => 'Laptops']);
+\App\Models\Category::create(['name' => 'Smart Watches']);
+\App\Models\Category::create(['name' => 'Accessories']);
 Wi-FI, cords, etc is part of accessories
 
 \App\Models\Brand::create(['name' => 'Apple']);
 \App\Models\Brand::create(['name' => 'Samsung']);
 
-
-<input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search for products..."
-                className="flex-1 bg-transparent px-4 py-2 outline-none text-sm placeholder:text-muted-foreground"
-              />
-
-              <button
-                type="submit"
-                className="flex items-center justify-center rounded-xl active:scale-95 transition-all"
-              >
-                <Search className="h-4 w-4 mx-3" />
-              </button>
 
 
 

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-// import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -41,48 +41,50 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/contact" element={<Contact />} />
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/:id" element={<ProductDetail />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/contact" element={<Contact />} />
 
-            {/* REGISTERED USERS ROUTES */}
-            <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-            <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-            <Route path="/payment-success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-
-
-            {/* ADMIN ROUTES */}
-            <Route path="/admin/signup" element={<AdminRequest />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}/>
-            <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>}/>
-            <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>}/>
-            <Route path="/admin/reviews" element={<AdminRoute><Reviews /></AdminRoute>}/>
-
-            {/* SUPER-ADMIN ROUTES */}
-            {/* ADMIN ACCESS */}
-            <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/>
-            <Route path="/superadmin/customers" element={<SuperAdminRoute><Users /></SuperAdminRoute>}/>
-            <Route path="/superadmin/admin-requests" element={<SuperAdminRoute><Requests /></SuperAdminRoute>}/>
-            {/* PICKUP LOCATIONS */}
-            <Route path="/superadmin/countries" element={<SuperAdminRoute><Countries /></SuperAdminRoute>}/>
-            <Route path="/superadmin/states" element={<SuperAdminRoute><States /></SuperAdminRoute>}/>
-            <Route path="/superadmin/pickup-locations" element={<SuperAdminRoute><PickupLocations /></SuperAdminRoute>}/>
-
-            <Route path="/superadmin/analytics" element={<SuperAdminRoute><Analytics /></SuperAdminRoute>}/>
-
-            {/* <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/> */}
-            {/* <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/> */}
+              {/* REGISTERED USERS ROUTES */}
+              <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+              <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+              <Route path="/payment-success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              {/* ADMIN ROUTES */}
+              <Route path="/admin/signup" element={<AdminRequest />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}/>
+              <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>}/>
+              <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>}/>
+              <Route path="/admin/reviews" element={<AdminRoute><Reviews /></AdminRoute>}/>
+
+              {/* SUPER-ADMIN ROUTES */}
+              {/* ADMIN ACCESS */}
+              <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/>
+              <Route path="/superadmin/customers" element={<SuperAdminRoute><Users /></SuperAdminRoute>}/>
+              <Route path="/superadmin/admin-requests" element={<SuperAdminRoute><Requests /></SuperAdminRoute>}/>
+              {/* PICKUP LOCATIONS */}
+              <Route path="/superadmin/countries" element={<SuperAdminRoute><Countries /></SuperAdminRoute>}/>
+              <Route path="/superadmin/states" element={<SuperAdminRoute><States /></SuperAdminRoute>}/>
+              <Route path="/superadmin/pickup-locations" element={<SuperAdminRoute><PickupLocations /></SuperAdminRoute>}/>
+
+              <Route path="/superadmin/analytics" element={<SuperAdminRoute><Analytics /></SuperAdminRoute>}/>
+
+              {/* <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/> */}
+              {/* <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/> */}
+
+
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
   </QueryClientProvider>

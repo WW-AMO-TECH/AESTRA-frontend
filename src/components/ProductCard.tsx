@@ -114,6 +114,7 @@ const ProductCard = ({
     }
 
     addToCart(product);
+    toast.success("Added to cart");
   };
 
   return (
