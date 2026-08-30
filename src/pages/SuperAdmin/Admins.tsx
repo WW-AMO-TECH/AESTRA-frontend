@@ -33,7 +33,7 @@ const Admins = () => {
   const fetchAdmins = async () => {
     try {
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/superadmin/admins",
+        "https://aestra.onrender.com/api/superadmin/admins",
         config
       );
 

@@ -191,7 +191,7 @@ const Brands = () => {
     // Laravel storage path
     const cleanPath = logo.replace(/^\/+/, "");
 
-    return `http://127.0.0.1:8000/storage/${cleanPath}`;
+    return `https://aestra.onrender.com/storage/${cleanPath}`;
     };
 
   // --------------------------------------------------

@@ -25,7 +25,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { formatPrice } from "@/lib/utils";
 
-const API = "http://127.0.0.1:8000/api";
+const API = "https://aestra.onrender.com/api";
 
 /* =========================================================
    TYPES
@@ -83,7 +83,7 @@ const getImageUrl = (product?: Product) => {
     return image;
   }
 
-  return `http://127.0.0.1:8000${image}`;
+  return `https://aestra.onrender.com${image}`;
 };
 
 /* =========================================================
