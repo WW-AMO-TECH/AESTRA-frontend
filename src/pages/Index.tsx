@@ -8,7 +8,6 @@ import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
 import axios from "@/api/axios";
 
-
 const categories = [
   {
     name: "Phones",
@@ -185,7 +184,7 @@ const HeroCarousel = ({
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="relative overflow-hidden bg-background">
+    <section className="relative overflow-hidden bg-background mt-16">
 
 
       {/* ==========================================
@@ -229,39 +228,16 @@ const HeroCarousel = ({
           HERO SLIDER
       ========================================== */}
 
-      <div
-        ref={emblaRef}
-        className="overflow-hidden"
-      >
+      <div ref={emblaRef} className="overflow-hidden">
         <div className="flex">
           {heroSlides.map((slide, index) => (
-            <div
-              key={index}
-              className="
-                min-w-0
-                flex-[0_0_100%]
-                px-4
-                pt-2
-                sm:px-6
-                lg:px-4
-              "
-            >
-              <div
-                className="
-                  relative
-                  mx-auto
-                  max-w-[1500px]
-                  overflow-hidden
-                  rounded-[2rem]
-                  bg-secondary
-                "
-              >
+            <div key={index} className="min-w-0 flex-[0_0_100%] px-4 pt-2 sm:px-6 lg:px-4 ">
+              <div className=" relative mx-auto max-w-[1500px] overflow-hidden rounded-[2rem] bg-secondary">
 
                 {/* Decorative glow */}
-
                 <div className=" pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl lg:h-96 lg:w-96"/>
                 <div className=" pointer-events-none absolute -bottom-28 left-1/3 h-72 w-72 rounded-full bg-primary/5 blur-3xl"/>
-                <div className=" relative grid min-h-[560px] grid-cols-1 lg:grid-cols-2 ">
+                <div className="relative grid min-h-[560px] grid-cols-1 lg:grid-cols-[3fr_2fr]">
 
                   {/* HERO TEXT */}
                   <motion.div
@@ -1540,7 +1516,7 @@ const Index = () => {
           tag: product.tag,
 
           image: product.images?.length
-            ? `https://aestra.onrender.com${product.images[0].image_url}`
+            ? `http://127.0.0.1:8000${product.images[0].image_url}`
             : "/placeholder.png",
 
           brand: {

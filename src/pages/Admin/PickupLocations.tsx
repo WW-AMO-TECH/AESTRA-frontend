@@ -42,8 +42,8 @@ const PickupLocations = () => {
   const fetchLocations = async () => {
     try {
       const res = await axios.get(
-        "https://aestra.onrender.com/api/superadmin/pickup-locations",
-        // "https://aestra.onrender.com/api/superadmin/pickup-locations",
+        "http://127.0.0.1:8000/api/superadmin/pickup-locations",
+        // "http://127.0.0.1:8000/api/superadmin/pickup-locations",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -64,8 +64,8 @@ const PickupLocations = () => {
   const fetchCountries = async () => {
     try {
       const res = await axios.get(
-        "https://aestra.onrender.com/api/superadmin/countries",
-        // "https://aestra.onrender.com/api/superadmin/countries",
+        "http://127.0.0.1:8000/api/superadmin/countries",
+        // "http://127.0.0.1:8000/api/superadmin/countries",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -100,8 +100,8 @@ const PickupLocations = () => {
 
     try {
       const res = await axios.get(
-        `https://aestra.onrender.com/api/superadmin/countries/${id}/states`,
-        // `https://aestra.onrender.com/api/superadmin/countries/${id}/states`,
+        `http://127.0.0.1:8000/api/superadmin/countries/${id}/states`,
+        // `http://127.0.0.1:8000/api/superadmin/countries/${id}/states`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -148,8 +148,8 @@ const PickupLocations = () => {
     try {
       if (editingId) {
         await axios.put(
-          `https://aestra.onrender.com/api/superadmin/pickup-locations/${editingId}`,
-          // `https://aestra.onrender.com/api/superadmin/pickup-locations/${editingId}`,
+          `http://127.0.0.1:8000/api/superadmin/pickup-locations/${editingId}`,
+          // `http://127.0.0.1:8000/api/superadmin/pickup-locations/${editingId}`,
           payload,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -157,8 +157,8 @@ const PickupLocations = () => {
         );
       } else {
         await axios.post(
-          "https://aestra.onrender.com/api/superadmin/pickup-locations",
-          // "https://aestra.onrender.com/api/superadmin/pickup-locations",
+          "http://127.0.0.1:8000/api/superadmin/pickup-locations",
+          // "http://127.0.0.1:8000/api/superadmin/pickup-locations",
           payload,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -195,8 +195,8 @@ const PickupLocations = () => {
 
     try {
       await axios.delete(
-        `https://aestra.onrender.com/api/superadmin/pickup-locations/${id}`,
-        // `https://aestra.onrender.com/api/superadmin/pickup-locations/${id}`,
+        `http://127.0.0.1:8000/api/superadmin/pickup-locations/${id}`,
+        // `http://127.0.0.1:8000/api/superadmin/pickup-locations/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

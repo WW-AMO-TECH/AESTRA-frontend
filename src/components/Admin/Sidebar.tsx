@@ -20,6 +20,25 @@ const sidebarItems = [
     roles: ["admin", "super_admin"],
   },
   {
+    label: "Catalog",
+    icon: Package,
+    roles: ["super_admin"],
+    subLinks: [
+      {
+        label: "Brands",
+        icon: UserCog,
+        path: "/superadmin/brands",
+        roles: ["super_admin"],
+      },
+      {
+        label: "Categories",
+        icon: User,
+        path: "/superadmin/categories",
+        roles: ["super_admin"],
+      },
+    ],
+  },
+  {
     label: "Products",
     icon: Package,
     path: "/admin/products",
@@ -155,7 +174,7 @@ const Sidebar = ({ user }: SidebarProps) => {
         `}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b">
+        <div className="flex items-center justify-between p-3 border-b">
             <img className="lg:h-8 lg:w-25 h-5" src="/AESTRA LOGO-navbar.png" alt=""/>
 
           <button

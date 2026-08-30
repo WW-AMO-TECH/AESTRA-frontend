@@ -128,7 +128,7 @@ const AdminDashboard = () => {
   }
 
   return (
-  <div className="min-h-screen bg-slate-100 lg:flex">
+  <div className="min-h-screen bg-primary/20 lg:flex">
     <Sidebar user={user} />
 
     <main className="flex-1 p-3 lg:p-4 lg:py-0 mt-12 lg:mt-0 h-screen overflow-y-auto">

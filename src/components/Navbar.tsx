@@ -44,7 +44,7 @@ const Navbar = () => {
   if (loading) return null; // prevents flicker
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 mb-10 bg-background/80 backdrop-blur-lg border-b border-black/15">
       <div className="container mx-auto px-4 lg:h-16 h-12 flex items-center justify-between">
 
         {/* LOGO */}

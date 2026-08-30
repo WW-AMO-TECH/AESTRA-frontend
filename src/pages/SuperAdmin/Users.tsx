@@ -67,7 +67,7 @@ interface Statistics {
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
-  "https://aestra.onrender.com/api";
+  "http://127.0.0.1:8000/api";
 
 const Users = () => {
   const { user } = useAuth();

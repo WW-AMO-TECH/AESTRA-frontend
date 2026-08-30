@@ -21,6 +21,8 @@ import PickupLocations from "./pages/Admin/PickupLocations";
 import NotFound from "./pages/NotFound";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
+import Brands from "./pages/SuperAdmin/Brands";
+import Categories from "./pages/SuperAdmin/Categories";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import AdminRoute from "@/routes/AdminRoute";
 import SuperAdminRoute from "@/routes/SuperAdminRoute";
@@ -68,6 +70,8 @@ const App = () => (
 
               {/* SUPER-ADMIN ROUTES */}
               {/* ADMIN ACCESS */}
+              <Route path="/superadmin/brands" element={<SuperAdminRoute><Brands /></SuperAdminRoute>}/>
+              <Route path="/superadmin/categories" element={<SuperAdminRoute><Categories /></SuperAdminRoute>}/>
               <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/>
               <Route path="/superadmin/customers" element={<SuperAdminRoute><Users /></SuperAdminRoute>}/>
               <Route path="/superadmin/admin-requests" element={<SuperAdminRoute><Requests /></SuperAdminRoute>}/>

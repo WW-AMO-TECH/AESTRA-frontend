@@ -317,7 +317,7 @@ const Checkout = () => {
                           if (selectedStateObj?.id) {
                             try {
                               const res = await axios.get(
-                                `https://aestra.onrender.com/api/superadmin/states/${selectedStateObj.id}/locations`
+                                `http://127.0.0.1:8000/api/superadmin/states/${selectedStateObj.id}/locations`
                               );
 
                               setLocations(res.data);

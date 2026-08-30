@@ -143,7 +143,7 @@ const AdminOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 lg:flex">
+    <div className="min-h-screen bg-primary/20 lg:flex">
       <Sidebar user={user} />
 
       {/* MAIN */}
@@ -400,8 +400,7 @@ const AdminOrders = () => {
                 {viewOrder.items?.map((item: any) => (
                   <div key={item.id} className="flex items-center gap-2 text-xs">
                     <img
-                      src={`https://aestra.onrender.com${item.product?.images?.[0]?.image_url}`}
-                      // src={`https://aestra.onrender.com${item.product?.images?.[0]?.image_url}`}
+                      src={`http://127.0.0.1:8000${item.product?.images?.[0]?.image_url}`}
                       className="w-8 h-8 rounded"
                     />
                     <span>{item.product?.name} x{item.quantity}</span>
