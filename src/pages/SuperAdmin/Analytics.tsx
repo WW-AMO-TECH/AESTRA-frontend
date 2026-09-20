@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "@/api/axios";
-import Sidebar from "@/components/Admin/Sidebar";
+import Sidebar from "@/components/SuperAdmin/Sidebar";
 import { useAuth } from "@/context/AuthContext";
 import { DollarSign, ShoppingCart, Users, TrendingUp, Calendar, Download, } from "lucide-react";
 

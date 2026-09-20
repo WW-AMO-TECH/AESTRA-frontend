@@ -1,75 +1,99 @@
 import {
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
   ReactNode,
 } from "react";
 import { toast } from "sonner";
 import api from "@/api/axios";
 
-/*
-|--------------------------------------------------------------------------
-| TYPES
-|--------------------------------------------------------------------------
-*/
 export interface User {
   id: number;
   name: string;
+  store_name?: string;
   email: string;
   phone?: string;
-  role: "user" | "admin" | "super_admin";
+  address?: string;
+  business_address?: string;
+  contact_information?: string;
+  avatar?: string;
+  role: "user" | "seller" | "super_admin";
+  status?: "active" | "pending" | "rejected";
+  verification_status?: "unverified" | "pending" | "verified" | "rejected";
+}
+
+interface SellerSignupForm {
+  name: string;
+  store_name: string;
+  email: string;
+  phone: string;
+  password: string;
+  address: string;
+  business_address: string;
+  contact_information: string;
 }
 
 interface AuthContextType {
   user: User | null;
+  setAuthUser: (token: string, user: User) => void;
   loading: boolean;
-
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (
+    email: string,
+    password: string
+  ) => Promise<boolean>;
   signup: (
     name: string,
     email: string,
     phone: string,
     password: string
   ) => Promise<boolean>;
-
-  adminLogin: (email: string, password: string) => Promise<User>;
-  adminSignup: (
+  sellerLogin: (
+    email: string,
+    password: string
+  ) => Promise<User>;
+  sellerSignup: (
+    form: SellerSignupForm
+  ) => Promise<boolean>;
+  superAdminLogin: (
+    email: string,
+    password: string
+  ) => Promise<User>;
+  superAdminSignup: (
     name: string,
     email: string,
-    phone: string,
-    password: string,
-    role: "admin" | "super_admin"
+    password: string
   ) => Promise<boolean>;
-
+  googleLogin: (type: "user" | "seller") => void;
   cart: any[];
-  addToCart: (product: any, options?: any) => Promise<void>;
+  addToCart: (
+    product: any,
+    options?: any
+  ) => Promise<void>;
   fetchCart: () => Promise<void>;
-  removeFromCart: (cartId: number) => Promise<void>;
-  updateQuantity: (cartId: number, quantity: number) => Promise<void>;
+  removeFromCart: (
+    cartId: number
+  ) => Promise<void>;
+  updateQuantity: (
+    cartId: number,
+    quantity: number
+  ) => Promise<void>;
   clearCart: () => Promise<void>;
-
   logout: () => Promise<void>;
 }
 
-/*
-|--------------------------------------------------------------------------
-| CONTEXT
-|--------------------------------------------------------------------------
-*/
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
+
+  if (!ctx) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
   return ctx;
 };
 
-/*
-|--------------------------------------------------------------------------
-| AXIOS HELPERS (CRITICAL FIX)
-|--------------------------------------------------------------------------
-*/
 const getToken = () => localStorage.getItem("token");
 
 const authHeaders = () => ({
@@ -79,79 +103,156 @@ const authHeaders = () => ({
   },
 });
 
-/*
-|--------------------------------------------------------------------------
-| PROVIDER
-|--------------------------------------------------------------------------
-*/
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState<any[]>([]);
-  const [initialized, setInitialized] = useState(false);
 
-  /*
-  |--------------------------------------------------------------------------
-  | AUTO AUTH RESTORE (FIXED)
-  |--------------------------------------------------------------------------
-  */
+  const setAuthUser = (
+    token: string,
+    authenticatedUser: User
+  ) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem(
+      "user",
+      JSON.stringify(authenticatedUser)
+    );
+    setUser(authenticatedUser);
+  };
+
+  // RESTORE AUTHENTICATION
   useEffect(() => {
-    const token = getToken();
-    const savedUser = localStorage.getItem("user");
-
-    if (!token) {
-      setLoading(false);
-      setInitialized(true);
-      return;
-    }
+    let mounted = true;
 
     const loadUser = async () => {
-      try {
-        const res = await api.get("/user/me", authHeaders());
+      const token = getToken();
 
-        setUser(res.data);
-        localStorage.setItem("user", JSON.stringify(res.data));
-      } catch (err: any) {
-        if (err?.response?.status === 401) {
+      if (!token) {
+        if (mounted) {
+          setUser(null);
+          setLoading(false);
+        }
+
+        return;
+      }
+
+      try {
+        const savedUser = localStorage.getItem("user");
+
+        let storedUser: User | null = null;
+
+        if (savedUser) {
+          try {
+            storedUser = JSON.parse(savedUser);
+          } catch {
+            localStorage.removeItem("user");
+          }
+        }
+
+        const endpoint =
+          storedUser?.role === "super_admin"
+            ? "/superadmin/me"
+            : storedUser?.role === "seller"
+            ? "/seller/me"
+            : "/user/me";
+
+        const response = await api.get(
+          endpoint,
+          authHeaders()
+        );
+
+        const currentUser =
+          response.data?.user || response.data;
+
+        if (!currentUser?.id || !currentUser?.role) {
+          throw new Error(
+            "Invalid authentication response."
+          );
+        }
+
+        if (!mounted) return;
+
+        setUser(currentUser);
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify(currentUser)
+        );
+      } catch (error: any) {
+        const status = error?.response?.status;
+
+        console.error(
+          "Authentication restore failed:",
+          error
+        );
+
+        if (
+          status === 401 ||
+          status === 403
+        ) {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
-          setUser(null);
+
+          if (mounted) {
+            setUser(null);
+          }
         }
       } finally {
-        setLoading(false);
-        setInitialized(true);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
     loadUser();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  /*
-  |--------------------------------------------------------------------------
-  | AUTH: LOGIN
-  |--------------------------------------------------------------------------
-  */
-  const login = async (email: string, password: string) => {
+  // GOOGLE AUTH
+  const googleLogin = (
+    type: "user" | "seller"
+  ) => {
+    window.location.href = `${
+      import.meta.env.VITE_BACKEND_URL
+    }/auth/google/${type}`;
+  };
+
+  // CUSTOMER LOGIN
+  const login = async (
+    email: string,
+    password: string
+  ) => {
     const res = await api.post(
       "/login",
-      { email, password },
-      { headers: { Accept: "application/json" } }
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
     );
 
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
-
-    setUser(res.data.user);
+    setAuthUser(
+      res.data.token,
+      res.data.user
+    );
 
     toast.success("Login successful");
+
     return true;
   };
 
-  /*
-  |--------------------------------------------------------------------------
-  | AUTH: SIGNUP
-  |--------------------------------------------------------------------------
-  */
+  // CUSTOMER SIGNUP
   const signup = async (
     name: string,
     email: string,
@@ -160,161 +261,293 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   ) => {
     const res = await api.post(
       "/signup",
-      { name, email, phone, password },
-      { headers: { Accept: "application/json" } }
+      {
+        name,
+        email,
+        phone,
+        password,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
     );
 
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
-
-    setUser(res.data.user);
+    setAuthUser(
+      res.data.token,
+      res.data.user
+    );
 
     toast.success("Account created");
+
     return true;
   };
 
-  /*
-  |--------------------------------------------------------------------------
-  | ADMIN LOGIN
-  |--------------------------------------------------------------------------
-  */
-  const adminLogin = async (email: string, password: string) => {
+  // SELLER SIGNUP
+  const sellerSignup = async (
+    form: SellerSignupForm
+  ) => {
     const res = await api.post(
-      "/admin/login",
-      { email, password },
-      { headers: { Accept: "application/json" } }
+      "/seller/signup",
+      form,
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
     );
 
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
+    toast.success(
+      "Seller request submitted successfully"
+    );
 
-    setUser(res.data.user);
+    return !!res.data;
+  };
 
-    toast.success("Admin login successful");
+  // SELLER LOGIN
+  const sellerLogin = async (
+    email: string,
+    password: string
+  ) => {
+    const res = await api.post(
+      "/seller/login",
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    setAuthUser(
+      res.data.token,
+      res.data.user
+    );
+
+    toast.success(
+      "Seller login successful"
+    );
+
     return res.data.user;
   };
 
-  /*
-  |--------------------------------------------------------------------------
-  | ADMIN SIGNUP
-  |--------------------------------------------------------------------------
-  */
-  const adminSignup = async (
-    name: string,
+  // SUPER ADMIN LOGIN
+  const superAdminLogin = async (
     email: string,
-    phone: string,
-    password: string,
-    role: "admin" | "super_admin"
+    password: string
   ) => {
-    await api.post(
-      "/admin/signup-request",
-      { name, email, phone, password, role },
-      { headers: { Accept: "application/json" } }
+    const res = await api.post(
+      "/superadmin/login",
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
     );
 
-    toast.success("Request sent");
-    return true;
+    setAuthUser(
+      res.data.token,
+      res.data.user
+    );
+
+    toast.success(
+      "Super Admin login successful"
+    );
+
+    return res.data.user;
   };
 
-  /*
-  |--------------------------------------------------------------------------
-  | CART (FIXED + CONSISTENT)
-  |--------------------------------------------------------------------------
-  */
-  const fetchCart = async () => {
-    const res = await api.get("/cart", authHeaders());
-    setCart(res.data);
-  };
-
-  const addToCart = async (product: any, options?: any) => {
+  // SUPER ADMIN SIGNUP
+  const superAdminSignup = async (
+    name: string,
+    email: string,
+    password: string
+  ) => {
     const res = await api.post(
+      "/superadmin/signup",
+      {
+        name,
+        email,
+        password,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    toast.success(
+      "Super Admin created successfully"
+    );
+
+    return !!res.data;
+  };
+
+  // FETCH CART
+  const fetchCart = async () => {
+    if (
+      !getToken() ||
+      user?.role !== "user"
+    ) {
+      return;
+    }
+
+    try {
+      const res = await api.get(
+        "/cart",
+        authHeaders()
+      );
+
+      setCart(
+        Array.isArray(res.data)
+          ? res.data
+          : []
+      );
+    } catch (error) {
+      console.error(
+        "Failed to fetch cart:",
+        error
+      );
+
+      setCart([]);
+    }
+  };
+
+  // ADD TO CART
+  const addToCart = async (
+    product: any,
+    options?: any
+  ) => {
+    await api.post(
       "/cart",
       {
         product_id: product.id,
         quantity: 1,
-        ...options,
+        options,
       },
       authHeaders()
     );
 
-    setCart(res.data.cart);
+    await fetchCart();
   };
 
-  const updateQuantity = async (cartId: number, quantity: number) => {
+  // UPDATE CART QUANTITY
+  const updateQuantity = async (
+    cartId: number,
+    quantity: number
+  ) => {
     if (quantity < 1) return;
 
     await api.put(
       `/cart/${cartId}`,
-      { quantity },
+      {
+        quantity,
+      },
       authHeaders()
     );
 
-    fetchCart();
+    await fetchCart();
   };
 
-  const removeFromCart = async (cartId: number) => {
-    await api.delete(`/cart/${cartId}`, authHeaders());
+  // REMOVE FROM CART
+  const removeFromCart = async (
+    cartId: number
+  ) => {
+    await api.delete(
+      `/cart/${cartId}`,
+      authHeaders()
+    );
 
-    fetchCart();
-    toast.success("Removed from cart");
+    await fetchCart();
+
+    toast.success(
+      "Removed from cart"
+    );
   };
 
+  // CLEAR CART
   const clearCart = async () => {
     try {
-      console.log("Sending DELETE request...");
-
-      const response = await api.delete("/cart/clear");
-
-      console.log("Clear cart response:", response.data);
-
+      if (
+        getToken() &&
+        user?.role === "user"
+      ) {
+        await api.delete(
+          "/cart/clear",
+          authHeaders()
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Failed to clear server cart:",
+        error
+      );
+    } finally {
       setCart([]);
       localStorage.removeItem("cart");
-
-    } catch (error) {
-      console.error("Failed to clear cart:", error);
     }
   };
 
-  /*
-  |--------------------------------------------------------------------------
-  | CART AUTO LOAD
-  |--------------------------------------------------------------------------
-  */
+  // CART AUTO LOAD
   useEffect(() => {
-    if (getToken()) fetchCart();
-  }, []);
+    if (user?.role === "user") {
+      fetchCart();
+    } else {
+      setCart([]);
+    }
+  }, [user]);
 
-  /*
-  |--------------------------------------------------------------------------
-  | SYNC CART STORAGE
-  |--------------------------------------------------------------------------
-  */
+  // CART LOCAL STORAGE SYNC
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(cart)
+    );
   }, [cart]);
 
-  /*
-  |--------------------------------------------------------------------------
-  | LOGOUT
-  |--------------------------------------------------------------------------
-  */
+  // LOGOUT
   const logout = async () => {
+    const role = user?.role;
+
     try {
-      await api.post("/user/logout", {}, authHeaders());
-    } catch {}
+      if (getToken()) {
+        const endpoint =
+          role === "super_admin"
+            ? "/superadmin/logout"
+            : role === "seller"
+            ? "/seller/logout"
+            : "/user/logout";
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+        await api.post(
+          endpoint,
+          {},
+          authHeaders()
+        );
+      }
+    } catch (error) {
+      console.warn(
+        "Logout request failed:",
+        error
+      );
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("cart");
 
-    setUser(null);
-    setCart([]);
+      setUser(null);
+      setCart([]);
+    }
   };
 
-  /*
-  |--------------------------------------------------------------------------
-  | PROVIDER
-  |--------------------------------------------------------------------------
-  */
   return (
     <AuthContext.Provider
       value={{
@@ -322,8 +555,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loading,
         login,
         signup,
-        adminLogin,
-        adminSignup,
+        sellerLogin,
+        sellerSignup,
+        superAdminLogin,
+        superAdminSignup,
+        googleLogin,
+        setAuthUser,
         cart,
         addToCart,
         fetchCart,

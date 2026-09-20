@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Loader2, Eye, Pencil, Trash2, Save } from "lucide-react";
 import { toast } from "sonner";
 import { formatPrice } from "@/lib/utils";
-import Sidebar from "@/components/Admin/Sidebar";
+import Sidebar from "@/components/SuperAdmin/Sidebar";
 
 const AdminOrders = () => {
   const { user } = useAuth();
@@ -400,7 +400,7 @@ const AdminOrders = () => {
                 {viewOrder.items?.map((item: any) => (
                   <div key={item.id} className="flex items-center gap-2 text-xs">
                     <img
-                      src={`https://aestra.onrender.com${item.product?.images?.[0]?.image_url}`}
+                      src={`http://127.0.0.1:8000${item.product?.images?.[0]?.image_url}`}
                       className="w-8 h-8 rounded"
                     />
                     <span>{item.product?.name} x{item.quantity}</span>

@@ -11,11 +11,11 @@ const Cart = () => {
 
   const safeCart = Array.isArray(cart) ? cart : [];
 
-  const subtotal = safeCart.reduce((total, item) => {
-    const price = item?.product?.price ?? 0;
-    const qty = item?.quantity ?? 0;
-    return total + price * qty;
-  }, 0);
+  const subtotal = safeCart.reduce(
+    (sum: number, item: any) =>
+      sum + Number(item.product.final_price ?? item.product.price) * item.quantity,
+    0
+  );
 
   const location = useLocation();
 

@@ -1,85 +1,89 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { CheckCircle2 } from "lucide-react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { CheckCircle2 } from "lucide-react";
 import axios from "@/api/axios";
-import { useAuth } from "@/context/AuthContext";
-
 
 const PaymentSuccess = () => {
+  const navigate = useNavigate();
+
   const params = new URLSearchParams(window.location.search);
   const reference = params.get("reference");
-  const navigate = useNavigate();
-  const { clearCart } = useAuth();
 
   useEffect(() => {
     const verifyPayment = async () => {
       if (!reference) {
-        navigate("/orders");
+        navigate("/payment-failed?message=Missing payment reference.", { replace: true });
         return;
       }
 
       try {
-        const token = localStorage.getItem("token");
-
-        // 🔥 VERIFY PAYMENT WITH BACKEND (Paystack check optional but good safety)
         const response = await axios.get(
-          `/payments/verify?reference=${reference}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          `/payments/verify?reference=${encodeURIComponent(reference)}`
         );
 
-        // Only clear cart if payment is confirmed
-        if (response.data.success) {
-          console.log("Calling clearCart...");
-          await clearCart();
-          console.log("clearCart completed");
-        }
+        if (response.data.status !== "success") {
+          const message =
+            response.data?.message ||
+            "Payment was successful, but your order could not be finalized.";
 
-      } catch (err) {
-        console.log("Payment verification failed", err);
-        navigate("/orders");
+          navigate(
+            `/payment-failed?message=${encodeURIComponent(message)}`,
+            { replace: true }
+          );
+
+          return;
+        }
+      } catch (error: any) {
+        console.error("Payment verification failed:", error);
+
+        const message =
+          error?.response?.data?.message ||
+          "Payment was successful, but we could not confirm your order.";
+
+        navigate(
+          `/payment-failed?message=${encodeURIComponent(message)}`,
+          { replace: true }
+        );
       }
     };
 
     verifyPayment();
-  }, [reference, navigate, clearCart]);
+  }, [reference, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-md text-center space-y-6 glass-card p-8 rounded-2xl animate-fade-in">
-
-        {/* ICON */}
         <div className="flex justify-center">
           <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
             <CheckCircle2 className="w-10 h-10 text-green-600" />
           </div>
         </div>
 
-        {/* TITLE */}
         <div>
           <h1 className="text-2xl font-bold text-green-600">
             Payment Successful
           </h1>
+
           <p className="text-sm text-muted-foreground mt-1">
             Your order has been placed successfully 🎉
           </p>
         </div>
 
-        {/* ORDER REF */}
         <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Order Number</p>
-          <div className="font-mono text-lg font-semibold tracking-wide">
+          <p className="text-xs text-muted-foreground">
+            Payment Reference
+          </p>
+
+          <div className="font-mono text-sm font-semibold tracking-wide break-all">
             {reference}
           </div>
         </div>
 
-        {/* ACTION BUTTONS */}
         <div className="flex flex-col sm:flex-row gap-3 pt-2">
           <button
-            onClick={() => navigate("/dashboard", { state: { tab: "orders" } }) }
+            onClick={() =>
+              navigate("/dashboard", { state: { tab: "orders" } })
+            }
             className="flex-1 btn-primary-glow px-4 py-2 rounded-xl text-sm font-medium"
           >
             View Orders

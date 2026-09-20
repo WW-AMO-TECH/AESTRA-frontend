@@ -11,17 +11,17 @@ const SuperAdminRoute = ({ children }: { children: JSX.Element }) => {
 
   // NOT LOGGED IN
   if (!user) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/seller/login" replace />;
   }
   
   // NORMAL ADMIN
-  if (user.role === "admin") {
-    return <Navigate to="/admin/dashboard" replace />;
+  if (user.role === "seller") {
+    return <Navigate to="/seller/dashboard" replace />;
   }
 
   // ONLY SUPER ADMIN ALLOWED
   if (user.role !== "super_admin") {
-    return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to="/seller/dashboard" replace />;
   }
 
   return children;

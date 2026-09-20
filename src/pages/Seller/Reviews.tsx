@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import Sidebar from "@/components/Admin/Sidebar";
+import Sidebar from "@/components/SuperAdmin/Sidebar";
 
 interface Review {
   id: number;

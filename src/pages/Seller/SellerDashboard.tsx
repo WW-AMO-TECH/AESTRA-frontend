@@ -1,6 +1,6 @@
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import Sidebar from "@/components/Admin/Sidebar";
+import Sidebar from "@/components/Seller/Sidebar";
 
 import {
   Users,
@@ -120,11 +120,11 @@ const recentOrders = [
   },
 ];
 
-const AdminDashboard = () => {
+const SellerDashboard = () => {
   const { user } = useAuth();
 
   if (!user) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/seller/login" replace />;
   }
 
   return (
@@ -549,4 +549,4 @@ const AdminDashboard = () => {
 );
 };
 
-export default AdminDashboard;
+export default SellerDashboard;

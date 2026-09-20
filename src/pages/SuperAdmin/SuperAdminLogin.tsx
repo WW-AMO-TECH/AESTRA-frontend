@@ -1,48 +1,43 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 
-const AdminLogin = () => {
+const SuperAdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPw, setShowPw] = useState(false);
-  const { adminLogin } = useAuth();
-  const nav = useNavigate();
+
+  const { superAdminLogin } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const user = await adminLogin(email, password);
+      const user = await superAdminLogin(email, password);
 
-      if (!user) {
-        toast.error("Login failed");
+      if (user.role !== "super_admin") {
+        toast.error("Access denied.");
         return;
       }
 
-      toast.success("Logged in successfully.");
-
-      if (user?.role === "admin" || user?.role === "super_admin") {
-        nav("/admin/dashboard");
-      } else {
-        nav("/admin/login");
-      }
+      toast.success("Super Admin login successful.");
+      navigate("/superadmin/dashboard");
     } catch (err: any) {
       const status = err?.response?.status;
+      const message = err?.response?.data?.message;
 
-      if (status === 403) {
-        toast.error("Not approved yet, wait for approval.");
-      } else if (status === 401) {
-        toast.error("Invalid credentials");
-      } else if (status === 404) {
-        toast.error("Admin not found");
+      if (status === 401) {
+        toast.error(message || "Invalid email or password.");
+      } else if (status === 403) {
+        toast.error(message || "Access denied.");
       } else {
-        toast.error(err?.response?.data?.message || "Something went wrong");
+        toast.error(message || "Something went wrong.");
       }
     } finally {
       setLoading(false);
@@ -55,18 +50,15 @@ const AdminLogin = () => {
 
       <div className="container mx-auto px-4 py-16 flex justify-center">
         <div className="w-full max-w-md glass-card p-8 animate-fade-in">
-
           <h1 className="text-2xl font-bold mb-2">
-            Admin Login
+            Super Admin Login
           </h1>
 
           <p className="text-sm text-muted-foreground mb-6">
-            Login as Admin or Super Admin
+            Sign in to access the Super Admin dashboard.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-
-            {/* EMAIL */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
                 Email
@@ -77,12 +69,11 @@ const AdminLogin = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-input bg-background text-sm"
                 placeholder="you@example.com"
+                className="w-full px-4 py-3 rounded-xl border border-input bg-background text-sm"
               />
             </div>
 
-            {/* PASSWORD */}
             <div>
               <label className="text-sm font-medium mb-1.5 block">
                 Password
@@ -94,8 +85,8 @@ const AdminLogin = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-input bg-background text-sm pr-10"
                   placeholder="••••••••"
+                  className="w-full px-4 py-3 rounded-xl border border-input bg-background text-sm pr-10"
                 />
 
                 <button
@@ -119,20 +110,11 @@ const AdminLogin = () => {
             >
               {loading ? "Please wait..." : "Sign In"}
             </button>
-
           </form>
-
-          <p className="text-sm mt-6 text-center">
-            Need access?{" "}
-            <Link to="/admin/signup" className="text-primary">
-              Request here
-            </Link>
-          </p>
-
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminLogin;
+export default SuperAdminLogin;

@@ -25,7 +25,7 @@ import { formatPrice } from "@/lib/utils";
 import { toast } from "sonner";
 import ProductReviews from "@/components/ProductReviews";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://aestra.onrender.com/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 const BASE_URL = API_URL.replace(/\/api\/?$/, "");
 
 type ImageItem = {

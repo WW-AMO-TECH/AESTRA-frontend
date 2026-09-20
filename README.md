@@ -37,7 +37,7 @@ I want admin to be able to create brands and categories from their dashbooard wh
 
 
 I replaced all 
-http://127.0.0.1:8000
-with
 https://aestra.onrender.com
+with
+http://127.0.0.1:8000
 ProductDetail.tsx and axios.ts too

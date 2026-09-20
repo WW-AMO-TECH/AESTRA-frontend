@@ -5,7 +5,6 @@ import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import { User, Heart, Package, FileText, MapPin, Settings, LogOut, Loader2 } from "lucide-react";
 import axios from "@/api/axios";
-
 import { formatPrice } from "@/lib/utils";
 
 type TabKey =
@@ -16,13 +15,10 @@ type TabKey =
   | "receipts"
   | "settings";
 
-
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, addToCart } = useAuth();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<TabKey>(
-    location.state?.tab || "profile"
-  );
+  const [activeTab, setActiveTab] = useState<TabKey>(location.state?.tab || "profile");
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [selectedReceipt, setSelectedReceipt] = useState<any | null>(null);
@@ -30,7 +26,6 @@ const Dashboard = () => {
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [wishlist, setWishlist] = useState<any[]>([]);
   const [loadingWishlist, setLoadingWishlist] = useState(false);
-  const { addToCart } = useAuth();
 
   const TAB_CONFIG = [
     { id: "profile", label: "Profile", icon: User },
@@ -40,15 +35,13 @@ const Dashboard = () => {
     { id: "receipts", label: "Receipts", icon: FileText },
     { id: "settings", label: "Settings", icon: Settings },
   ] as const;
-  
+
   const getTabBadge = (tabId: string) => {
     switch (tabId) {
       case "orders":
         return orders.length;
-
       case "wishlist":
         return wishlist.length;
-
       default:
         return 0;
     }
@@ -59,16 +52,18 @@ const Dashboard = () => {
   }
 
   const fetchWishlist = async () => {
+    if (!user) {
+      setWishlist([]);
+      setLoadingWishlist(false);
+      return;
+    }
+
     try {
       setLoadingWishlist(true);
 
       const response = await axios.get("/wishlist");
-
       const data = response?.data;
-
-      const normalizedWishlist = Array.isArray(data)
-        ? data
-        : data?.wishlist ?? [];
+      const normalizedWishlist = Array.isArray(data) ? data : data?.wishlist ?? [];
 
       setWishlist(normalizedWishlist);
     } catch (error) {
@@ -78,21 +73,22 @@ const Dashboard = () => {
       setLoadingWishlist(false);
     }
   };
-  
+
   const removeFromWishlist = async (productId: number) => {
+    if (!user) {
+      toast.error("Please login first");
+      return;
+    }
+
     try {
       setLoadingWishlist(true);
 
       const response = await axios.delete(`/wishlist/${productId}`);
-
       const data = response?.data;
 
       toast.success(data?.message || "Removed from wishlist");
 
-      // Update UI state after successful deletion
-      setWishlist((prev) =>
-        prev.filter((item) => item.product_id !== productId)
-      );
+      setWishlist((prev) => prev.filter((item) => item.product_id !== productId));
     } catch (error) {
       console.error(error);
       toast.error("Failed to remove from wishlist");
@@ -102,20 +98,27 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchWishlist();
-  }, []);
+    if (user) {
+      fetchWishlist();
+    } else {
+      setWishlist([]);
+      setLoadingWishlist(false);
+    }
+  }, [user]);
 
   const fetchOrders = async () => {
+    if (!user) {
+      setOrders([]);
+      setLoadingOrders(false);
+      return;
+    }
+
     try {
       setLoadingOrders(true);
 
       const response = await axios.get("/orders");
-
       const data = response?.data;
-
-      const normalizedOrders = Array.isArray(data)
-        ? data
-        : data?.orders ?? [];
+      const normalizedOrders = Array.isArray(data) ? data : data?.orders ?? [];
 
       setOrders(normalizedOrders);
     } catch (error) {
@@ -127,8 +130,13 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    if (user) {
+      fetchOrders();
+    } else {
+      setOrders([]);
+      setLoadingOrders(false);
+    }
+  }, [user]);
 
   const renderStatus = (status: string) => {
     const map: Record<string, string> = {
@@ -140,11 +148,7 @@ const Dashboard = () => {
     };
 
     return (
-      <span
-        className={`px-2 py-1 rounded-full text-[10px] font-semibold ${
-          map[status] || "bg-gray-100 text-gray-700"
-        }`}
-      >
+      <span className={`px-2 py-1 rounded-full text-[10px] font-semibold ${map[status] || "bg-gray-100 text-gray-700"}`}>
         {status}
       </span>
     );
@@ -154,8 +158,8 @@ const Dashboard = () => {
     <div className="glass-card p-3 flex md:flex-col gap-2 overflow-x-auto">
       {TAB_CONFIG.map((t) => {
         const Icon = t.icon;
-        const Label = t.label;
         const badge = getTabBadge(t.id);
+
         return (
           <button
             key={t.id}
@@ -170,8 +174,8 @@ const Dashboard = () => {
             }`}
           >
             <Icon className="w-4 h-4" />
-            {Label}
-            {typeof badge === "number" && badge > 0 && (
+            {t.label}
+            {badge > 0 && (
               <span className="ml-auto text-[10px] bg-red-500 text-white px-1.5 py-0.25 rounded-2xl">
                 {badge}
               </span>
@@ -194,7 +198,6 @@ const Dashboard = () => {
     <div className="glass-card p-3 space-y-4">
       <h2 className="text-xl font-bold">Profile</h2>
 
-      {/* NAME SECTION */}
       <div className="border rounded-xl p-4 flex flex-col gap-3">
         <div className="text-xs text-muted-foreground">Full Name</div>
 
@@ -213,9 +216,7 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div className="text-sm font-semibold">
-              {user.name}
-            </div>
+            <div className="text-sm font-semibold">{user.name}</div>
 
             <button
               onClick={() => {
@@ -230,24 +231,15 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* EMAIL SECTION */}
       <div className="border rounded-xl p-4 flex flex-col gap-2">
         <div className="text-xs text-muted-foreground">Email Address</div>
-
-        <div className="text-sm font-semibold">
-          {user.email}
-        </div>
+        <div className="text-sm font-semibold">{user.email}</div>
       </div>
 
-      {/* OPTIONAL INFO BLOCK (matches order-style separation) */}
       <div className="border rounded-xl p-4 flex justify-between items-center">
         <div>
-          <div className="text-xs text-muted-foreground">
-            Account Status
-          </div>
-          <div className="text-sm font-semibold">
-            Active
-          </div>
+          <div className="text-xs text-muted-foreground">Account Status</div>
+          <div className="text-sm font-semibold">Active</div>
         </div>
 
         <div className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
@@ -259,7 +251,6 @@ const Dashboard = () => {
 
   const renderOrders = () => (
     <div className="glass-card p-3">
-
       {loadingOrders ? (
         <div className="flex justify-center py-10">
           <Loader2 className="h-6 w-6 animate-spin" />
@@ -271,34 +262,33 @@ const Dashboard = () => {
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
-            <div
-              key={order.id}
-              className="border rounded-xl p-4 flex flex-col gap-4"
-            >
+            <div key={order.id} className="border rounded-xl p-4 flex flex-col gap-4">
               <div className="flex justify-between text-sm font-semibold">
                 <div className="text-xs text-muted-foreground space-y-1">
                   <p className="text-black">{order.order_number || order.id}</p>
                   <p className="text-black">Ref: {order.reference}</p>
-                  <p>{new Date(order.created_at).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}</p>
-                  <div className="space-y-2 mt-4">
-                  {order.items?.map((item: any) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center gap-2 mt-3"
-                    >
-                      <img
-                        src={`https://aestra.onrender.com${
-                          item.product?.images?.[0]?.image_url
-                        }`}
-                        alt={item.product?.name}
-                        className="w-6 h-6 rounded object-cover"
-                      />
+                  <p>
+                    {new Date(order.created_at).toLocaleDateString("en-NG", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
 
-                      <span className="truncate">
-                        {item.product?.name} x {item.quantity}
-                      </span>
-                    </div>
-                  ))}
+                  <div className="space-y-2 mt-4">
+                    {order.items?.map((item: any) => (
+                      <div key={item.id} className="flex items-center gap-2 mt-3">
+                        <img
+                          src={`http://127.0.0.1:8000${item.product?.images?.[0]?.image_url}`}
+                          alt={item.product?.name}
+                          className="w-6 h-6 rounded object-cover"
+                        />
+
+                        <span className="truncate">
+                          {item.product?.name} x {item.quantity}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -310,7 +300,8 @@ const Dashboard = () => {
               </div>
 
               <div className="flex justify-between pt-2 border-t border-border text-sm font-semibold">
-                <span>Total</span><span>{formatPrice(order.total_price || order.total)}</span>
+                <span>Total</span>
+                <span>{formatPrice(order.total_price || order.total)}</span>
               </div>
             </div>
           ))}
@@ -332,19 +323,12 @@ const Dashboard = () => {
       ) : (
         <div className="space-y-4">
           {wishlist.map((item: any) => (
-            <div
-              key={item.id}
-              className="border rounded-xl p-4 flex flex-col gap-4"
-            >
+            <div key={item.id} className="border rounded-xl p-4 flex flex-col gap-4">
               <div className="flex justify-between text-sm font-semibold">
-                
-                {/* Left side: product info */}
                 <div className="text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2">
                     <img
-                      src={`https://aestra.onrender.com${
-                        item.product?.images?.[0]?.image_url
-                      }`}
+                      src={`http://127.0.0.1:8000${item.product?.images?.[0]?.image_url}`}
                       alt={item.product?.name}
                       className="w-10 h-10 rounded object-cover"
                     />
@@ -360,18 +344,14 @@ const Dashboard = () => {
 
                   <p className="text-xs text-muted-foreground">
                     Added on{" "}
-                    {new Date(item.created_at).toLocaleDateString(
-                      "en-NG",
-                      {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      }
-                    )}
+                    {new Date(item.created_at).toLocaleDateString("en-NG", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
                   </p>
                 </div>
 
-                {/* Right side: actions */}
                 <div className="flex flex-col items-end gap-2">
                   <button
                     onClick={() => removeFromWishlist(item.product_id)}
