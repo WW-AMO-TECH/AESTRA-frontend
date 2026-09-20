@@ -928,7 +928,7 @@ const Index = () => {
         name: product.name,
         price: Number(product.price),
         tag: product.tag,
-        image: product.images?.length ? `http://127.0.0.1:8000${product.images[0].image_url}` : "/placeholder.png",
+        image: product.images?.length ? `https://aestra.onrender.com${product.images[0].image_url}` : "/placeholder.png",
         brand: { name: product.brand?.name, logo_url: product.brand?.logo_url },
         rating: product.rating ?? null,
         reviews_count: product.reviews_count ?? 0,

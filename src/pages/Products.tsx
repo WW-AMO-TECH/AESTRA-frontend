@@ -20,7 +20,7 @@ import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
 import { formatPrice } from "@/lib/utils";
 
-const API = "http://127.0.0.1:8000/api";
+const API = "https://aestra.onrender.com/api";
 
 /* =========================================================
    TYPES
@@ -74,7 +74,7 @@ const getImageUrl = (product?: Product) => {
 
   if (image.startsWith("http")) return image;
 
-  return `http://127.0.0.1:8000${image}`;
+  return `https://aestra.onrender.com${image}`;
 };
 
 /* =========================================================

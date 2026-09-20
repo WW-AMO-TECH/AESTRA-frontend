@@ -279,7 +279,7 @@ const Dashboard = () => {
                     {order.items?.map((item: any) => (
                       <div key={item.id} className="flex items-center gap-2 mt-3">
                         <img
-                          src={`http://127.0.0.1:8000${item.product?.images?.[0]?.image_url}`}
+                          src={`https://aestra.onrender.com${item.product?.images?.[0]?.image_url}`}
                           alt={item.product?.name}
                           className="w-6 h-6 rounded object-cover"
                         />
@@ -328,7 +328,7 @@ const Dashboard = () => {
                 <div className="text-xs text-muted-foreground space-y-2">
                   <div className="flex items-center gap-2">
                     <img
-                      src={`http://127.0.0.1:8000${item.product?.images?.[0]?.image_url}`}
+                      src={`https://aestra.onrender.com${item.product?.images?.[0]?.image_url}`}
                       alt={item.product?.name}
                       className="w-10 h-10 rounded object-cover"
                     />

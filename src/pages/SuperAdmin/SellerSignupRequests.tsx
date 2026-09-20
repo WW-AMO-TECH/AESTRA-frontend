@@ -80,7 +80,7 @@ const SellerSignupRequests = () => {
       setLoading(true);
 
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/superadmin/seller-requests",
+        "https://aestra.onrender.com/api/superadmin/seller-requests",
         config
       );
 
@@ -103,7 +103,7 @@ const SellerSignupRequests = () => {
       setProcessingId(id);
 
       await axios.post(
-        `http://127.0.0.1:8000/api/superadmin/seller-request/${id}/approve`,
+        `https://aestra.onrender.com/api/superadmin/seller-request/${id}/approve`,
         {},
         config
       );
@@ -129,7 +129,7 @@ const SellerSignupRequests = () => {
       setProcessingId(id);
 
       await axios.delete(
-        `http://127.0.0.1:8000/api/superadmin/seller-request/${id}`,
+        `https://aestra.onrender.com/api/superadmin/seller-request/${id}`,
         config
       );
 

@@ -139,7 +139,7 @@ const Catalog = () => {
   const getImageUrl = (path?: string | null) => {
     if (!path) return "";
     if (path.startsWith("blob:") || path.startsWith("http")) return path;
-    return `http://127.0.0.1:8000/storage/${path.replace(/^\/+/, "")}`;
+    return `https://aestra.onrender.com/storage/${path.replace(/^\/+/, "")}`;
   };
 
   const getParentName = (parentId?: number | null) => {

@@ -61,7 +61,7 @@ const Sellers = () => {
       setLoading(true);
 
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/superadmin/sellers",
+        "https://aestra.onrender.com/api/superadmin/sellers",
         config
       );
 
@@ -158,7 +158,7 @@ const Sellers = () => {
       setProcessingId(seller.id);
 
       await axios.patch(
-        `http://127.0.0.1:8000/api/superadmin/sellers/${seller.id}/block`,
+        `https://aestra.onrender.com/api/superadmin/sellers/${seller.id}/block`,
         {},
         config
       );
@@ -211,7 +211,7 @@ const Sellers = () => {
       setProcessingId(id);
 
       await axios.delete(
-        `http://127.0.0.1:8000/api/superadmin/sellers/${id}`,
+        `https://aestra.onrender.com/api/superadmin/sellers/${id}`,
         config
       );
 

@@ -7,7 +7,7 @@ import { ChevronDown, Globe, Loader2, Map, MapPin, Pencil, Plus, Search, Trash2,
 import Sidebar from "@/components/SuperAdmin/Sidebar";
 import { useAuth } from "@/context/AuthContext";
 
-const API = "http://127.0.0.1:8000/api";
+const API = "https://aestra.onrender.com/api";
 
 type Tab = "countries" | "states" | "locations";
 
