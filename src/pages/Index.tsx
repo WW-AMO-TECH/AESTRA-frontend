@@ -337,7 +337,7 @@ const HeroCarousel = ({
 };
 
 const CategorySection = () => (
-  <section className="mx-auto max-w-[1500px] px-4 py-8 sm:px-6 lg:px-10 lg:py-10 xl:px-16">
+  <section className="mx-auto max-w-[1500px] px-2 py-8 sm:px-6 lg:px-5 lg:py-10">
     {/* HEADER */}
     <div className="mb-6 flex items-end justify-between">
       <div>
@@ -960,7 +960,7 @@ const Index = () => {
         <HeroCarousel search={search} setSearch={setSearch} />
 
         {/* PERKS */}
-        <section className="px-4 sm:px-6 lg:px-10 xl:px-16">
+        <section className="px-4 sm:px-6 lg:px-10">
           <div className="">
             <div className="flex overflow-x-auto scrollbar-hide lg:grid lg:grid-cols-4">
               {perks.map((perk) => (

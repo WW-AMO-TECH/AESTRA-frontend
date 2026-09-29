@@ -47,6 +47,12 @@ const sidebarItems: SidebarItem[] = [
     roles: ["seller"],
   },
   {
+    label: "Reviews",
+    icon: ShoppingCart,
+    path: "/seller/reviews",
+    roles: ["seller"],
+  },
+  {
     label: "Tracking",
     icon: MapPin,
     path: "/seller/tracking",
@@ -54,9 +60,27 @@ const sidebarItems: SidebarItem[] = [
   },
   {
     label: "Analytics",
-    icon: BarChart3,
-    path: "/superadmin/analytics",
-    roles: ["seller", "super_admin"],
+    icon: MapPin,
+    path: "/seller/tracking",
+    roles: ["seller"],
+  },
+  {
+    label: "Wallet",
+    icon: MapPin,
+    path: "/seller/tracking",
+    roles: ["seller"],
+  },
+  {
+    label: "Transactions",
+    icon: MapPin,
+    path: "/seller/tracking",
+    roles: ["seller"],
+  },
+  {
+    label: "Profile",
+    icon: MapPin,
+    path: "/seller/tracking",
+    roles: ["seller"],
   },
 ];
 

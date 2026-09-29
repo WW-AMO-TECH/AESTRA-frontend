@@ -375,7 +375,7 @@ const SuperAdminDashboard = () => {
 
       </div>
 
-      <Link to="/admin/orders" className="text-primary font-medium text-sm">
+      <Link to="/superadmin/orders" className="text-primary font-medium text-sm">
         View All
       </Link>
 

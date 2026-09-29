@@ -14,6 +14,7 @@ const Navbar=()=>{
   const navigate=useNavigate();
   const [sheetOpen,setSheetOpen]=useState(false);
   const [search,setSearch]=useState("");
+  const [mobileSearch, setMobileSearch] = useState("");
 
   const isSeller=user?.role==="seller";
   const isSuperAdmin=user?.role==="super_admin";
@@ -37,6 +38,14 @@ const Navbar=()=>{
     e.preventDefault();
     const query=search.trim();
     navigate(query?`/products?search=${encodeURIComponent(query)}`:"/products");
+  };
+
+  const handleMobileSearch = (e) => {
+    e.preventDefault();
+    const query = mobileSearch.trim();
+    if (!query) return;
+    setSheetOpen(false);
+    navigate(`/products?search=${encodeURIComponent(query)}`);
   };
 
   const handleLogout=async()=>{
@@ -83,6 +92,7 @@ const Navbar=()=>{
         {/* DESKTOP RIGHT */}
         <div className="ml-auto hidden items-center gap-2 md:flex">
 
+          {/* DONT DELETE THIS */}
           {/* SEARCH */}
           <form onSubmit={handleSearch} className="hidden lg:block">
             <div className="flex h-10 w-[250px] items-center rounded-xl border border-border bg-muted/30 transition-all focus-within:border-primary focus-within:bg-background focus-within:ring-2 focus-within:ring-primary/10 xl:w-[310px]">
@@ -107,15 +117,6 @@ const Navbar=()=>{
               )}
             </div>
           </form>
-
-          {/* MOBILE-SIZED SEARCH BUTTON ON TABLET */}
-          <button
-            onClick={()=>navigate("/products")}
-            className="hidden rounded-xl p-2.5 text-muted-foreground transition hover:bg-primary/10 hover:text-primary md:max-lg:flex"
-            aria-label="Search"
-          >
-            <Search className="h-5 w-5"/>
-          </button>
 
           {/* CART */}
           <Link
@@ -171,14 +172,44 @@ const Navbar=()=>{
 
         {/* MOBILE MENU */}
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <SheetTrigger asChild>
-            <button
-              className="ml-auto flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-background transition hover:border-primary/30 hover:bg-primary/5 hover:text-primary md:hidden"
-              aria-label="Open menu"
+          <div className="ml-auto flex items-center gap-2 md:hidden">
+            {/* MOBILE SEARCH */}
+            <form
+              onSubmit={handleMobileSearch}
+              className="flex h-10 w-[220px] shrink-0 items-center rounded-xl border border-border bg-background transition focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10"
             >
-              <Menu className="h-5 w-5"/>
-            </button>
-          </SheetTrigger>
+              <Search className="ml-3 h-4 w-4 shrink-0 text-muted-foreground" />
+
+              <input
+                type="search"
+                value={mobileSearch}
+                onChange={(e) => setMobileSearch(e.target.value)}
+                placeholder="Search products..."
+                className="min-w-0 flex-1 bg-transparent px-2 text-sm outline-none placeholder:text-muted-foreground"
+                aria-label="Search products"
+              />
+
+              {mobileSearch && (
+                <button
+                  type="submit"
+                  className="mr-1.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition hover:bg-primary/90"
+                  aria-label="Search"
+                >
+                  <Search className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </form>
+
+            {/* MENU */}
+            <SheetTrigger asChild>
+              <button
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background transition hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
+                aria-label="Open menu"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </SheetTrigger>
+          </div>
 
           <SheetContent
             side="right"
@@ -195,67 +226,9 @@ const Navbar=()=>{
               </SheetTitle>
             </SheetHeader>
 
-            <div className="px-4 py-5">
-
-              {/* MOBILE SEARCH */}
-              <form onSubmit={handleSearch} className="mb-5">
-                <div className="flex h-11 items-center rounded-xl border border-border bg-muted/30 focus-within:border-primary focus-within:bg-background focus-within:ring-2 focus-within:ring-primary/10">
-                  <Search className="ml-3.5 h-4 w-4 text-muted-foreground"/>
-                  <input
-                    value={search}
-                    onChange={e=>setSearch(e.target.value)}
-                    placeholder="Search products..."
-                    className="min-w-0 flex-1 bg-transparent px-3 text-sm outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="mr-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"
-                  >
-                    <ArrowRight className="h-4 w-4"/>
-                  </button>
-                </div>
-              </form>
-
-              {/* USER CARD */}
-              {user?(
-                <Link
-                  to={dashboardPath}
-                  onClick={()=>setSheetOpen(false)}
-                  className="mb-5 flex items-center gap-3 rounded-2xl border border-primary/10 bg-primary/5 p-3.5"
-                >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-lg font-bold text-primary">
-                    {(user.name||user.email||"U").charAt(0).toUpperCase()}
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[11px] text-muted-foreground">
-                      Welcome back
-                    </p>
-                    <p className="truncate text-sm font-bold">
-                      {user.name||user.email}
-                    </p>
-                    <p className="mt-0.5 text-[10px] capitalize text-primary">
-                      {user.role==="super_admin"?"Super Admin":user.role}
-                    </p>
-                  </div>
-
-                  <ChevronRight className="h-4 w-4 text-muted-foreground"/>
-                </Link>
-              ):(
-                <div className="mb-5 rounded-2xl border border-primary/10 bg-primary/5 p-4">
-                  <p className="text-sm font-bold">Welcome to AESTRA</p>
-                  <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                    Discover quality products from trusted sellers.
-                  </p>
-                </div>
-              )}
-
+            <div className="px-2 py-3">
               {/* NAVIGATION */}
               <div>
-                <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  Navigation
-                </p>
-
                 <div className="space-y-1">
                   {navLinks.map(({to,label,icon:Icon})=>{
                     const active=location.pathname===to;

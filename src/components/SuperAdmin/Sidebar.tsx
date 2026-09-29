@@ -26,10 +26,23 @@ const sidebarItems = [
     roles: ["super_admin"],
   },
   {
-    label: "Products",
+    label: "Inventory",
     icon: Package,
-    path: "/superadmin/products",
-    roles: ["seller", "super_admin"],
+    roles: ["super_admin"],
+    subLinks: [
+      {
+        label: "Products upload requests",
+        icon: UserCog,
+        path: "/superadmin/product-upload-requests",
+        roles: ["super_admin"],
+      },
+      {
+        label: "Products",
+        icon: Package,
+        path: "/superadmin/products",
+        roles: ["seller", "super_admin"],
+      },
+    ],
   },
   {
     label: "Customers",
@@ -69,15 +82,15 @@ const sidebarItems = [
     roles: ["seller", "super_admin"],
   },
   {
-    label: "Tracking",
-    icon: MapPin,
-    path: "/admin/tracking",
+    label: "Reviews & Ratings",
+    icon: Star,
+    path: "/superadmin/reviews",
     roles: ["seller", "super_admin"],
   },
   {
-    label: "Reviews & Ratings",
-    icon: Star,
-    path: "/admin/reviews",
+    label: "Tracking",
+    icon: MapPin,
+    path: "/superadmin/tracking",
     roles: ["seller", "super_admin"],
   },
   {
@@ -90,6 +103,18 @@ const sidebarItems = [
     label: "Blog",
     icon: BarChart3,
     path: "/superadmin/blog",
+    roles: ["seller", "super_admin"],
+  },
+  {
+    label: "Requests for products",
+    icon: ShoppingCart,
+    path: "/superadmin/product-requests",
+    roles: ["seller", "super_admin"],
+  },
+  {
+    label: "Authentication page settings",
+    icon: ShoppingCart,
+    path: "/superadmin/authentication-settings",
     roles: ["seller", "super_admin"],
   },
 ];
@@ -175,18 +200,18 @@ const Sidebar = ({ user }: SidebarProps) => {
                     onClick={() => setSidebarOpen(false)}
                     className={`
                       flex items-center gap-3
-                      px-4 py-2 rounded-xl transition
+                      px-4 py-2 rounded-lg text-sm transition
                       hover:bg-primary/10
                       ${
                         isActive
-                          ? "bg-primary text-white hover:bg-primary/75"
-                          : "text-gray-700"
+                          ? "bg-primary text-white"
+                          : "text-gray-600"
                       }
                     `}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-4 h-4" />
 
-                    <span className="font-medium">
+                    <span className="font-medium text-sm">
                       {item.label}
                     </span>
                   </Link>
@@ -215,9 +240,9 @@ const Sidebar = ({ user }: SidebarProps) => {
                     "
                   >
                     <div className="flex items-center gap-3">
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-4 h-4" />
 
-                      <span className="font-medium">
+                      <span className="font-medium text-sm">
                         {item.label}
                       </span>
                     </div>

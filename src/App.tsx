@@ -17,7 +17,8 @@ import GoogleAuthSuccess from "./pages/GoogleAuthSuccess";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
-import AdminOrders from "./pages/Seller/Orders";
+import SellerOrders from "./pages/Seller/Orders";
+import Orders from "./pages/SuperAdmin/Orders";
 import Checkout from "./pages/Checkout";
 import PaymentFailed from "@/pages/PaymentFailed";
 import PaymentSuccess from "@/pages/PaymentSuccess";
@@ -39,7 +40,8 @@ import SuperAdminProducts from "./pages/SuperAdmin/Products";
 
 import SellerSignupRequests from "./pages/SuperAdmin/SellerSignupRequests";
 import Analytics from "./pages/SuperAdmin/Analytics";
-import Reviews from "./pages/Seller/Reviews";
+import Reviews from "./pages/SuperAdmin/Reviews";
+import SellerReviews from "./pages/Seller/Reviews";
 import SuperAdminDashboard from "./pages/SuperAdmin/SuperAdminDashboard";
 
 const queryClient = new QueryClient();
@@ -77,12 +79,13 @@ const App = () => (
               {/* SELLER ROUTES */}
               <Route path="/seller/dashboard" element={<SellerRoute><SellerDashboard /></SellerRoute>}/>
               <Route path="/seller/products" element={<SellerRoute><SellerProductsPage /></SellerRoute>}/>
-              <Route path="/seller/reviews" element={<SellerRoute><Reviews /></SellerRoute>}/>
+              <Route path="/seller/orders" element={<SellerRoute><SellerOrders /></SellerRoute>}/>
+              <Route path="/seller/reviews" element={<SellerRoute><SellerReviews /></SellerRoute>}/>
 
               {/* SUPER-ADMIN ROUTES */}
               {/* ADMIN ACCESS */}
               <Route path="/superadmin/dashboard" element={<SuperAdminRoute><SuperAdminDashboard /></SuperAdminRoute>}/>
-              <Route path="/superadmin/orders" element={<SuperAdminRoute><AdminOrders /></SuperAdminRoute>}/>
+              <Route path="/superadmin/orders" element={<SuperAdminRoute><Orders /></SuperAdminRoute>}/>
               <Route path="/superadmin/catalog" element={<SuperAdminRoute><Catalog /></SuperAdminRoute>}/>
               <Route path="/superadmin/products" element={<SuperAdminRoute><SuperAdminProducts /></SuperAdminRoute>}/>
               <Route path="/superadmin/sellers" element={<SuperAdminRoute><Sellers /></SuperAdminRoute>}/>
@@ -90,7 +93,7 @@ const App = () => (
               <Route path="/superadmin/seller-requests" element={<SuperAdminRoute><SellerSignupRequests /></SuperAdminRoute>}/>
               {/* PICKUP LOCATIONS */}
               <Route path="/superadmin/pickup-locations" element={<SuperAdminRoute><PickupLocations /></SuperAdminRoute>}/>
-
+              <Route path="/superadmin/reviews" element={<SuperAdminRoute><Reviews /></SuperAdminRoute>}/>
               <Route path="/superadmin/analytics" element={<SuperAdminRoute><Analytics /></SuperAdminRoute>}/>
 
               {/* <Route path="/superadmin/admins" element={<SuperAdminRoute><Admins /></SuperAdminRoute>}/> */}

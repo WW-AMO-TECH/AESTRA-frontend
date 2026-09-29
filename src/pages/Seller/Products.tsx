@@ -6,7 +6,7 @@ import {
   RefreshCw, Tag, Boxes, Zap, CheckCircle2, AlertTriangle
 } from "lucide-react";
 
-import Sidebar from "@/components/SuperAdmin/Sidebar";
+import Sidebar from "@/components/Seller/Sidebar";
 import { useAuth } from "@/context/AuthContext";
 
 const API = import.meta.env.VITE_API_URL || "https://aestra.onrender.com/api";
@@ -530,8 +530,8 @@ export default function SellerProductsPage() {
     <div className="min-h-screen bg-primary/20 lg:flex">
       <Sidebar user={user} />
 
-      <main className="flex-1 p-3 lg:p-3 mt-14 lg:mt-0 h-screen overflow-y-auto">
-        <div className="min-h-full sm:p-5 lg:p-3">
+      <main className="mt-14 h-screen flex-1 overflow-y-auto p-3 lg:mt-0 lg:p-3">
+        <div className="mx-auto max-w-[1600px]">
           <div className="mx-auto max-w-7xl">
             <header className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>

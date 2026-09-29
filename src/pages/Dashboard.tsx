@@ -443,7 +443,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-2">
         <div className="flex flex-col md:flex-row gap-4">
           <aside className="md:w-64">{renderTabs()}</aside>
           <main className="flex-1">{renderContent()}</main>

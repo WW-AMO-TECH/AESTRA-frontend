@@ -4,6 +4,9 @@ import { useAuth } from "@/context/AuthContext";
 import {
   Loader2,
   Eye,
+  Pencil,
+  Trash2,
+  Save,
   Search,
   ShoppingBag,
   Clock3,
@@ -17,7 +20,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatPrice } from "@/lib/utils";
-import Sidebar from "@/components/Seller/Sidebar";
+import Sidebar from "@/components/SuperAdmin/Sidebar";
 
 type Status =
   | "all"
@@ -84,11 +87,19 @@ interface PriceRowProps {
   value: string;
 }
 
-const PriceRow = ({ label, value }: PriceRowProps) => {
+const PriceRow = ({
+  label,
+  value,
+}: PriceRowProps) => {
   return (
     <div className="flex items-center justify-between text-xs">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="font-medium">{value}</span>
+      <span className="text-muted-foreground">
+        {label}
+      </span>
+
+      <span className="font-medium">
+        {value}
+      </span>
     </div>
   );
 };
@@ -105,19 +116,23 @@ const Orders = () => {
   const [dateFilter, setDateFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 10;
-
   const [viewOrder, setViewOrder] =
     useState<Order | null>(null);
 
+  const [editOrderStatus, setEditOrderStatus] = useState<{
+    id: number;
+    status: string;
+  } | null>(null);
+
   /* =====================================================
-     FETCH SELLER ORDERS
+     FETCH ORDERS
   ===================================================== */
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
 
-      const res = await axios.get("/seller/orders");
+      const res = await axios.get("/superadmin/orders");
 
       const data = res.data;
 
@@ -143,27 +158,11 @@ const Orders = () => {
   }, []);
 
   /* =====================================================
-     SELLER ITEMS
-  ===================================================== */
-
-  const getSellerItems = (order: Order) => {
-    if (!order.items) return [];
-
-    return order.items.filter(
-      (item: any) =>
-        Number(item.product?.seller_id) ===
-        Number(user?.id)
-    );
-  };
-
-  /* =====================================================
      FILTER ORDERS
   ===================================================== */
 
   const filteredOrders = useMemo(() => {
-    let data = orders.filter(
-      (order) => getSellerItems(order).length > 0
-    );
+    let data = [...orders];
 
     const value = search.toLowerCase().trim();
 
@@ -173,10 +172,25 @@ const Orders = () => {
           order.order_number
             ?.toLowerCase()
             .includes(value) ||
+          order.reference_number
+            ?.toLowerCase()
+            .includes(value) ||
+          order.reference
+            ?.toLowerCase()
+            .includes(value) ||
+          order.payment_reference
+            ?.toLowerCase()
+            .includes(value) ||
+          order.transaction_reference
+            ?.toLowerCase()
+            .includes(value) ||
+          order.order_reference
+            ?.toLowerCase()
+            .includes(value) ||
           order.full_name
             ?.toLowerCase()
             .includes(value) ||
-          order.user?.name
+          order.user?.email
             ?.toLowerCase()
             .includes(value) ||
           order.status
@@ -196,7 +210,9 @@ const Orders = () => {
 
     if (dateFilter === "today") {
       data = data.filter((order) => {
-        const orderDate = new Date(order.created_at);
+        const orderDate = new Date(
+          order.created_at
+        );
 
         return (
           orderDate.toDateString() ===
@@ -239,7 +255,6 @@ const Orders = () => {
     search,
     statusFilter,
     dateFilter,
-    user?.id,
     ]);
 
     const totalPages = Math.ceil(
@@ -263,113 +278,113 @@ const Orders = () => {
   ===================================================== */
 
   const stats = useMemo(
-    () => {
-      const sellerOrders = orders.filter(
-        (order) =>
-          getSellerItems(order).length > 0
-      );
+    () => [
+      {
+        value: "all" as Status,
+        label: "All Orders",
+        count: orders.length,
+        icon: (
+          <ShoppingBag className="w-3 h-3 sm:w-5 sm:h-5" />
+        ),
+        color: "bg-primary/10 text-primary",
+      },
 
-      return [
-        {
-          value: "all" as Status,
-          label: "All Orders",
-          count: sellerOrders.length,
-          icon: (
-            <ShoppingBag className="w-3 h-3 sm:w-5 sm:h-5" />
-          ),
-          color: "bg-primary/10 text-primary",
-        },
-        {
-          value: "processing" as Status,
-          label: "Processing",
-          count: sellerOrders.filter(
-            (order) =>
-              order.status === "processing"
-          ).length,
-          icon: (
-            <Clock3 className="w-3 h-3 sm:w-5 sm:h-5" />
-          ),
-          color: "bg-blue-100 text-blue-800",
-        },
-        {
-          value: "pending" as Status,
-          label: "Pending",
-          count: sellerOrders.filter(
-            (order) =>
-              order.status === "pending"
-          ).length,
-          icon: (
-            <Clock3 className="w-3 h-3 sm:w-5 sm:h-5" />
-          ),
-          color: "bg-amber-100 text-amber-800",
-        },
-        {
-          value: "shipped" as Status,
-          label: "Shipped",
-          count: sellerOrders.filter(
-            (order) =>
-              order.status === "shipped"
-          ).length,
-          icon: (
-            <Truck className="w-3 h-3 sm:w-5 sm:h-5" />
-          ),
-          color: "bg-primary/10 text-primary",
-        },
-        {
-          value: "ready_for_pickup" as Status,
-          label: "Ready for Pickup",
-          count: sellerOrders.filter(
-            (order) =>
-              order.status ===
-              "ready_for_pickup"
-          ).length,
-          icon: (
-            <PackageCheck className="w-3 h-3 sm:w-5 sm:h-5" />
-          ),
-          color: "bg-violet-100 text-violet-800",
-        },
-        {
-          value: "picked_up" as Status,
-          label: "Picked Up",
-          count: sellerOrders.filter(
-            (order) =>
-              order.status === "picked_up"
-          ).length,
-          icon: (
-            <PackageCheck className="w-3 h-3 sm:w-5 sm:h-5" />
-          ),
-          color:
-            "bg-secondary text-foreground",
-        },
-        {
-          value: "delivered" as Status,
-          label: "Delivered",
-          count: sellerOrders.filter(
-            (order) =>
-              order.status === "delivered"
-          ).length,
-          icon: (
-            <CheckCircle2 className="w-3 h-3 sm:w-5 sm:h-5" />
-          ),
-          color:
-            "bg-emerald-100 text-emerald-800",
-        },
-        {
-          value: "cancelled" as Status,
-          label: "Cancelled",
-          count: sellerOrders.filter(
-            (order) =>
-              order.status === "cancelled"
-          ).length,
-          icon: (
-            <Ban className="w-3 h-3 sm:w-5 sm:h-5" />
-          ),
-          color:
-            "bg-destructive/10 text-destructive",
-        },
-      ];
-    },
-    [orders, user?.id]
+      {
+        value: "processing" as Status,
+        label: "Processing",
+        count: orders.filter(
+          (order) =>
+            order.status === "processing"
+        ).length,
+        icon: (
+          <Clock3 className="w-3 h-3 sm:w-5 sm:h-5" />
+        ),
+        color: "bg-blue-100 text-blue-800",
+      },
+
+      {
+        value: "pending" as Status,
+        label: "Pending",
+        count: orders.filter(
+          (order) =>
+            order.status === "pending"
+        ).length,
+        icon: (
+          <Clock3 className="w-3 h-3 sm:w-5 sm:h-5" />
+        ),
+        color: "bg-amber-100 text-amber-800",
+      },
+
+      {
+        value: "shipped" as Status,
+        label: "Shipped",
+        count: orders.filter(
+          (order) =>
+            order.status === "shipped"
+        ).length,
+        icon: (
+          <Truck className="w-3 h-3 sm:w-5 sm:h-5" />
+        ),
+        color: "bg-primary/10 text-primary",
+      },
+
+      {
+        value: "ready_for_pickup" as Status,
+        label: "Ready for Pickup",
+        count: orders.filter(
+          (order) =>
+            order.status ===
+            "ready_for_pickup"
+        ).length,
+        icon: (
+          <PackageCheck className="w-3 h-3 sm:w-5 sm:h-5" />
+        ),
+        color: "bg-violet-100 text-violet-800",
+      },
+
+      {
+        value: "picked_up" as Status,
+        label: "Picked Up",
+        count: orders.filter(
+          (order) =>
+            order.status === "picked_up"
+        ).length,
+        icon: (
+          <PackageCheck className="w-3 h-3 sm:w-5 sm:h-5" />
+        ),
+        color:
+          "bg-secondary text-foreground",
+      },
+
+      {
+        value: "delivered" as Status,
+        label: "Delivered",
+        count: orders.filter(
+          (order) =>
+            order.status === "delivered"
+        ).length,
+        icon: (
+          <CheckCircle2 className="w-3 h-3 sm:w-5 sm:h-5" />
+        ),
+        color:
+          "bg-emerald-100 text-emerald-800",
+      },
+
+      {
+        value: "cancelled" as Status,
+        label: "Cancelled",
+        count: orders.filter(
+          (order) =>
+            order.status === "cancelled"
+        ).length,
+        icon: (
+          <Ban className="w-3 h-3 sm:w-5 sm:h-5" />
+        ),
+        color:
+          "bg-destructive/10 text-destructive",
+      },
+    ],
+    [orders]
   );
 
   /* =====================================================
@@ -418,49 +433,178 @@ const Orders = () => {
   };
 
   /* =====================================================
+     UPDATE STATUS
+  ===================================================== */
+
+  const updateOrderStatus = async (
+    id: number,
+    status: string
+  ) => {
+    try {
+      await axios.patch(
+        `/superadmin/orders/${id}/status`,
+        { status }
+      );
+
+      toast.success(
+        "Order updated successfully"
+      );
+
+      setEditOrderStatus(null);
+
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to update order"
+      );
+    }
+  };
+
+  /* =====================================================
+     DELETE ORDER
+  ===================================================== */
+
+  const deleteOrder = async (id: number) => {
+    try {
+      await axios.delete(
+        `/superadmin/orders/${id}`
+      );
+
+      toast.success(
+        "Order deleted successfully"
+      );
+
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to delete order"
+      );
+    }
+  };
+
+  /* =====================================================
      ORDER HELPERS
   ===================================================== */
 
   const getOrderTotal = (order: Order) => {
-    const sellerItems = getSellerItems(order);
-
-    if (!sellerItems.length) {
-      return 0;
-    }
-
-    return sellerItems.reduce(
-      (sum: number, item: any) => {
-        const lineTotal =
-          item.line_total ??
-          item.total;
-
-        if (
-          lineTotal !== undefined &&
-          lineTotal !== null
-        ) {
-          return sum + Number(lineTotal);
-        }
-
-        const price = Number(
-          item.price ??
-            item.unit_price ??
-            0
-        );
-
-        const quantity = Number(
-          item.quantity ?? 1
-        );
-
-        return sum + price * quantity;
-      },
-      0
+    return Number(
+      order.total_price ??
+        order.total ??
+        0
     );
   };
 
   const getOrderSubtotal = (
     order: Order
   ) => {
+    if (
+      order.subtotal !== undefined &&
+      order.subtotal !== null
+    ) {
+      return Number(order.subtotal);
+    }
+
+    if (order.items?.length) {
+      return order.items.reduce(
+        (
+          sum: number,
+          item: any
+        ) => {
+          const lineTotal =
+            item.line_total ??
+            item.total;
+
+          if (
+            lineTotal !== undefined &&
+            lineTotal !== null
+          ) {
+            return (
+              sum + Number(lineTotal)
+            );
+          }
+
+          const price = Number(
+            item.price ??
+              item.unit_price ??
+              0
+          );
+
+          const quantity = Number(
+            item.quantity ?? 1
+          );
+
+          return (
+            sum + price * quantity
+          );
+        },
+        0
+      );
+    }
+
     return getOrderTotal(order);
+  };
+
+  const getOrderReference = (
+    order: Order
+  ) => {
+    return (
+      order.reference_number ||
+      order.reference ||
+      order.payment_reference ||
+      order.transaction_reference ||
+      order.order_reference ||
+      "—"
+    );
+  };
+
+  const getTransactionFee = (
+    order: Order
+  ) => {
+    return Number(
+      order.transaction_fee ??
+        order.paystack_fee ??
+        order.payment_fee ??
+        order.gateway_fee ??
+        order.transfer_fee ??
+        order.bank_transfer_fee ??
+        0
+    );
+  };
+
+  const isBankTransfer = (
+    order: Order
+  ) => {
+    const paymentMethod =
+      order.payment_method
+        ?.toLowerCase()
+        .replace(/[_-]/g, " ") || "";
+
+    return (
+      paymentMethod.includes(
+        "bank transfer"
+      ) ||
+      paymentMethod === "transfer" ||
+      paymentMethod === "bank"
+    );
+  };
+
+  const getStoreName = (
+    item: any
+  ) => {
+    return (
+      item.store?.name ||
+      item.store_name ||
+      item.product?.store?.name ||
+      item.product?.store_name ||
+      item.seller?.store_name ||
+      item.seller?.name ||
+      item.product?.seller
+        ?.store_name ||
+      item.product?.seller?.name ||
+      "Store not available"
+    );
   };
 
   const getPickupLocation = (
@@ -547,7 +691,9 @@ const Orders = () => {
         {!viewOrder ? (
           <div className="space-y-4">
 
-            {/* HEADER */}
+            {/* =====================================================
+                HEADER
+            ===================================================== */}
 
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
@@ -556,12 +702,14 @@ const Orders = () => {
                 </h1>
 
                 <p className="text-xs text-muted-foreground mt-1">
-                  View customer orders containing your products.
+                  Manage customer orders, fulfillment and order status.
                 </p>
               </div>
             </div>
 
-            {/* STATS */}
+            {/* =====================================================
+                STATS
+            ===================================================== */}
 
             <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 xl:grid-cols-8">
               {stats.map((stat) => (
@@ -602,7 +750,9 @@ const Orders = () => {
               ))}
             </div>
 
-            {/* SECTION HEADER + SEARCH */}
+            {/* =====================================================
+                SECTION HEADER + SEARCH
+            ===================================================== */}
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
@@ -635,6 +785,8 @@ const Orders = () => {
 
               <div className="flex flex-col gap-2 sm:flex-row">
 
+                {/* SEARCH */}
+
                 <div className="relative w-full sm:w-72">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
 
@@ -649,6 +801,8 @@ const Orders = () => {
                     className="w-full rounded-xl border bg-background py-2.5 pl-9 pr-3 text-xs outline-none focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
+
+                {/* DATE FILTER */}
 
                 <div className="relative">
                   <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
@@ -683,7 +837,9 @@ const Orders = () => {
               </div>
             </div>
 
-            {/* TABLE */}
+            {/* =====================================================
+                TABLE
+            ===================================================== */}
 
             <div className="glass-card overflow-x-auto">
 
@@ -774,6 +930,10 @@ const Orders = () => {
                                 {order.order_number ||
                                   `#${order.id}`}
                               </p>
+
+                              <p className="text-[10px] text-muted-foreground">
+                                #{order.id}
+                              </p>
                             </div>
                           </td>
 
@@ -785,6 +945,11 @@ const Orders = () => {
                                 {order.full_name ||
                                   order.user?.name ||
                                   "Unknown Customer"}
+                              </p>
+
+                              <p className="text-[10px] text-muted-foreground">
+                                {order.user?.email ||
+                                  "No email"}
                               </p>
                             </div>
                           </td>
@@ -801,15 +966,64 @@ const Orders = () => {
                             </span>
                           </td>
 
-                          {/* STATUS - VIEW ONLY */}
+                          {/* STATUS */}
 
                           <td className="p-3">
-                            {statusBadge(
-                              order.status
+
+                            {editOrderStatus?.id ===
+                            order.id ? (
+                              <select
+                                value={
+                                  editOrderStatus.status
+                                }
+                                onChange={(e) =>
+                                  setEditOrderStatus(
+                                    {
+                                      ...editOrderStatus,
+                                      status:
+                                        e.target.value,
+                                    }
+                                  )
+                                }
+                                className="rounded-lg border bg-background px-2 py-1.5 text-[10px] outline-none focus:ring-2 focus:ring-primary/20"
+                              >
+                                <option value="pending">
+                                  Pending
+                                </option>
+
+                                <option value="processing">
+                                  Processing
+                                </option>
+
+                                <option value="shipped">
+                                  Shipped
+                                </option>
+
+                                <option value="ready_for_pickup">
+                                  Ready for Pickup
+                                </option>
+
+                                <option value="picked_up">
+                                  Picked Up
+                                </option>
+
+                                <option value="delivered">
+                                  Delivered
+                                </option>
+
+                                <option value="cancelled">
+                                  Cancelled
+                                </option>
+                              </select>
+                            ) : (
+                              statusBadge(
+                                order.status
+                              )
                             )}
+
                           </td>
 
-                          {/* TOTAL - PRODUCTS ONLY */}
+                          {/* TOTAL */}
 
                           <td className="p-3 font-semibold">
                             {formatPrice(
@@ -832,7 +1046,10 @@ const Orders = () => {
                           {/* ACTIONS */}
 
                           <td className="p-3">
-                            <div className="flex justify-end">
+
+                            <div className="flex justify-end gap-2">
+
+                              {/* VIEW */}
 
                               <button
                                 onClick={() =>
@@ -846,86 +1063,135 @@ const Orders = () => {
                                 <Eye className="w-4 h-4" />
                               </button>
 
+                              {/* SAVE / EDIT */}
+
+                              {editOrderStatus?.id ===
+                              order.id ? (
+                                <button
+                                  onClick={() =>
+                                    updateOrderStatus(
+                                      order.id,
+                                      editOrderStatus.status
+                                    )
+                                  }
+                                  className="rounded-lg p-1.5 hover:bg-emerald-50 transition-colors"
+                                  title="Save status"
+                                >
+                                  <Save className="w-4 h-4 text-emerald-600" />
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    setEditOrderStatus(
+                                      {
+                                        id: order.id,
+                                        status:
+                                          order.status,
+                                      }
+                                    )
+                                  }
+                                  className="rounded-lg p-1.5 hover:bg-secondary transition-colors"
+                                  title="Edit status"
+                                >
+                                  <Pencil className="w-4 h-4" />
+                                </button>
+                              )}
+
+                              {/* DELETE */}
+
+                              <button
+                                onClick={() =>
+                                  deleteOrder(
+                                    order.id
+                                  )
+                                }
+                                className="rounded-lg p-1.5 hover:bg-red-50 transition-colors"
+                                title="Delete order"
+                              >
+                                <Trash2 className="w-4 h-4 text-red-500" />
+                              </button>
                             </div>
                           </td>
-
                         </tr>
                       )
                     )
                   )}
                 </tbody>
+
               </table>
-
               {filteredOrders.length > 0 && (
-              <div className="flex flex-col gap-3 border-t p-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-[11px] text-muted-foreground">
-                  Showing{" "}
-                  <span className="font-semibold text-foreground">
-                    {(currentPage - 1) * ordersPerPage + 1}
-                  </span>
-                  {" - "}
-                  <span className="font-semibold text-foreground">
-                    {Math.min(
-                      currentPage * ordersPerPage,
-                      filteredOrders.length
-                    )}
-                  </span>{" "}
-                  of{" "}
-                  <span className="font-semibold text-foreground">
-                    {filteredOrders.length}
-                  </span>{" "}
-                  orders
-                </p>
+                <div className="flex flex-col gap-3 border-t p-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-[11px] text-muted-foreground">
+                    Showing{" "}
+                    <span className="font-semibold text-foreground">
+                      {(currentPage - 1) * ordersPerPage + 1}
+                    </span>
+                    {" - "}
+                    <span className="font-semibold text-foreground">
+                      {Math.min(
+                        currentPage * ordersPerPage,
+                        filteredOrders.length
+                      )}
+                    </span>{" "}
+                    of{" "}
+                    <span className="font-semibold text-foreground">
+                      {filteredOrders.length}
+                    </span>{" "}
+                    orders
+                  </p>
 
-                <div className="flex items-center justify-between gap-1">
-                  <button
-                    onClick={() =>
-                      setCurrentPage((page) => Math.max(page - 1, 1))
-                    }
-                    disabled={currentPage === 1}
-                    className="rounded-lg border px-3 py-1.5 text-[11px] font-medium transition-colors hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
-                  >
-                    Previous
-                  </button>
+                  <div className="flex items-center justify-between gap-1">
+                    <button
+                      onClick={() =>
+                        setCurrentPage((page) => Math.max(page - 1, 1))
+                      }
+                      disabled={currentPage === 1}
+                      className="rounded-lg border px-3 py-1.5 text-[11px] font-medium transition-colors hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
+                    >
+                      Previous
+                    </button>
 
-                  <div className="flex items-center gap-1">
-                    {Array.from(
-                      { length: totalPages },
-                      (_, index) => index + 1
-                    ).map((page) => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`h-8 min-w-8 rounded-lg px-2 text-[11px] font-semibold transition-colors ${
-                          currentPage === page
-                            ? "bg-primary text-primary-foreground"
-                            : "hover:bg-secondary"
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    ))}
+                    <div className="flex items-center gap-1">
+                      {Array.from(
+                        { length: totalPages },
+                        (_, index) => index + 1
+                      ).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`h-8 min-w-8 rounded-lg px-2 text-[11px] font-semibold transition-colors ${
+                            currentPage === page
+                              ? "bg-primary text-primary-foreground"
+                              : "hover:bg-secondary"
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        setCurrentPage((page) =>
+                          Math.min(page + 1, totalPages)
+                        )
+                      }
+                      disabled={currentPage === totalPages}
+                      className="rounded-lg border px-3 py-1.5 text-[11px] font-medium transition-colors hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
+                    >
+                      Next
+                    </button>
                   </div>
-
-                  <button
-                    onClick={() =>
-                      setCurrentPage((page) =>
-                        Math.min(page + 1, totalPages)
-                      )
-                    }
-                    disabled={currentPage === totalPages}
-                    className="rounded-lg border px-3 py-1.5 text-[11px] font-medium transition-colors hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
-                  >
-                    Next
-                  </button>
                 </div>
-              </div>
-            )}
+              )}
             </div>
+
           </div>
         ) : (
 
-          /* VIEW ORDER */
+          /* =====================================================
+             VIEW ORDER
+          ===================================================== */
 
           <div className="space-y-2">
 
@@ -941,11 +1207,17 @@ const Orders = () => {
               Back to Orders
             </button>
 
-            {/* ORDER SUMMARY */}
+            {/* =====================================================
+                ORDER SUMMARY
+            ===================================================== */}
 
             <div className="glass-card overflow-hidden">
 
+              {/* DETAILS */}
+
               <div className="grid grid-cols-2 gap-x-4 gap-y-5 p-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8">
+
+                {/* ORDER NUMBER */}
 
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -957,6 +1229,22 @@ const Orders = () => {
                       `#${viewOrder.id}`}
                   </p>
                 </div>
+
+                {/* REFERENCE */}
+
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                    Reference
+                  </p>
+
+                  <p className="mt-1 text-xs font-semibold break-all">
+                    {getOrderReference(
+                      viewOrder
+                    )}
+                  </p>
+                </div>
+
+                {/* DATE */}
 
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -970,6 +1258,8 @@ const Orders = () => {
                   </p>
                 </div>
 
+                {/* TIME */}
+
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                     Time
@@ -981,6 +1271,8 @@ const Orders = () => {
                     )}
                   </p>
                 </div>
+
+                {/* STATUS */}
 
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -994,6 +1286,8 @@ const Orders = () => {
                   </div>
                 </div>
 
+                {/* CUSTOMER */}
+
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                     Customer
@@ -1004,7 +1298,14 @@ const Orders = () => {
                       viewOrder.user?.name ||
                       "Unknown"}
                   </p>
+
+                  <p className="mt-0.5 text-[10px] text-muted-foreground truncate">
+                    {viewOrder.user?.email ||
+                      "No email"}
+                  </p>
                 </div>
+
+                {/* FULFILLMENT */}
 
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -1020,6 +1321,8 @@ const Orders = () => {
                   </p>
                 </div>
 
+                {/* PAYMENT */}
+
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                     Payment Method
@@ -1033,6 +1336,8 @@ const Orders = () => {
                       "Not specified"}
                   </p>
                 </div>
+
+                {/* PICKUP LOCATION */}
 
                 <div className="col-span-2 sm:col-span-3 lg:col-span-2 xl:col-span-2">
                   <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -1054,31 +1359,36 @@ const Orders = () => {
 
             </div>
 
-            {/* ORDER ITEMS */}
+            {/* =====================================================
+                ORDER ITEMS
+            ===================================================== */}
 
             <div className="glass-card overflow-hidden">
 
               <div className="border-b p-4">
 
                 <h2 className="text-sm font-semibold">
-                  Your Products in This Order
+                  Order Items
                 </h2>
 
                 <p className="mt-1 text-[11px] text-muted-foreground">
-                  {getSellerItems(viewOrder).length}{" "}
-                  {getSellerItems(viewOrder).length ===
+                  {viewOrder.items?.length ||
+                    0}{" "}
+                  {viewOrder.items?.length ===
                   1
                     ? "item"
                     : "items"}{" "}
-                  from your store
+                  in this order
                 </p>
 
               </div>
 
+              {/* ITEMS */}
+
               <div className="divide-y">
 
-                {getSellerItems(viewOrder).length ? (
-                  getSellerItems(viewOrder).map(
+                {viewOrder.items?.length ? (
+                  viewOrder.items.map(
                     (item: any) => {
 
                       const image =
@@ -1129,6 +1439,8 @@ const Orders = () => {
                           className="flex items-center gap-3 p-4"
                         >
 
+                          {/* IMAGE */}
+
                           <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-secondary">
 
                             {imageUrl ? (
@@ -1150,6 +1462,8 @@ const Orders = () => {
 
                           </div>
 
+                          {/* PRODUCT */}
+
                           <div className="min-w-0 flex-1">
 
                             <p className="truncate text-xs font-semibold">
@@ -1159,6 +1473,15 @@ const Orders = () => {
                             </p>
 
                             <p className="mt-1 text-[10px] text-muted-foreground">
+                              Store:{" "}
+                              <span className="font-medium text-foreground">
+                                {getStoreName(
+                                  item
+                                )}
+                              </span>
+                            </p>
+
+                            <p className="mt-0.5 text-[10px] text-muted-foreground">
                               Qty:{" "}
                               {quantity}{" "}
                               ×{" "}
@@ -1168,6 +1491,8 @@ const Orders = () => {
                             </p>
 
                           </div>
+
+                          {/* TOTAL */}
 
                           <div className="text-right">
                             <p className="text-xs font-semibold">
@@ -1183,17 +1508,48 @@ const Orders = () => {
                   )
                 ) : (
                   <div className="p-8 text-center text-xs text-muted-foreground">
-                    No products from your store were found in this order.
+                    No items found for this order.
                   </div>
                 )}
 
               </div>
 
-              {/* ORDER TOTALS */}
+              {/* =====================================================
+                  ORDER TOTALS
+              ===================================================== */}
 
               <div className="border-t bg-secondary/30 p-4">
 
                 <div className="ml-auto w-full max-w-sm space-y-2">
+
+                  {/* SUBTOTAL */}
+
+                  <PriceRow
+                    label="Subtotal"
+                    value={formatPrice(
+                      getOrderSubtotal(
+                        viewOrder
+                      )
+                    )}
+                  />
+
+                  {/* TRANSACTION FEE */}
+
+                  <PriceRow
+                    label={
+                      viewOrder.payment_method ===
+                      "paystack"
+                        ? "Paystack Fee"
+                        : "Bank Transaction Fee"
+                    }
+                    value={formatPrice(
+                      getTransactionFee(
+                        viewOrder
+                      )
+                    )}
+                  />
+
+                  {/* TOTAL */}
 
                   <div className="flex items-center justify-between border-t pt-3">
 
@@ -1208,10 +1564,167 @@ const Orders = () => {
                         )
                       )}
                     </span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
+
+            {/* =====================================================
+                ORDER STATUS PROGRESSION
+            ===================================================== */}
+
+            <div className="glass-card p-4 sm:p-5">
+
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+                  <h2 className="text-sm font-semibold">
+                    Order Status
+                  </h2>
+
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Current fulfillment progress
+                  </p>
+                </div>
+
+              </div>
+
+              {/* CANCELLED */}
+
+              {viewOrder.status ===
+              "cancelled" ? (
+                <div className="mt-5 rounded-xl border border-destructive/20 bg-destructive/5 p-4">
+
+                  <div className="flex items-center gap-3">
+
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                      <Ban className="w-4 h-4" />
+                    </div>
+
+                    <div>
+                      <p className="text-xs font-semibold text-destructive">
+                        Order Cancelled
+                      </p>
+
+                      <p className="mt-0.5 text-[10px] text-muted-foreground">
+                        This order is no longer progressing through fulfillment.
+                      </p>
+                    </div>
+
+                  </div>
+
+                </div>
+              ) : (
+
+                /* PROGRESSION */
+
+                <div className="mt-5 overflow-x-auto pb-2">
+
+                  <div className="flex min-w-[680px] items-start">
+
+                    {statusSteps.map(
+                      (
+                        step,
+                        index
+                      ) => {
+
+                        const currentIndex =
+                          getStatusIndex(
+                            viewOrder.status
+                          );
+
+                        const completed =
+                          currentIndex >=
+                          index;
+
+                        const current =
+                          viewOrder.status ===
+                          step;
+
+                        return (
+                          <div
+                            key={step}
+                            className="flex flex-1 items-start"
+                          >
+
+                            {/* STEP */}
+
+                            <div className="flex min-w-0 flex-col items-center">
+
+                              {/* DOT */}
+
+                              <div
+                                className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full border-2 transition-all ${
+                                  completed
+                                    ? "border-primary bg-primary text-primary-foreground"
+                                    : "border-border bg-background text-muted-foreground"
+                                } ${
+                                  current
+                                    ? "ring-4 ring-primary/10"
+                                    : ""
+                                }`}
+                              >
+                                {completed ? (
+                                  <CheckCircle2 className="h-3.5 w-3.5" />
+                                ) : (
+                                  <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                                )}
+                              </div>
+
+                              {/* LABEL */}
+
+                              <p
+                                className={`mt-2 max-w-[80px] text-center text-[9px] font-semibold capitalize ${
+                                  current
+                                    ? "text-primary"
+                                    : completed
+                                    ? "text-foreground"
+                                    : "text-muted-foreground"
+                                }`}
+                              >
+                                {step.replace(
+                                  /_/g,
+                                  " "
+                                )}
+                              </p>
+
+                            </div>
+
+                            {/* DASH */}
+
+                            {index <
+                              statusSteps.length -
+                                1 && (
+                              <div className="flex-1 px-1 pt-3.5">
+
+                                <div
+                                  className={`h-0.5 w-full border-t-2 border-dashed ${
+                                    currentIndex >
+                                    index
+                                      ? "border-primary"
+                                      : "border-border"
+                                  }`}
+                                />
+
+                              </div>
+                            )}
+
+                          </div>
+                        );
+                      }
+                    )}
+
+                  </div>
+
+                </div>
+              )}
+
+            </div>
+
           </div>
         )}
 
