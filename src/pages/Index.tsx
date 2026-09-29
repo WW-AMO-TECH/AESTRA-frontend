@@ -106,33 +106,6 @@ const HeroCarousel = ({
 
   return (
     <section className="relative overflow-hidden bg-background">
-      {/* MOBILE SEARCH */}
-      <div className="px-4 pb-4 pt-3 lg:hidden">
-        <div className="relative">
-          <Search
-            size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-          />
-
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search products, brands and more..."
-            className="h-12 w-full rounded-2xl border border-border/70 bg-card pl-11 pr-11 text-sm shadow-[0_4px_20px_rgba(0,0,0,0.04)] outline-none transition focus:border-primary/50 focus:ring-4 focus:ring-primary/10"
-          />
-
-          {search && (
-            <button
-              type="button"
-              onClick={() => setSearch("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition hover:text-foreground"
-            >
-              <X size={17} />
-            </button>
-          )}
-        </div>
-      </div>
-
       {/* CAROUSEL */}
       <div
         ref={emblaRef}

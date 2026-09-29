@@ -58,7 +58,7 @@ const Navbar=()=>{
 
   return(
     <nav className="sticky top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-[1480px] items-center gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex py-2 min-w-0 max-w-[1480px] items-center gap-3 px-3 sm:gap-4 sm:px-6 lg:px-8">
 
         {/* LOGO */}
         <Link to="/" className="shrink-0">
@@ -172,11 +172,11 @@ const Navbar=()=>{
 
         {/* MOBILE MENU */}
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <div className="ml-auto flex items-center gap-2 md:hidden">
+          <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-2 md:hidden">
             {/* MOBILE SEARCH */}
             <form
               onSubmit={handleMobileSearch}
-              className="flex h-10 w-[220px] shrink-0 items-center rounded-xl border border-border bg-background transition focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10"
+              className="flex h-10 min-w-0 flex-1 items-center rounded-xl border border-border bg-background transition focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10"
             >
               <Search className="ml-3 h-4 w-4 shrink-0 text-muted-foreground" />
 
@@ -221,7 +221,7 @@ const Navbar=()=>{
                 <img
                   src="/AESTRA LOGO-navbar.png"
                   alt="AESTRA"
-                  className="h-7 w-auto object-contain"
+                  className="h-6 w-auto object-contain"
                 />
               </SheetTitle>
             </SheetHeader>
