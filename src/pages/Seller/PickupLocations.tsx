@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
-import axios from "axios";
+import axios from "@/api/axios";
 import { toast } from "sonner";
 import {
   ChevronDown,
@@ -18,8 +18,6 @@ import {
 
 import Sidebar from "@/components/SuperAdmin/Sidebar";
 import { useAuth } from "@/context/AuthContext";
-
-const API = "https://aestra.onrender.com/api";
 
 type Tab = "countries" | "states" | "locations" | "deliveryLocations" | "rates";
 
@@ -629,40 +627,36 @@ export default function PickupLocations() {
     useState<Record<string, string>>({});
 
   const fetchData = async () => {
-    setLoading(true);
-
     try {
       const h = { headers: headers() };
 
       const results = await Promise.allSettled([
-        axios.get(`${API}/superadmin/countries`, h),
-        axios.get(`${API}/superadmin/states`, h),
-        axios.get(`${API}/superadmin/pickup-locations`, h),
-        axios.get(`${API}/superadmin/delivery-locations`, h),
-        axios.get(`${API}/superadmin/delivery-rates`, h),
+        axios.get("/superadmin/countries", h),
+        axios.get("/superadmin/states", h),
+        axios.get("/superadmin/pickup-locations", h),
+        axios.get("/superadmin/delivery-locations", h),
+        axios.get("/superadmin/delivery-rates", h),
       ]);
 
-      const getData = (result: PromiseSettledResult<any>) =>
-        result.status === "fulfilled"
-          ? result.value.data?.data ?? result.value.data ?? []
-          : [];
+      const getData = (result: PromiseSettledResult<any>) => {
+        if (result.status !== "fulfilled") return [];
+
+        const payload = result.value?.data;
+
+        if (Array.isArray(payload)) return payload;
+        if (Array.isArray(payload?.data)) return payload.data;
+
+        return [];
+      };
 
       setCountries(getData(results[0]));
       setStates(getData(results[1]));
       setLocations(getData(results[2]));
       setDeliveryLocations(getData(results[3]));
       setRates(getData(results[4]));
-
-      results.forEach((result, index) => {
-        if (result.status === "rejected") {
-          console.error(`Failed request ${index}:`, result.reason);
-        }
-      });
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to load data.");
-    } finally {
-      setLoading(false);
+      console.error("Failed to fetch pickup/delivery data:", error);
+      toast.error("Failed to load pickup and delivery data.");
     }
   };
 
@@ -1475,13 +1469,13 @@ export default function PickupLocations() {
 
       if (editingId !== null) {
         response = await axios.put(
-          `${API}/superadmin/pickup-locations/${editingId}`,
+          `/superadmin/pickup-locations/${editingId}`,
           data,
           h
         );
       } else {
         response = await axios.post(
-          `${API}/superadmin/pickup-locations`,
+          `/superadmin/pickup-locations`,
           data,
           h
         );
@@ -1640,13 +1634,13 @@ export default function PickupLocations() {
 
       if (editingId !== null) {
         response = await axios.put(
-          `${API}/superadmin/delivery-locations/${editingId}`,
+          `/superadmin/delivery-locations/${editingId}`,
           data,
           h
         );
       } else {
         response = await axios.post(
-          `${API}/superadmin/delivery-locations`,
+          `/superadmin/delivery-locations`,
           data,
           h
         );
@@ -1781,7 +1775,7 @@ export default function PickupLocations() {
 
       if (editingId !== null) {
         await axios.put(
-          `${API}/superadmin/delivery-rates/${editingId}`,
+          `/superadmin/delivery-rates/${editingId}`,
           data,
           h
         );
@@ -1791,7 +1785,7 @@ export default function PickupLocations() {
         );
       } else {
         await axios.post(
-          `${API}/superadmin/delivery-rates`,
+          `/superadmin/delivery-rates`,
           data,
           h
         );
@@ -1848,7 +1842,7 @@ export default function PickupLocations() {
 
         if (editingId !== null) {
           await axios.put(
-            `${API}/superadmin/countries/${editingId}`,
+            `/superadmin/countries/${editingId}`,
             data,
             h
           );
@@ -1858,7 +1852,7 @@ export default function PickupLocations() {
           );
         } else {
           await axios.post(
-            `${API}/superadmin/countries`,
+            `/superadmin/countries`,
             data,
             h
           );
@@ -1877,7 +1871,7 @@ export default function PickupLocations() {
 
         if (editingId !== null) {
           await axios.put(
-            `${API}/superadmin/states/${editingId}`,
+            `/superadmin/states/${editingId}`,
             data,
             h
           );
@@ -1887,7 +1881,7 @@ export default function PickupLocations() {
           );
         } else {
           await axios.post(
-            `${API}/superadmin/states`,
+            `/superadmin/states`,
             data,
             h
           );
@@ -1939,7 +1933,7 @@ export default function PickupLocations() {
       };
 
       await axios.delete(
-        `${API}/superadmin/${paths[deleteType]}/${deleteId}`,
+        `/superadmin/${paths[deleteType]}/${deleteId}`,
         {
           headers: headers(),
         }
@@ -1985,7 +1979,7 @@ export default function PickupLocations() {
       };
 
       await axios.patch(
-        `${API}/superadmin/${paths[type]}/${id}/toggle-status`,
+        `/superadmin/${paths[type]}/${id}/toggle-status`,
         {},
         {
           headers: headers(),

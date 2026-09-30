@@ -31,16 +31,16 @@ const sidebarItems = [
     roles: ["super_admin"],
     subLinks: [
       {
-        label: "Products upload requests",
-        icon: UserCog,
-        path: "/superadmin/product-upload-requests",
-        roles: ["super_admin"],
-      },
-      {
         label: "Products",
         icon: Package,
         path: "/superadmin/products",
         roles: ["seller", "super_admin"],
+      },
+      {
+        label: "Products upload requests",
+        icon: UserCog,
+        path: "/superadmin/product-upload-requests",
+        roles: ["super_admin"],
       },
     ],
   },
@@ -179,7 +179,7 @@ const Sidebar = ({ user }: SidebarProps) => {
         </div>
 
         {/* Sidebar Links */}
-        <div className="flex-1 overflow-y-auto p-2 space-y-2">
+        <div className="flex-1 overflow-y-auto space-y-1">
           {sidebarItems
             .filter((item) =>
               item.roles.includes(user?.role || "")
@@ -200,7 +200,7 @@ const Sidebar = ({ user }: SidebarProps) => {
                     onClick={() => setSidebarOpen(false)}
                     className={`
                       flex items-center gap-3
-                      px-4 py-2 rounded-lg text-sm transition
+                      p-2 rounded-lg text-sm transition
                       hover:bg-primary/10
                       ${
                         isActive
@@ -235,7 +235,7 @@ const Sidebar = ({ user }: SidebarProps) => {
                     onClick={() => toggleSubMenu(item.label)}
                     className="
                       w-full flex items-center justify-between
-                      px-4 py-2 rounded-xl transition
+                      p-2 rounded-xl transition
                       hover:bg-primary/10 text-gray-700
                     "
                   >
@@ -272,7 +272,7 @@ const Sidebar = ({ user }: SidebarProps) => {
                             }
                             className={`
                               flex items-center gap-3
-                              px-4 py-2 rounded-lg text-sm transition
+                              p-2 rounded-lg text-sm transition
                               hover:bg-primary/10
                               ${
                                 isActive
@@ -300,7 +300,7 @@ const Sidebar = ({ user }: SidebarProps) => {
             to="/admin/settings"
             className="
               w-full flex items-center justify-between
-              px-4 py-2 rounded-xl
+              p-2 rounded-xl
               hover:bg-primary/10 transition
             "
           >

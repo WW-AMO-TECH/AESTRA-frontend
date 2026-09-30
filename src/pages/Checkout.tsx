@@ -141,44 +141,26 @@ const Checkout = () => {
   }, [subtotal, fulfillment, selectedDeliveryFee]);
 
   const paystackTransactionFee = useMemo(() => {
-    return Number(
-      (
-        (amountBeforeTransactionFee * PAYSTACK_FEE_PERCENTAGE) /
-        100
-      ).toFixed(2)
+    return (
+      (amountBeforeTransactionFee * PAYSTACK_FEE_PERCENTAGE) /
+      100
     );
   }, [amountBeforeTransactionFee]);
 
   const bankTransferTransactionFee = useMemo(() => {
-    return Number(
-      (
-        (amountBeforeTransactionFee *
-          BANK_TRANSFER_FEE_PERCENTAGE) /
-        100
-      ).toFixed(2)
+    return (
+      (amountBeforeTransactionFee * BANK_TRANSFER_FEE_PERCENTAGE) /
+      100
     );
   }, [amountBeforeTransactionFee]);
 
   const paystackTotal = useMemo(() => {
-    return Number(
-      (
-        amountBeforeTransactionFee +
-        paystackTransactionFee
-      ).toFixed(2)
-    );
+    return amountBeforeTransactionFee + paystackTransactionFee;
   }, [amountBeforeTransactionFee, paystackTransactionFee]);
 
   const bankTransferTotal = useMemo(() => {
-    return Number(
-      (
-        amountBeforeTransactionFee +
-        bankTransferTransactionFee
-      ).toFixed(2)
-    );
-  }, [
-    amountBeforeTransactionFee,
-    bankTransferTransactionFee,
-  ]);
+    return amountBeforeTransactionFee + bankTransferTransactionFee;
+  }, [amountBeforeTransactionFee, bankTransferTransactionFee]);
 
   const selectedTotal =
     paymentMethod === "transfer"
@@ -539,6 +521,47 @@ const Checkout = () => {
       return;
     }
 
+    /*
+     * Resolve the selected locations from their IDs.
+     * The IDs are sent for database relationships while
+     * the names/states are sent as snapshots on the order.
+     */
+    const selectedPickup = pickupLocations.find(
+      (location) =>
+        location.id.toString() ===
+        selectedPickupLocation
+    );
+
+    const selectedDelivery =
+      fulfillment === "delivery"
+        ? deliveryLocations.find(
+            (location) =>
+              location.id.toString() ===
+              selectedDeliveryLocation
+          )
+        : null;
+
+    const selectedPickupState = states.find(
+      (state) => state.id.toString() === pickupState
+    );
+
+    const selectedDeliveryState =
+      fulfillment === "delivery"
+        ? states.find(
+            (state) => state.id.toString() === deliveryState
+          )
+        : null;
+
+    if (!selectedPickup) {
+      alert("Please select a valid pickup location.");
+      return;
+    }
+
+    if (fulfillment === "delivery" && !selectedDelivery) {
+      alert("Please select a valid delivery location.");
+      return;
+    }
+
     if (paymentMethod === "transfer") {
       if (!bankAccountName.trim()) {
         alert(
@@ -562,27 +585,55 @@ const Checkout = () => {
           "/payments/bank-transfer",
           {
             email: user.email,
+
             fulfillment,
+
             full_name: fullName.trim(),
             phone: phone.trim(),
 
-            pickup_state: pickupState,
-            pickup_location_id: selectedPickupLocation,
+            /*
+             * Pickup snapshot + relationship ID
+             */
+            pickup_state:
+              selectedPickupState?.name ||
+              pickupState,
 
+            pickup_location_id:
+              Number(selectedPickupLocation),
+
+            pickup_location:
+              selectedPickup.name,
+
+            /*
+             * Delivery snapshot + relationship ID
+             */
             delivery_state:
               fulfillment === "delivery"
-                ? deliveryState
+                ? selectedDeliveryState?.name ||
+                  deliveryState
+                : null,
+
+            delivery_location:
+              fulfillment === "delivery"
+                ? selectedDelivery?.name || null
                 : null,
 
             delivery_location_id:
               fulfillment === "delivery"
-                ? selectedDeliveryLocation
+                ? Number(selectedDeliveryLocation)
                 : null,
 
             delivery_type:
               fulfillment === "delivery"
                 ? deliveryType
                 : null,
+
+            /*
+             * IMPORTANT:
+             * delivery_fee is intentionally NOT sent.
+             * The backend must calculate the authoritative
+             * delivery fee from the selected locations/rate.
+             */
 
             bank_account_name:
               bankAccountName.trim(),
@@ -629,28 +680,57 @@ const Checkout = () => {
         "/payments/initiate",
         {
           email: user.email,
+
           payment_method: "paystack",
+
           fulfillment,
+
           full_name: fullName.trim(),
           phone: phone.trim(),
 
-          pickup_state: pickupState,
-          pickup_location_id: selectedPickupLocation,
+          /*
+           * Pickup snapshot + relationship ID
+           */
+          pickup_state:
+            selectedPickupState?.name ||
+            pickupState,
 
+          pickup_location_id:
+            Number(selectedPickupLocation),
+
+          pickup_location:
+            selectedPickup.name,
+
+          /*
+           * Delivery snapshot + relationship ID
+           */
           delivery_state:
             fulfillment === "delivery"
-              ? deliveryState
+              ? selectedDeliveryState?.name ||
+                deliveryState
+              : null,
+
+          delivery_location:
+            fulfillment === "delivery"
+              ? selectedDelivery?.name || null
               : null,
 
           delivery_location_id:
             fulfillment === "delivery"
-              ? selectedDeliveryLocation
+              ? Number(selectedDeliveryLocation)
               : null,
 
           delivery_type:
             fulfillment === "delivery"
               ? deliveryType
               : null,
+
+          /*
+           * IMPORTANT:
+           * delivery_fee is intentionally NOT sent.
+           * The backend calculates it from the
+           * super-admin-configured delivery rate.
+           */
 
           items: safeCart.map((item: any) => ({
             product_id: item.product.id,
@@ -815,7 +895,9 @@ const Checkout = () => {
 
             <button
               type="button"
-              onClick={() => navigate("/orders")}
+                onClick={() =>
+                navigate("/dashboard", { state: { tab: "orders" } })
+              }
               className="btn-primary-glow mt-6 w-full"
             >
               View My Orders
@@ -1934,11 +2016,6 @@ const Checkout = () => {
                             placeholder="Input the name of the account used for the payment"
                             className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                           />
-
-                          <p className="mt-1.5 text-xs text-muted-foreground">
-                            Input the name of the account used
-                            for the payment.
-                          </p>
                         </div>
 
                         <div>
@@ -1957,11 +2034,6 @@ const Checkout = () => {
                             placeholder="Copy the session ID or transaction number for the payment"
                             className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                           />
-
-                          <p className="mt-1.5 text-xs text-muted-foreground">
-                            Copy the session ID or transaction
-                            number for the payment.
-                          </p>
                         </div>
                       </div>
                     </div>

@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import axios from "axios";
+import axios from "@/api/axios";
 import {
   Search,
   SlidersHorizontal,
@@ -19,12 +19,6 @@ import Autoplay from "embla-carousel-autoplay";
 import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
 import { formatPrice } from "@/lib/utils";
-
-const API = "https://aestra.onrender.com/api";
-
-/* =========================================================
-   TYPES
-========================================================= */
 
 type Product = {
   id: number;
@@ -126,8 +120,6 @@ const FlashDeals = ({ products }: { products: Product[] }) => {
 
   return (
     <section className="relative mb-7 overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-r from-primary/10 via-white to-primary/10 p-4 sm:p-5">
-      {/* HEADER */}
-
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
@@ -151,8 +143,6 @@ const FlashDeals = ({ products }: { products: Product[] }) => {
           </div>
         </div>
 
-        {/* COUNTDOWN */}
-
         <div className="hidden items-center gap-1.5 sm:flex">
           {[
             ["02", "Days"],
@@ -172,8 +162,6 @@ const FlashDeals = ({ products }: { products: Product[] }) => {
           ))}
         </div>
       </div>
-
-      {/* CAROUSEL */}
 
       <div className="relative">
         <button
@@ -265,8 +253,6 @@ const FlashDeals = ({ products }: { products: Product[] }) => {
         </div>
       </div>
 
-      {/* DOTS */}
-
       {products.length > 1 && (
         <div className="mt-3 flex justify-center gap-1">
           {products.map((_, index) => (
@@ -287,7 +273,9 @@ const FlashDeals = ({ products }: { products: Product[] }) => {
   );
 };
 
-// FILTER
+/* =========================================================
+   FILTER
+========================================================= */
 
 type FilterSidebarProps = {
   categories: any[];
@@ -331,8 +319,6 @@ const FilterSidebar = ({
 }: FilterSidebarProps) => {
   return (
     <aside className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      {/* HEADER */}
-
       <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3.5">
         <h2 className="text-sm font-bold text-slate-900">Filter</h2>
 
@@ -344,8 +330,6 @@ const FilterSidebar = ({
           Clear All
         </button>
       </div>
-
-      {/* CATEGORY */}
 
       <div className="border-b border-slate-100 p-4">
         <h3 className="mb-3 text-[11px] font-bold text-slate-800">
@@ -384,8 +368,6 @@ const FilterSidebar = ({
         </div>
       </div>
 
-      {/* BRAND */}
-
       <div className="border-b border-slate-100 p-4">
         <h3 className="mb-3 text-[11px] font-bold text-slate-800">
           Brand
@@ -419,8 +401,6 @@ const FilterSidebar = ({
           ))}
         </div>
       </div>
-
-      {/* PRICE */}
 
       <div className="border-b border-slate-100 p-4">
         <h3 className="mb-3 text-[11px] font-bold text-slate-800">
@@ -467,8 +447,6 @@ const FilterSidebar = ({
         </div>
       </div>
 
-      {/* GRADE */}
-
       <div className="border-b border-slate-100 p-4">
         <h3 className="mb-3 text-[11px] font-bold text-slate-800">
           Grade
@@ -486,8 +464,6 @@ const FilterSidebar = ({
           <option value="C">Grade C</option>
         </select>
       </div>
-
-      {/* CONDITION */}
 
       <div className="p-4">
         <h3 className="mb-3 text-[11px] font-bold text-slate-800">
@@ -515,6 +491,9 @@ const FilterSidebar = ({
 const Products = () => {
   const [params] = useSearchParams();
 
+  const urlSearch = params.get("search")?.trim() || "";
+  const urlCategory = params.get("category") || "";
+
   const [products, setProducts] = useState<Product[]>([]);
   const [flashDeals, setFlashDeals] = useState<Product[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -525,12 +504,8 @@ const Products = () => {
 
   /* FILTERS */
 
-  const [search, setSearch] = useState("");
-
-  const [category, setCategory] = useState(
-    params.get("category") || ""
-  );
-
+  const [search, setSearch] = useState(urlSearch);
+  const [category, setCategory] = useState(urlCategory);
   const [brand, setBrand] = useState("");
   const [grade, setGrade] = useState("");
   const [condition, setCondition] = useState("");
@@ -553,6 +528,18 @@ const Products = () => {
   const perPage = 10;
 
   /* =========================================================
+     SYNC URL SEARCH WITH PAGE
+  ========================================================= */
+
+  useEffect(() => {
+    setSearch(urlSearch);
+  }, [urlSearch]);
+
+  useEffect(() => {
+    setCategory(urlCategory);
+  }, [urlCategory]);
+
+  /* =========================================================
      FETCH PRODUCTS
   ========================================================= */
 
@@ -560,7 +547,7 @@ const Products = () => {
     try {
       setLoading(true);
 
-      const res = await axios.get(`${API}/products`, {
+      const res = await axios.get(`/products`, {
         params: {
           search: search || undefined,
           category: category || undefined,
@@ -593,7 +580,7 @@ const Products = () => {
     try {
       setFlashLoading(true);
 
-      const res = await axios.get(`${API}/products`, {
+      const res = await axios.get(`/products`, {
         params: {
           is_flash_deal: 1,
         },
@@ -626,8 +613,8 @@ const Products = () => {
       try {
         const [categoryRes, brandRes] =
           await Promise.all([
-            axios.get(`${API}/categories`),
-            axios.get(`${API}/brands`),
+            axios.get(`/categories`),
+            axios.get(`/brands`),
           ]);
 
         setCategories(
@@ -709,8 +696,7 @@ const Products = () => {
 
         case "rating":
           return (
-            (b.rating || 0) -
-            (a.rating || 0)
+            (b.rating || 0) - (a.rating || 0)
           );
 
         case "newest":
@@ -760,6 +746,8 @@ const Products = () => {
     setMinPrice("");
     setMaxPrice("");
     setPage(1);
+
+    window.history.replaceState({}, "", "/products");
   };
 
   /* RESET PAGE WHEN FILTER CHANGES */
@@ -781,7 +769,7 @@ const Products = () => {
     <div className="min-h-screen bg-[#f8fafb]">
       <Navbar />
 
-      <main className="mx-auto max-w-[1500px] px-4 py-5 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-[1500px] px-2 py-5 sm:px-6 lg:px-8">
 
         {/* HERO */}
 
@@ -851,17 +839,13 @@ const Products = () => {
           ))}
         </div>
 
-        {/* ===================================================
-            FLASH DEALS
-        =================================================== */}
+        {/* FLASH DEALS */}
 
         {!flashLoading && (
           <FlashDeals products={flashDeals} />
         )}
 
-        {/* ===================================================
-            SHOP AREA
-        =================================================== */}
+        {/* SHOP AREA */}
 
         <div className="grid gap-6 lg:grid-cols-[210px_1fr]">
 
@@ -896,7 +880,9 @@ const Products = () => {
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 className="text-lg font-bold text-slate-900">
-                  All Products
+                  {search
+                    ? `Search results for "${search}"`
+                    : "All Products"}
                 </h2>
 
                 <p className="text-[10px] text-slate-400">
@@ -991,9 +977,7 @@ const Products = () => {
               </div>
             </div>
 
-            {/* =================================================
-                LOADING
-            ================================================= */}
+            {/* LOADING */}
 
             {loading ? (
               <div className="flex min-h-[400px] items-center justify-center rounded-2xl border border-slate-200 bg-white">
@@ -1007,9 +991,7 @@ const Products = () => {
               </div>
             ) : visibleProducts.length ? (
 
-              /* =================================================
-                 PRODUCT GRID
-              ================================================= */
+              /* PRODUCT GRID */
 
               <div
                 className={
@@ -1044,9 +1026,7 @@ const Products = () => {
 
             ) : (
 
-              /* =================================================
-                 EMPTY STATE
-              ================================================= */
+              /* EMPTY STATE */
 
               <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 text-center">
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
@@ -1072,9 +1052,7 @@ const Products = () => {
               </div>
             )}
 
-            {/* =================================================
-                PAGINATION
-            ================================================= */}
+            {/* PAGINATION */}
 
             {totalPages > 1 && (
               <div className="mt-7 flex items-center justify-center gap-1.5">
@@ -1130,9 +1108,7 @@ const Products = () => {
         </div>
       </main>
 
-      {/* =====================================================
-          MOBILE FILTER DRAWER
-      ===================================================== */}
+      {/* MOBILE FILTER DRAWER */}
 
       {mobileFilters && (
         <div className="fixed inset-0 z-[100] lg:hidden">

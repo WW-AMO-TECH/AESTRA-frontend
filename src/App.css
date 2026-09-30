@@ -40,3 +40,20 @@
 .read-the-docs {
   color: #888;
 }
+
+@media (min-width: 1024px) {
+  .hero-product-float {
+    animation: heroProductFloat 4s ease-in-out infinite;
+  }
+}
+
+@keyframes heroProductFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  
+  50% {
+    transform: translateY(-7px);
+  }
+}
