@@ -627,6 +627,8 @@ export default function PickupLocations() {
     useState<Record<string, string>>({});
 
   const fetchData = async () => {
+    setLoading(true);
+
     try {
       const h = { headers: headers() };
 
@@ -657,6 +659,8 @@ export default function PickupLocations() {
     } catch (error) {
       console.error("Failed to fetch pickup/delivery data:", error);
       toast.error("Failed to load pickup and delivery data.");
+    } finally {
+      setLoading(false);
     }
   };
 
