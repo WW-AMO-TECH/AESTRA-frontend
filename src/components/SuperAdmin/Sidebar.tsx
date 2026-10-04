@@ -179,7 +179,7 @@ const Sidebar = ({ user }: SidebarProps) => {
         </div>
 
         {/* Sidebar Links */}
-        <div className="flex-1 overflow-y-auto space-y-1">
+        <div className="flex-1 overflow-y-auto p-1 space-y-1">
           {sidebarItems
             .filter((item) =>
               item.roles.includes(user?.role || "")

@@ -7,6 +7,7 @@ import {
   Zap,
   Loader2,
   Heart,
+  ArrowRight,
   ChevronLeft,
   ChevronRight,
   X,
@@ -773,7 +774,7 @@ const Products = () => {
 
         {/* HERO */}
 
-        <section className="relative mb-5 min-h-[190px] overflow-hidden rounded-2xl bg-gradient-to-r from-primary/15 via-primary/5 to-primary/15 px-5 py-6 sm:px-8 sm:py-8">
+        <section className="relative min-h-[190px] overflow-hidden rounded-2xl bg-gradient-to-r from-primary/15 via-primary/5 to-primary/15 px-5 py-6 sm:px-8 sm:py-8">
 
           <div className="relative z-10 max-w-[390px]">
             <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-primary">
@@ -810,34 +811,47 @@ const Products = () => {
             />
           </div>
         </section>
+        
+        <section className="mx-auto max-w-[1500px] py-4 sm:px-6 lg:px-5 lg:py-2">
 
-        <div className="mb-6 flex gap-5 overflow-x-auto pb-1 scrollbar-hide">
-          {[
-            ["📱", "Phones", "phones"],
-            ["💻", "Laptops", "laptops"],
-            ["🎧", "Headphones", "headphones"],
-            ["⌚", "Smart Watches", "smart-watches"],
-            ["🔌", "Accessories", "accessories"],
-            ["🔊", "Speakers", "speakers"],
-            ["📷", "Cameras", "cameras"],
-            ["📺", "TV & Home", "tv"],
-            ["🎮", "Gaming", "gaming"],
-          ].map(([icon, name, slug]) => (
-            <Link
-              key={name}
-              to={`/products?category=${slug}`}
-              className="group flex min-w-[68px] flex-col items-center gap-1.5"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-lg shadow-sm transition-all group-hover:border-primary/40 group-hover:bg-primary/5 group-hover:shadow-md">
-                {icon}
-              </div>
+          {/* CATEGORIES */}
+          <div className="flex gap-5 overflow-x-auto pb-2 py-2 scrollbar-hide sm:gap-7 lg:grid lg:grid-cols-9 lg:gap-4 lg:overflow-visible">
+            {[
+              ["📱", "Phones", "phones"],
+              ["💻", "Laptops", "laptops"],
+              ["🎧", "Headphones", "headphones"],
+              ["⌚", "Smart Watches", "smart-watches"],
+              ["🔌", "Accessories", "accessories"],
+              ["🔊", "Speakers", "speakers"],
+              ["📷", "Cameras", "cameras"],
+              ["📺", "TV & Home", "tv"],
+              ["🎮", "Gaming", "gaming"],
+            ].map(([icon, name, slug], index) => (
+              <Link
+                key={name}
+                to={`/products?category=${slug}`}
+                className="group flex min-w-[72px] flex-col items-center"
+              >
+                {/* ICON */}
+                <div className="relative flex h-[58px] w-[58px] items-center justify-center rounded-full border border-border/70 bg-card text-xl shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary/30 group-hover:bg-primary/[0.06] group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+                  <span className="transition-transform duration-300 group-hover:scale-110">
+                    {icon}
+                  </span>
 
-              <span className="whitespace-nowrap text-[9px] font-medium text-slate-600 group-hover:text-primary">
-                {name}
-              </span>
-            </Link>
-          ))}
-        </div>
+                  {/* NUMBER */}
+                  <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-background text-[7px] font-bold text-muted-foreground/50 ring-1 ring-border/50">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* NAME */}
+                <span className="mt-2 text-center text-[10px] font-medium leading-tight text-muted-foreground transition-colors duration-300 group-hover:text-primary sm:text-[11px]">
+                  {name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* FLASH DEALS */}
 
@@ -897,7 +911,6 @@ const Products = () => {
               <div className="flex items-center gap-2">
 
                 {/* MOBILE FILTER */}
-
                 <button
                   type="button"
                   onClick={() =>
@@ -910,7 +923,6 @@ const Products = () => {
                 </button>
 
                 {/* SORT */}
-
                 <div className="relative">
                   <select
                     value={sortBy}
@@ -944,7 +956,6 @@ const Products = () => {
                 </div>
 
                 {/* VIEW MODE */}
-
                 <div className="hidden rounded-lg border border-slate-200 bg-white p-1 shadow-sm sm:flex">
                   <button
                     type="button"
@@ -1124,7 +1135,7 @@ const Products = () => {
 
           {/* DRAWER */}
 
-          <div className="absolute right-0 top-0 h-full w-[88%] max-w-sm overflow-y-auto bg-slate-50 p-4 shadow-2xl">
+          <div className="absolute right-0 top-0 h-full w-[75%] max-w-[320px] overflow-y-auto bg-slate-50 p-4 shadow-2xl">
 
             <div className="mb-4 flex items-center justify-between">
               <div>

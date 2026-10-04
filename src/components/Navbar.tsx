@@ -70,7 +70,7 @@ const Navbar=()=>{
         </Link>
 
         {/* DESKTOP NAVIGATION */}
-        <div className="ml-5 hidden items-center gap-1 md:flex">
+        <div className="ml-5 hidden items-center gap-1 min-[836px]:flex">
           {navLinks.map(({to,label})=>(
             <Link
               key={to}
@@ -90,29 +90,29 @@ const Navbar=()=>{
         </div>
 
         {/* DESKTOP RIGHT */}
-        <div className="ml-auto hidden items-center gap-2 md:flex">
+        <div className="ml-auto hidden items-center gap-2 min-[836px]:flex">
 
           {/* DONT DELETE THIS */}
           {/* SEARCH */}
-          <form onSubmit={handleSearch} className="hidden lg:block">
-            <div className="flex h-10 w-[250px] items-center rounded-xl border border-border bg-muted/30 transition-all focus-within:border-primary focus-within:bg-background focus-within:ring-2 focus-within:ring-primary/10 xl:w-[310px]">
-              <Search className="ml-3 h-4 w-4 shrink-0 text-muted-foreground"/>
+          <form onSubmit={handleSearch} className="block">
+            <div className="flex h-10 w-[180px] items-center rounded-xl border border-border bg-muted/30 transition-all focus-within:border-primary focus-within:bg-background focus-within:ring-2 focus-within:ring-primary/10 lg:w-[250px] xl:w-[310px]">
+              <Search className="ml-3 h-4 w-4 shrink-0 text-muted-foreground" />
 
               <input
                 type="text"
                 value={search}
-                onChange={e=>setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search products..."
-                className="min-w-0 flex-1 bg-transparent px-3 text-sm outline-none placeholder:text-muted-foreground"
+                className="min-w-0 flex-1 bg-transparent px-2 text-sm outline-none placeholder:text-muted-foreground"
               />
 
-              {search&&(
+              {search && (
                 <button
                   type="button"
-                  onClick={()=>setSearch("")}
+                  onClick={() => setSearch("")}
                   className="mr-2 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
-                  <X className="h-3.5 w-3.5"/>
+                  <X className="h-3.5 w-3.5" />
                 </button>
               )}
             </div>
@@ -172,11 +172,11 @@ const Navbar=()=>{
 
         {/* MOBILE MENU */}
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-2 md:hidden">
+          <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-2 min-[836px]:hidden">
             {/* MOBILE SEARCH */}
             <form
               onSubmit={handleMobileSearch}
-              className="flex h-10 min-w-0 flex-1 items-center rounded-xl border border-border bg-background transition focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10"
+              className="flex h-8 min-w-0 flex-1 items-center rounded-xl border border-border transition focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10"
             >
               <Search className="ml-3 h-4 w-4 shrink-0 text-muted-foreground" />
 
@@ -203,7 +203,7 @@ const Navbar=()=>{
             {/* MENU */}
             <SheetTrigger asChild>
               <button
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background transition hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
+                className="flex h-8 w-8 shrink-0 items-center justify-center transition hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
                 aria-label="Open menu"
               >
                 <Menu className="h-5 w-5" />
@@ -212,24 +212,16 @@ const Navbar=()=>{
           </div>
 
           <SheetContent
-            side="right"
-            className="w-[88%] max-w-[390px] overflow-y-auto border-l border-border bg-background p-0"
+            side="left"
+            className="w-[75%] max-w-[320px] overflow-y-auto border-l border-border bg-background p-0"
           >
             {/* MOBILE HEADER */}
-            <SheetHeader className="border-b border-border px-5 py-5">
-              <SheetTitle className="flex items-center">
-                <img
-                  src="/AESTRA LOGO-navbar.png"
-                  alt="AESTRA"
-                  className="h-6 w-auto object-contain"
-                />
-              </SheetTitle>
-            </SheetHeader>
+            <SheetHeader className="border-b border-border px-5 py-3"></SheetHeader>
 
             <div className="px-2 py-3">
               {/* NAVIGATION */}
               <div>
-                <div className="space-y-1">
+                <div className="space-y-1 pt-2">
                   {navLinks.map(({to,label,icon:Icon})=>{
                     const active=location.pathname===to;
 
@@ -238,7 +230,7 @@ const Navbar=()=>{
                         key={to}
                         to={to}
                         onClick={()=>setSheetOpen(false)}
-                        className={`group flex items-center justify-between rounded-xl px-3 py-2.5 transition ${
+                        className={`group flex items-center justify-between rounded-xl px-0.5 transition ${
                           active
                             ?"bg-primary/10 text-primary"
                             :"text-foreground hover:bg-muted"
@@ -259,62 +251,38 @@ const Navbar=()=>{
                       </Link>
                     );
                   })}
-
-                  {/* CART */}
-                  <Link
-                    to="/cart"
-                    onClick={()=>setSheetOpen(false)}
-                    className="group flex items-center justify-between rounded-xl px-3 py-2.5 transition hover:bg-muted"
-                  >
-                    <span className="flex items-center gap-3">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted text-muted-foreground group-hover:text-primary">
-                        <ShoppingCart className="h-[17px] w-[17px]"/>
-                      </span>
-                      <span className="text-sm font-medium">Cart</span>
-                    </span>
-
-                    {cartCount>0?(
-                      <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
-                        {cartCount>99?"99+":cartCount}
-                      </span>
-                    ):(
-                      <ChevronRight className="h-4 w-4 text-muted-foreground"/>
-                    )}
-                  </Link>
                 </div>
               </div>
-
-              {/* SELLER CTA */}
-              {!isStaff&&(
-                <Link
-                  to="/seller/signup"
-                  onClick={()=>setSheetOpen(false)}
-                  className="group relative mt-6 flex items-center justify-between overflow-hidden rounded-2xl bg-primary p-4 text-primary-foreground shadow-lg shadow-primary/15 transition hover:shadow-xl"
-                >
-                  <div className="relative z-10 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15">
-                      <Store className="h-5 w-5"/>
-                    </div>
-
-                    <div>
-                      <p className="text-sm font-bold">Become a Seller</p>
-                      <p className="mt-0.5 text-[10px] text-primary-foreground/75">
-                        Start selling on AESTRA
-                      </p>
-                    </div>
-                  </div>
-
-                  <ArrowRight className="relative z-10 h-5 w-5 transition-transform group-hover:translate-x-1"/>
-
-                  <div className="absolute -bottom-10 -right-8 h-24 w-24 rounded-full bg-white/10 blur-2xl"/>
-                </Link>
-              )}
 
               {/* ACCOUNT */}
               <div className="mt-7 border-t border-border pt-5">
                 <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                   Account
                 </p>
+
+                  {/* CART */}
+                  <div className="space-y-1">
+                    <Link
+                      to="/cart"
+                      onClick={()=>setSheetOpen(false)}
+                      className="group flex items-center justify-between rounded-xl px-3 py-2.5 hover:bg-muted"
+                    >
+                      <span className="flex items-center gap-3">
+                          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted group-hover:text-primary">
+                          <ShoppingCart className="h-[17px] w-[17px]"/>
+                        </span>
+                        <span className="text-sm font-medium">Cart</span>
+                      </span>
+
+                      {cartCount>0?(
+                        <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
+                          {cartCount>99?"99+":cartCount}
+                        </span>
+                      ):(
+                        <ChevronRight className="h-4 w-4 text-muted-foreground"/>
+                      )}
+                    </Link>
+                  </div>
 
                 {user?(
                   <div className="space-y-1">
@@ -381,6 +349,32 @@ const Navbar=()=>{
                   </div>
                 </div>
               </div>
+
+              {/* SELLER CTA */}
+              {!isStaff&&(
+                <Link
+                  to="/seller/signup"
+                  onClick={()=>setSheetOpen(false)}
+                  className="group relative mt-6 flex items-center justify-between overflow-hidden rounded-xl bg-primary p-4 text-primary-foreground shadow-lg shadow-primary/15 transition hover:shadow-xl"
+                >
+                  <div className="relative z-10 flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15">
+                      <Store className="h-5 w-5"/>
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-bold">Become a Seller</p>
+                      <p className="mt-0.5 text-[10px] text-primary-foreground/75">
+                        Start selling on AESTRA
+                      </p>
+                    </div>
+                  </div>
+
+                  <ArrowRight className="relative z-10 h-5 w-5 transition-transform group-hover:translate-x-1"/>
+
+                  <div className="absolute -bottom-10 -right-8 h-24 w-24 rounded-full bg-white/10 blur-2xl"/>
+                </Link>
+              )}
 
               <div className="py-6 text-center">
                 <p className="text-[10px] text-muted-foreground">

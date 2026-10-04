@@ -101,6 +101,12 @@ export default {
           from: { transform: "translateX(-100%)", opacity: "0" },
           to: { transform: "translateX(0)", opacity: "1" },
         },
+        wiggle: {
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "25%": { transform: "rotate(-12deg)" },
+          "50%": { transform: "rotate(12deg)" },
+          "75%": { transform: "rotate(-8deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -110,6 +116,7 @@ export default {
         float: "float 3s ease-in-out infinite",
         shimmer: "shimmer 2s linear infinite",
         "slide-in": "slide-in 0.5s ease-out forwards",
+        wiggle: "wiggle 0.35s ease-in-out",
       },
       backgroundImage: {
         "hero-gradient": "linear-gradient(135deg, hsl(210, 72%, 48%) 0%, hsl(180, 65%, 38%) 50%, hsl(155, 58%, 42%) 100%)",

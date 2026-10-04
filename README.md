@@ -36,7 +36,7 @@ I want sellers to only be able to view; products that they add, orders & order t
 I want admin to be able to create brands and categories from their dashbooard which can be selected while trying to add or edit a product.
 
 
-I replaced all 
+I replaced all
 http://127.0.0.1:8000
 with
 https://aestra.onrender.com

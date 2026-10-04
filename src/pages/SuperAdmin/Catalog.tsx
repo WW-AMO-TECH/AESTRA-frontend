@@ -451,7 +451,7 @@ const Catalog = () => {
     <div className="min-h-screen bg-primary/20 lg:flex">
       <Sidebar user={user} />
 
-      <main className="flex-1 p-3 lg:p-3 mt-14 lg:mt-0 h-screen overflow-y-auto">
+      <main className="flex-1 p-2 lg:p-3 mt-14 lg:mt-0 h-screen overflow-y-auto">
         <div className="space-y-4">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>

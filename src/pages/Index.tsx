@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
-  ArrowRight,
+  ArrowRight, ChevronLeft, ChevronRight,
   ArrowUpRight,
   CheckCircle2,
   CreditCard,
@@ -24,17 +24,6 @@ import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
 import axios from "@/api/axios";
 
-const categories = [
-  { name: "Phones", image: "/hero-phone.png" },
-  { name: "Laptops", image: "/hero-laptop.png" },
-  { name: "Audio", image: "/hero-headphones.png" },
-  { name: "Smart Watches", image: "/hero-watch.png" },
-  { name: "Gaming", image: "/hero-phone.png" },
-  { name: "Accessories", image: "/hero-headphones.png" },
-  { name: "Cameras", image: "/hero-phone.png" },
-  { name: "Speakers", image: "/hero-laptop.png" },
-];
-
 const perks = [
   { icon: Truck, title: "Fast Delivery", description: "Nationwide delivery" },
   { icon: ShieldCheck, title: "Quality Assured", description: "Shop with confidence" },
@@ -43,15 +32,22 @@ const perks = [
 ];
 
 const brands = [
-  { name: "Apple", logo: "/apple.svg" },
-  { name: "Samsung", logo: "/samsung.svg" },
-  { name: "Google", logo: "/google.svg" },
-  { name: "HP", logo: "/hp.svg" },
   { name: "Dell", logo: "/dell.svg" },
   { name: "Lenovo", logo: "/lenovo.avif" },
   { name: "Sony", logo: "/sony.svg" },
   { name: "JBL", logo: "/jbl.svg" },
 ];
+
+type Brand = {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string | null;
+  logo?: string | null;
+  website?: string | null;
+  status: boolean;
+  sort_order: number;
+};
 
 const heroSlides = [
   {
@@ -168,7 +164,7 @@ const HeroCarousel = ({
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="relative overflow-hidden bg-background">
+    <section className="relative overflow-hidden">
       {/* CAROUSEL */}
       <div ref={emblaRef} className="w-full overflow-hidden">
         <div className="flex">
@@ -366,8 +362,136 @@ const HeroCarousel = ({
   );
 };
 
+// PRODUCT SECTION
+const ProductSection = ({
+  title,
+  subtitle,
+  products,
+}: {
+  title: string;
+  subtitle?: string;
+  products: Product[];
+}) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    setCanScrollLeft(el.scrollLeft > 5);
+    setCanScrollRight(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - 5
+    );
+  };
+
+  useEffect(() => {
+    updateScroll();
+
+    const el = scrollRef.current;
+    if (!el) return;
+
+    el.addEventListener("scroll", updateScroll);
+    window.addEventListener("resize", updateScroll);
+
+    return () => {
+      el.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("resize", updateScroll);
+    };
+  }, [products]);
+
+  const scrollProducts = (direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    el.scrollBy({
+      left: direction === "right" ? el.clientWidth * 0.8 : -el.clientWidth * 0.8,
+      behavior: "smooth",
+    });
+  };
+
+  if (!products.length) return null;
+
+  return (
+    <section className="mx-auto max-w-[1500px] px-4 py-10 sm:px-6 lg:px-4 lg:py-6">
+      {/* HEADER */}
+      <div className="mb-6 flex items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <div className="h-5 w-1 rounded-full bg-primary" />
+
+            <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+              {title}
+            </h2>
+          </div>
+
+          {subtitle && (
+            <p className="mt-1.5 pl-3 text-xs text-muted-foreground sm:text-sm">
+              {subtitle}
+            </p>
+          )}
+        </div>
+
+        <Link
+          to="/products"
+          className="group flex shrink-0 items-center gap-1 text-xs font-semibold text-primary sm:text-sm"
+        >
+          View All
+          <ArrowRight
+            size={15}
+            className="transition group-hover:translate-x-1"
+          />
+        </Link>
+      </div>
+
+      {/* PRODUCTS */}
+      <div className="relative">
+        <div
+          ref={scrollRef}
+          className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide sm:gap-4 lg:gap-5"
+        >
+          {products.map((product, index) => (
+            <div
+              key={product.id}
+              className="w-[calc(50%-6px)] shrink-0 sm:w-[calc(33.333%-11px)] md:w-[calc(25%-12px)] lg:w-[calc(20%-16px)]"
+            >
+              <ProductCard product={product} index={index} />
+            </div>
+          ))}
+        </div>
+
+        {/* LEFT BUTTON */}
+        {canScrollLeft && (
+          <button
+            type="button"
+            onClick={() => scrollProducts("left")}
+            aria-label="Previous products"
+            className="absolute left-1 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-md backdrop-blur transition hover:bg-primary hover:text-primary-foreground"
+          >
+            <ChevronLeft size={19} />
+          </button>
+        )}
+
+        {/* RIGHT BUTTON */}
+        {canScrollRight && (
+          <button
+            type="button"
+            onClick={() => scrollProducts("right")}
+            aria-label="Next products"
+            className="absolute right-1 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-md backdrop-blur transition hover:bg-primary hover:text-primary-foreground"
+          >
+            <ChevronRight size={19} />
+          </button>
+        )}
+      </div>
+    </section>
+  );
+};
+
+// CATEGORY SECTION
 const CategorySection = () => (
-  <section className="mx-auto max-w-[1500px] px-2 py-8 sm:px-6 lg:px-5 lg:py-10">
+  <section className="mx-auto max-w-[1500px] px-2 py-4 sm:px-6 lg:px-5 lg:py-10">
     {/* HEADER */}
     <div className="mb-6 flex items-end justify-between">
       <div>
@@ -394,7 +518,7 @@ const CategorySection = () => (
     </div>
 
     {/* CATEGORIES */}
-    <div className="flex gap-5 overflow-x-auto pb-2 scrollbar-hide sm:gap-7 lg:grid lg:grid-cols-9 lg:gap-4 lg:overflow-visible">
+    <div className="flex gap-5 overflow-x-auto pb-2 py-2 scrollbar-hide sm:gap-7 lg:grid lg:grid-cols-9 lg:gap-4 lg:overflow-visible">
       {[
         ["📱", "Phones", "phones"],
         ["💻", "Laptops", "laptops"],
@@ -432,57 +556,6 @@ const CategorySection = () => (
     </div>
   </section>
 );
-
-// PRODUCT SECTION
-const ProductSection = ({
-  title,
-  subtitle,
-  products,
-}: {
-  title: string;
-  subtitle?: string;
-  products: Product[];
-}) => {
-  if (!products.length) return null;
-
-  return (
-    <section className="mx-auto max-w-[1500px] px-4 py-10 sm:px-6 lg:px-4 lg:py-6">
-      <div className="mb-6 flex items-end justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="h-5 w-1 rounded-full bg-primary" />
-            <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
-              {title}
-            </h2>
-          </div>
-
-          {subtitle && (
-            <p className="mt-1.5 pl-3 text-xs text-muted-foreground sm:text-sm">
-              {subtitle}
-            </p>
-          )}
-        </div>
-
-        <Link
-          to="/products"
-          className="group flex shrink-0 items-center gap-1 text-xs font-semibold text-primary sm:text-sm"
-        >
-          View All
-          <ArrowRight
-            size={15}
-            className="transition group-hover:translate-x-1"
-          />
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
-        {products.map((product, index) => (
-          <ProductCard key={product.id} product={product} index={index} />
-        ))}
-      </div>
-    </section>
-  );
-};
 
 // DEAL BANNER
 const DealBanner = () => {
@@ -630,47 +703,165 @@ const PromotionalBanners = () => (
 );
 
 // BRANDS
-const BrandSection = () => (
-  <section className="border-y bg-secondary/30 py-10 sm:py-12">
-    <div className="mx-auto max-w-[1500px] px-4 sm:px-6 lg:px-10 xl:px-16">
-      <div className="mb-7 flex items-end justify-between">
-        <div>
-          <p className="mb-1 text-xs font-bold uppercase tracking-wider text-primary">
-            Trusted names
-          </p>
+const BrandSection = () => {
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [loading, setLoading] = useState(true);
+  const brandRef = useRef<HTMLDivElement>(null);
+  const [canBrandLeft, setCanBrandLeft] = useState(false);
+  const [canBrandRight, setCanBrandRight] = useState(false);
 
-          <h2 className="text-xl font-bold sm:text-2xl">
-            Shop Top Brands
-          </h2>
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const { data } = await axios.get("/brands");
+
+        setBrands(
+          Array.isArray(data)
+            ? data.filter((brand: Brand) => brand.status)
+            : []
+        );
+      } catch (error) {
+        console.error("Failed to load brands:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBrands();
+  }, []);
+
+  const updateBrandScroll = () => {
+    const el = brandRef.current;
+    if (!el) return;
+
+    setCanBrandLeft(el.scrollLeft > 5);
+    setCanBrandRight(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - 5
+    );
+  };
+
+  useEffect(() => {
+    updateBrandScroll();
+
+    const el = brandRef.current;
+    if (!el) return;
+
+    el.addEventListener("scroll", updateBrandScroll);
+    window.addEventListener("resize", updateBrandScroll);
+
+    return () => {
+      el.removeEventListener("scroll", updateBrandScroll);
+      window.removeEventListener("resize", updateBrandScroll);
+    };
+  }, [brands]);
+
+  const scrollBrands = (direction: "left" | "right") => {
+    const el = brandRef.current;
+    if (!el) return;
+
+    el.scrollBy({
+      left:
+        direction === "right"
+          ? el.clientWidth * 0.75
+          : -el.clientWidth * 0.75,
+      behavior: "smooth",
+    });
+  };
+
+  if (!loading && !brands.length) return null;
+
+  return (
+    <section className="border-y py-8 sm:py-10">
+      <div className="mx-auto max-w-[1500px] px-4 sm:px-6 lg:px-10 xl:px-16">
+        {/* HEADER */}
+        <div className="mb-5 flex items-end justify-between">
+          <div>
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-primary sm:text-xs">
+              Trusted names
+            </p>
+
+            <h2 className="text-lg font-bold sm:text-2xl">
+              Shop Top Brands
+            </h2>
+          </div>
+
+          <Link
+            to="/products"
+            className="flex items-center gap-1 text-xs font-semibold text-primary sm:text-sm"
+          >
+            Explore Brands
+            <ArrowRight size={14} />
+          </Link>
         </div>
 
-        <Link
-          to="/products"
-          className="flex items-center gap-1 text-xs font-semibold text-primary sm:text-sm"
-        >
-          Explore Brands
-          <ArrowRight size={15} />
-        </Link>
-      </div>
+        {/* BRANDS */}
+        {loading ? (
+          <div className="flex gap-3 overflow-hidden sm:gap-4">
+            {[1, 2, 3, 4, 5].map((item) => (
+              <div
+                key={item}
+                className="h-16 w-[110px] shrink-0 animate-pulse rounded-xl bg-white/70 sm:h-20 sm:w-[140px]"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="relative">
+            <div
+              ref={brandRef}
+              className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide sm:gap-4"
+            >
+              {brands.map((brand) => (
+                <Link
+                  key={brand.id}
+                  to={`/products?brand=${encodeURIComponent(brand.slug)}`}
+                  className="group flex h-16 w-[110px] shrink-0 items-center justify-centerpx-4 transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md sm:h-20 sm:w-[140px] sm:rounded-2xl sm:px-5"
+                >
+                  {brand.logo ? (
+                    <img
+                      src={
+                        brand.logo.startsWith("http")
+                          ? brand.logo
+                          : `https://aestra.onrender.com/storage/${brand.logo}`
+                      }
+                      alt={brand.name}
+                      className="max-h-8 max-w-[80px] object-contain transition duration-300 group-hover:scale-105 sm:max-h-10 sm:max-w-[100px]"
+                    />
+                  ) : (
+                    <span className="truncate text-xs font-semibold text-slate-600 sm:text-sm">
+                      {brand.name}
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-        {brands.map((brand) => (
-          <Link
-            key={brand.name}
-            to={`/products?brand=${encodeURIComponent(brand.name)}`}
-            className="group flex h-24 items-center justify-center rounded-2xl border bg-background p-5 transition duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
-          >
-            <img
-              src={brand.logo}
-              alt={brand.name}
-              className="h-auto max-h-11 w-auto max-w-[110px] object-contain transition duration-300 group-hover:scale-105"
-            />
-          </Link>
-        ))}
+            {canBrandLeft && (
+              <button
+                type="button"
+                onClick={() => scrollBrands("left")}
+                aria-label="Previous brands"
+                className="absolute left-1 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border bg-white/95 text-foreground shadow-md backdrop-blur transition hover:bg-primary hover:text-white"
+              >
+                <ChevronLeft size={17} />
+              </button>
+            )}
+
+            {canBrandRight && (
+              <button
+                type="button"
+                onClick={() => scrollBrands("right")}
+                aria-label="Next brands"
+                className="absolute right-1 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border bg-white/95 text-foreground shadow-md backdrop-blur transition hover:bg-primary hover:text-white"
+              >
+                <ChevronRight size={17} />
+              </button>
+            )}
+          </div>
+        )}
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // SELLER BANNER
 const SellerBanner = () => (
@@ -1035,6 +1226,9 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState<"new" | "best" | "trending">("new");
+  const discoverRef = useRef<HTMLDivElement>(null);
+  const [canDiscoverLeft, setCanDiscoverLeft] = useState(false);
+  const [canDiscoverRight, setCanDiscoverRight] = useState(false);
 
   useEffect(() => {
     fetchProducts();
@@ -1102,11 +1296,49 @@ const Index = () => {
       ? bestSellerProducts
       : trendingProducts;
 
+  const updateDiscoverScroll = () => {
+  const el = discoverRef.current;
+    if (!el) return;
+
+    setCanDiscoverLeft(el.scrollLeft > 5);
+    setCanDiscoverRight(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - 5
+    );
+  };
+
+  const scrollDiscover = (direction: "left" | "right") => {
+    const el = discoverRef.current;
+    if (!el) return;
+
+    el.scrollBy({
+      left:
+        direction === "right"
+          ? el.clientWidth * 0.8
+          : -el.clientWidth * 0.8,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    updateDiscoverScroll();
+
+    const el = discoverRef.current;
+    if (!el) return;
+
+    el.addEventListener("scroll", updateDiscoverScroll);
+    window.addEventListener("resize", updateDiscoverScroll);
+
+    return () => {
+      el.removeEventListener("scroll", updateDiscoverScroll);
+      window.removeEventListener("resize", updateDiscoverScroll);
+    };
+  }, [displayedProducts, activeTab]);
+
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Navbar />
 
-      <div className="animate-fade-in">
+      <div className="mx-auto w-full max-w-[1500px] overflow-x-hidden">
         <HeroCarousel
           search={search}
           setSearch={setSearch}
@@ -1140,8 +1372,6 @@ const Index = () => {
           </div>
         </section>
 
-        <CategorySection />
-
         {/* FEATURED PRODUCTS */}
         {!loading ? (
           <ProductSection
@@ -1155,10 +1385,12 @@ const Index = () => {
           </section>
         )}
 
+        <CategorySection />
+
         <DealBanner />
 
         {/* DISCOVER MORE */}
-        <section className="mx-auto max-w-[1500px] px-4 sm:px-6 lg:px-4 lg:py-4">
+        <section className="mx-auto max-w-[1500px] px-4 py-2 sm:px-6 lg:px-4 lg:py-4">
           <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="flex items-center gap-2">
@@ -1214,14 +1446,47 @@ const Index = () => {
           </div>
 
           {!loading && displayedProducts.length > 0 ? (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
-              {displayedProducts.map((product, index) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  index={index}
-                />
-              ))}
+            <div className="relative">
+              <div
+                ref={discoverRef}
+                className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide sm:gap-4 lg:gap-5"
+              >
+                {displayedProducts.map((product, index) => (
+                  <div
+                    key={product.id}
+                    className="w-[calc(50%-6px)] shrink-0 sm:w-[calc(33.333%-11px)] md:w-[calc(25%-12px)] lg:w-[calc(20%-16px)]"
+                  >
+                    <ProductCard
+                      product={product}
+                      index={index}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* LEFT */}
+              {canDiscoverLeft && (
+                <button
+                  type="button"
+                  onClick={() => scrollDiscover("left")}
+                  aria-label="Previous products"
+                  className="absolute left-1 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-md backdrop-blur transition hover:bg-primary hover:text-primary-foreground"
+                >
+                  <ChevronLeft size={19} />
+                </button>
+              )}
+
+              {/* RIGHT */}
+              {canDiscoverRight && (
+                <button
+                  type="button"
+                  onClick={() => scrollDiscover("right")}
+                  aria-label="Next products"
+                  className="absolute right-1 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-md backdrop-blur transition hover:bg-primary hover:text-primary-foreground"
+                >
+                  <ChevronRight size={19} />
+                </button>
+              )}
             </div>
           ) : !loading ? (
             <div className="rounded-2xl border bg-card px-5 py-16 text-center">

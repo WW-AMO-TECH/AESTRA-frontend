@@ -42,15 +42,11 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     try {
       if (wishlistIds.includes(productId)) {
         await axios.delete(`/wishlist/${productId}`);
-
         setWishlistIds((prev) => prev.filter((id) => id !== productId));
-
         toast.success("Removed from wishlist");
       } else {
         await axios.post(`/wishlist/${productId}`);
-
         setWishlistIds((prev) => [...prev, productId]);
-
         toast.success("Added to wishlist");
       }
     } catch (error) {
@@ -68,21 +64,20 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     try {
       const response = await axios.get("/wishlist");
       const data = response?.data;
-      const wishlist = Array.isArray(data) ? data : data?.wishlist ?? [];
-      const ids = wishlist.map((item: any) => item.product_id);
+      const wishlist = Array.isArray(data)
+        ? data
+        : data?.wishlist ?? [];
 
-      setWishlistIds(ids);
+      setWishlistIds(
+        wishlist.map((item: any) => item.product_id)
+      );
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    if (user) {
-      fetchWishlistIds();
-    } else {
-      setWishlistIds([]);
-    }
+    fetchWishlistIds();
   }, [user]);
 
   if (!product) return null;
@@ -107,125 +102,227 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     toast.success("Added to cart");
   };
 
+  const isWishlisted = wishlistIds.includes(product.id);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-black/20 group w-full"
+      className="
+        group w-full overflow-hidden rounded-xl sm:rounded-2xl
+        border border-black/10 bg-white shadow-sm
+        transition-all duration-300
+        hover:shadow-lg
+      "
     >
+      {/* PRODUCT IMAGE */}
       <div className="relative overflow-hidden">
         <Link to={`/products/${product.id}`}>
           <img
             src={product.image || "/placeholder.png"}
             alt={product.name || "Product"}
-            className="w-full h-52 sm:h-60 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+            className="
+              aspect-square w-full object-cover
+              transition-transform duration-500
+              group-hover:scale-105
+            "
           />
         </Link>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
 
+        {/* WISHLIST */}
+        <button
+          onClick={() => toggleWishlist(product.id)}
+          aria-label={
+            user ? "Toggle wishlist" : "Login to use wishlist"
+          }
+          className="
+            absolute bottom-2 right-2
+            flex h-7 w-7 items-center justify-center
+            rounded-full bg-white/95 shadow-sm
+            backdrop-blur-sm
+            transition-all duration-200
+            hover:scale-105
+            hover:bg-red-50
+          "
+        >
+          <Heart
+            size={15}
+            className={`
+              transition-colors duration-200
+              ${
+                isWishlisted
+                  ? "fill-red-500 text-red-500"
+                  : "text-slate-500 hover:text-red-500"
+              }
+            `}
+          />
+        </button>
+
+        {/* CONDITION */}
         {product.condition && (
           <span
-            className={`absolute top-2 lg:top-3 left-2 lg:left-3 text-[11px] px-2 rounded-full text-white font-medium shadow-md ${conditionColor}`}
+            className={`
+              absolute left-2 top-2
+              rounded-full px-1.5 py-0.4
+              text-[8px] font-semibold text-white
+              shadow-sm sm:px-2 sm:text-[10px]
+              ${conditionColor}
+            `}
           >
             {product.condition}
           </span>
         )}
 
+        {/* DISCOUNT */}
         {!!product.discount_percentage && (
-          <span className="absolute top-2 lg:top-3 right-2 lg:right-3 text-[11px] px-2 rounded-full bg-green-500 text-white font-semibold shadow-md">
+          <span
+            className="
+              absolute left-2 top-6
+              rounded-full bg-green-500
+              px-1.5 py-0.3
+              text-[8px] font-semibold text-white
+              shadow-sm sm:text-[10px]
+            "
+          >
             -{product.discount_percentage}%
           </span>
         )}
 
+        {/* GRADE */}
         {product.grade && (
-          <span className="absolute top-7 lg:top-8 right-2 lg:right-3 text-[11px] px-2 rounded-full bg-primary text-white font-medium shadow-md">
+          <span
+            className="
+              absolute right-2 top-2
+              rounded-full bg-primary
+              px-1.5 py-0.5
+              text-[8px] font-semibold text-white
+              shadow-sm sm:text-[10px]
+            "
+          >
             {product.grade}
           </span>
         )}
       </div>
 
-      <div className="px-1.5 lg:px-3 py-1 lg:py-1.5 flex justify-between gap-1 lg:gap-3">
-        <div className="flex-1 min-w-0">
-          {product.brand?.name && (
-            <div className="flex items-center gap-1 pt-1">
-              {product.brand.logo_url && (
-                <img
-                  src={product.brand.logo_url}
-                  alt={product.brand.name}
-                  className="w-5 h-5 rounded-full object-cover border"
-                />
-              )}
+      {/* PRODUCT INFO */}
+      <div className="p-2">
+        {/* BRAND */}
+        {product.brand?.name && (
+          <div className="mb-1 flex items-center gap-1">
+            {product.brand.logo_url && (
+              <img
+                src={product.brand.logo_url}
+                alt={product.brand.name}
+                className="
+                  h-4 w-4 rounded-full
+                  border object-cover
+                  sm:h-5 sm:w-5
+                "
+              />
+            )}
 
-              <Link to={`/products/${product.id}`}>
-                <h3 className="text-[12px] lg:text-[15px] font-semibold text-gray-900 hover:text-primary transition-colors">
-                  {product.name}
-                </h3>
-              </Link>
-            </div>
-          )}
+            <span
+              className="
+                truncate text-[9px] font-medium
+                text-slate-500 sm:text-[11px]
+              "
+            >
+              {product.brand.name}
+            </span>
+          </div>
+        )}
 
-          <p className="text-[10px] md:text-sm text-gray-500 font-medium truncate">
-            {product.brand.name}
-          </p>
-
-          {product.rating !== null &&
-          product.rating !== undefined &&
-          product.reviews_count &&
-          product.reviews_count > 0 ? (
-            <div className="mb-2 flex items-center gap-1 md:mb-0">
-              <div className="flex items-center">
-                {Array.from({
-                  length: Math.round(product.rating),
-                }).map((_, index) => (
-                  <span
-                    key={index}
-                    className="text-[11px] leading-none text-yellow-400 md:text-sm"
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
-
-              <span className="text-[10px] font-medium text-slate-500 md:text-xs">
-                ({product.reviews_count})
-              </span>
-            </div>
-          ) : (
-            <p className="mb-2 text-[10px] font-medium text-slate-400 md:mb-0">
-              No ratings
-            </p>
-          )}
-
-          <p className="text-[14px] md:text-[16px] font-bold text-gray-900 md:mt-1">
-            {formatPrice(product.price)}
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center justify-center gap-2">
-          <button
-            className={`w-11 h-8 pt-3 flex items-center justify-center transition-all duration-200 ${
-              wishlistIds.includes(product.id)
-                ? "text-red-500"
-                : "text-muted-foreground hover:text-red-500"
-            }`}
-            onClick={() => toggleWishlist(product.id)}
-            aria-label={user ? "Toggle wishlist" : "Login to use wishlist"}
+        {/* PRODUCT NAME */}
+        <Link to={`/products/${product.id}`}>
+          <h3
+            className="
+              line-clamp-2
+              min-h-[20px]
+              text-[11px] font-semibold
+              leading-4 text-slate-900
+              transition-colors
+              hover:text-primary
+              sm:min-h-[18px]
+              sm:text-[13px]
+              sm:leading-4
+            "
           >
-            <Heart
-              size={18}
-              className={wishlistIds.includes(product.id) ? "fill-red-500" : ""}
-            />
-          </button>
+            {product.name}
+          </h3>
+        </Link>
 
-          <button
-            onClick={handleAddToCart}
-            className="w-7 lg:w-11 h-7 lg:h-11 rounded-md lg:rounded-xl bg-white text-primary/80 border border-black/20 hover:bg-secondary hover:text-primary mt-2 transition-all duration-200 flex items-center justify-center"
-          >
-            <ShoppingCart size={18} />
-          </button>
-        </div>
+        {/* RATING */}
+        {product.rating !== null &&
+        product.rating !== undefined &&
+        product.reviews_count &&
+        product.reviews_count > 0 ? (
+          <div className="flex items-center gap-1">
+            <div className="flex">
+              {Array.from({
+                length: Math.round(product.rating),
+              }).map((_, i) => (
+                <span
+                  key={i}
+                  className="text-[9px] leading-none text-yellow-400 sm:text-[11px]"
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+
+            <span className="text-[8px] text-slate-400 sm:text-[10px]">
+              ({product.reviews_count})
+            </span>
+          </div>
+        ) : (
+          <p className="mt-1 text-[8px] text-slate-400 sm:text-[10px]">
+            No ratings
+          </p>
+        )}
+
+        {/* PRICE */}
+        <p
+          className="
+            mt-1.5 text-[13px] font-bold
+            text-slate-900
+            sm:text-[15px]
+          "
+        >
+          {formatPrice(product.price)}
+        </p>
+
+      {/* ADD TO CART */}
+      <button
+        onClick={handleAddToCart}
+        className="
+          group/cart
+          mt-2 flex h-8 w-full
+          items-center justify-center gap-1.5
+          rounded-lg
+          bg-primary
+          px-2
+          text-[10px] font-semibold
+          text-white
+          transition-all duration-200
+          hover:bg-primary/90
+          hover:scale-[1.02]
+          active:scale-[0.98]
+          sm:h-9
+          sm:text-[11px]
+        "
+      >
+        <ShoppingCart
+          size={13}
+          className="
+            transition-transform duration-200
+            group-hover/cart:animate-[wiggle_0.35s_ease-in-out]
+          "
+        />
+        Add to Cart
+      </button>
       </div>
     </motion.div>
   );
