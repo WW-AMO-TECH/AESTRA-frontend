@@ -70,7 +70,7 @@ const Login = () => {
                 </span>
               </div>
               <span className="text-[30px] font-extrabold tracking-[0.04em] text-[#142638]">
-                AESTRA
+                SHOP2EASY
               </span>
             </Link>
 
@@ -116,7 +116,7 @@ const Login = () => {
                 </h1>
 
                 <p className="mt-2 text-[15px] text-[#607084]">
-                  Log in to your AESTRA account.
+                  Log in to your account.
                 </p>
               </div>
 
@@ -140,7 +140,7 @@ const Login = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email or phone number"
                       autoComplete="username"
-                      className="h-[51px] w-full rounded-[10px] border border-[#d7dfe7] bg-white pl-12 pr-4 text-[14px] text-[#172839] outline-none transition placeholder:text-[#8997a8] focus:border-primary focus:ring-2 focus:ring-[#229653]/10"
+                      className="h-[51px] w-full rounded-[10px] border border-[#d7dfe7] bg-white pl-12 pr-4 text-[14px] text-[#172839] outline-none transition placeholder:text-[#8997a8] focus:border-primary focus:ring-2 focus:ring-primary/10"
                     />
                   </div>
                 </div>
@@ -161,7 +161,7 @@ const Login = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your password"
                       autoComplete="current-password"
-                      className="h-[51px] w-full rounded-[10px] border border-[#d7dfe7] bg-white pl-12 pr-12 text-[14px] text-[#172839] outline-none transition placeholder:text-[#8997a8] focus:border-[#229653] focus:ring-2 focus:ring-[#229653]/10"
+                      className="h-[51px] w-full rounded-[10px] border border-[#d7dfe7] bg-white pl-12 pr-12 text-[14px] text-[#172839] outline-none transition placeholder:text-[#8997a8] focus:border-primary focus:ring-2 focus:ring-primary/10"
                     />
 
                     <button
@@ -191,7 +191,7 @@ const Login = () => {
 
                   <button
                     type="button"
-                    className="text-[13px] font-semibold text-[#188b4a] transition hover:underline"
+                    className="text-[13px] font-semibold text-primary transition hover:underline"
                   >
                     Forgot password?
                   </button>
@@ -201,7 +201,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[10px] bg-[#229653] text-[15px] font-bold text-white shadow-[0_5px_14px_rgba(34,150,83,0.18)] transition hover:bg-[#1d864a] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[10px] bg-primary text-[15px] font-bold text-white shadow-[0_5px_14px_rgba(34,150,83,0.18)] transition hover:bg-primary active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? "Please wait..." : "Log In"}
                   {!loading && <ArrowRight className="h-[19px] w-[19px]" />}
@@ -258,7 +258,7 @@ const Login = () => {
                 Don’t have an account?{" "}
                 <Link
                   to="/signup"
-                  className="ml-1 font-semibold text-[#188b4a] transition hover:underline"
+                  className="ml-1 font-semibold text-primary transition hover:underline"
                 >
                   Sign Up
                 </Link>

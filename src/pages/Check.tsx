@@ -80,7 +80,7 @@ const perks = [
 ];
 
 const testimonials = [
-  { name: "Alex M.", role: "Tech Enthusiast", text: "AESTRA-TECH has the best prices for premium tech. My go-to store!", rating: 5 },
+  { name: "Alex M.", role: "Tech Enthusiast", text: "SHOP2EASY has the best prices for premium tech. My go-to store!", rating: 5 },
   { name: "Sarah K.", role: "Content Creator", text: "Fast shipping and authentic products. Couldn't ask for more.", rating: 5 },
   { name: "David R.", role: "Developer", text: "The MacBook Air I got was flawless. Great customer service too.", rating: 4 },
 ];
@@ -253,7 +253,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div>
-              <h4 className="font-display font-semibold text-sm mb-3">AESTRA-TECH</h4>
+              <h4 className="font-display font-semibold text-sm mb-3">SHOP2EASY</h4>
               <p className="text-xs text-muted-foreground">Your one-stop shop for premium tech gadgets.</p>
             </div>
             <div>
@@ -289,13 +289,13 @@ const Index = () => {
               <h4 className="font-display font-semibold text-sm mb-3">Support</h4>
               <div className="flex flex-col gap-1.5 text-xs text-muted-foreground">
                 <Link to="/contact" className="hover:text-foreground transition-colors">Contact Us</Link>
-                <span>help@aestra-tech.com</span>
+                <span>help@SHOP2EASY.com</span>
                 <span>+234 (0) 812 345 6789</span>
               </div>
             </div>
           </div>
           <div className="border-t border-border mt-6 pt-6 text-center text-xs text-muted-foreground">
-            © 2024 AESTRA-TECH. All rights reserved.
+            © 2024 SHOP2EASY. All rights reserved.
           </div>
         </div>
       </footer>

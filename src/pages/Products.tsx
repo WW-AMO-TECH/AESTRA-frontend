@@ -770,7 +770,7 @@ const Products = () => {
     <div className="min-h-screen bg-[#f8fafb]">
       <Navbar />
 
-      <main className="mx-auto max-w-[1500px] px-2 py-5 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-[1500px] p-2 sm:px-6 lg:px-8">
 
         {/* HERO */}
 
@@ -778,7 +778,7 @@ const Products = () => {
 
           <div className="relative z-10 max-w-[390px]">
             <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-primary">
-              AESTRA DEALS
+              DEALS
             </span>
 
             <h1 className="mt-1 text-2xl font-extrabold leading-tight text-slate-900 sm:text-3xl">

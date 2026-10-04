@@ -312,7 +312,7 @@ const Customers = () => {
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-2xl font-bold text-slate-900">Customers</h1>
-              <p className="mt-1 text-sm text-slate-500">View and manage customers on AESTRA.</p>
+              <p className="mt-1 text-sm text-slate-500">View and manage customers.</p>
             </div>
 
             <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm">

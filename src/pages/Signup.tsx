@@ -60,7 +60,7 @@ const Signup = () => {
         <div className="w-full max-w-md glass-card p-8 animate-fade-in">
           <h1 className="font-display text-2xl font-bold mb-2">Create account</h1>
           <p className="text-muted-foreground text-sm mb-8">
-            Join AESTRA-TECH today
+            Join SHOP2EASY today
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">

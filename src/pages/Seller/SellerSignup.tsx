@@ -58,7 +58,7 @@ const SellerSignup=()=>{
             <section className="relative hidden min-h-[780px] overflow-hidden bg-primary/10 lg:block">
               <img
                 src="/images/seller-login.jpg"
-                alt="Sell on Shop2easy"
+                alt="Sell on SHOP2EASY"
                 className="absolute inset-0 h-[480px] w-full object-cover"
               />
 
@@ -66,7 +66,7 @@ const SellerSignup=()=>{
 
               <div className="absolute bottom-0 left-0 right-0 bg-primary/10 px-8 pb-9 pt-8 xl:px-10">
                 <p className="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-primary">
-                  JOIN <span className="italic">Shop2easy</span>
+                  JOIN <span className="italic">SHOP2EASY</span>
                 </p>
 
                 <h2 className="max-w-lg text-3xl font-extrabold leading-tight text-foreground xl:text-[38px]">
@@ -134,7 +134,7 @@ const SellerSignup=()=>{
                   </h1>
 
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Submit your details to start selling on AESTRA.
+                    Submit your details to start selling on SHOP2EASY.
                   </p>
                 </div>
 
@@ -315,7 +315,7 @@ const SellerSignup=()=>{
                     <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary"/>
                     <p>
                       Your seller request will be reviewed before your store
-                      can start selling on AESTRA.
+                      can start selling on the platform.
                     </p>
                   </div>
 

@@ -903,8 +903,8 @@ const SellerBanner = () => (
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
                 <img
-                  src="/AESTRA LOGO-navbar.png"
-                  alt="AESTRA"
+                  src="/LOGO-navbar.png" 
+                  alt="SHOP2EASY Logo"
                   className="h-5 w-auto"
                 />
 
@@ -1167,8 +1167,8 @@ const Footer = () => (
         <div className="col-span-2 sm:col-span-1">
           <Link to="/">
             <img
-              src="/AESTRA LOGO-footer.png"
-              alt="AESTRA"
+              src="/LOGO-footer.png"
+              alt="SHOP2EASY Logo"
               className="h-8 w-auto object-contain"
             />
           </Link>
@@ -1214,7 +1214,7 @@ const Footer = () => (
         </div>
 
         <div>
-          <h3 className="text-xs font-semibold">Sell on AESTRA</h3>
+          <h3 className="text-xs font-semibold">Sell</h3>
 
           <div className="mt-3 flex flex-col gap-2 text-[10px] text-white/60">
             <Link to="/seller/signup">Become a Seller</Link>
@@ -1237,7 +1237,7 @@ const Footer = () => (
       </div>
 
       <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-4 text-[9px] text-white/40 sm:flex-row sm:items-center sm:justify-between">
-        <p>© 2026 AESTRA. All rights reserved.</p>
+        <p>© 2026 SHOP2EASY. All rights reserved.</p>
 
         <div className="flex gap-4">
           <span>Trust</span>
@@ -1366,7 +1366,7 @@ const Index = () => {
   }, [displayedProducts, activeTab]);
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden">
+    <div className="min-h-screen w-full">
       <Navbar />
 
       <div className="mx-auto w-full max-w-[1500px] overflow-x-hidden">

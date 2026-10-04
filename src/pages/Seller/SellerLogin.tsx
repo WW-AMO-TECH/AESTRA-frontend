@@ -70,7 +70,7 @@ const SellerLogin=()=>{
               {/* SIGNUP */}
               <div className="flex justify-end">
                 <p className="text-[clamp(11px,1vw,13px)] text-[#526274]">
-                  New to AESTRA?
+                  New to SHOP2EASY?
                   <Link
                     to="/seller/signup"
                     className="ml-1 font-semibold text-primary transition hover:text-primary/90 hover:underline"
@@ -85,7 +85,7 @@ const SellerLogin=()=>{
                 <div className="mb-[clamp(6px,1vh,12px)] flex items-center gap-2">
                   <Store className="h-[18px] w-[18px] text-primary"/>
                   <span className="text-[clamp(10px,1vw,12px)] font-bold uppercase tracking-[0.13em] text-primary">
-                    SELL ON AESTRA
+                    SELL ON SHOP2EASY
                   </span>
                 </div>
 
@@ -94,7 +94,7 @@ const SellerLogin=()=>{
                 </h1>
 
                 <p className="mt-1.5 text-[clamp(12px,1.1vw,15px)] text-[#607084]">
-                  Log in to your AESTRA seller account.
+                  Log in to your seller account.
                 </p>
               </div>
 

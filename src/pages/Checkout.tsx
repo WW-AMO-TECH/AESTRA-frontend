@@ -870,7 +870,7 @@ const Checkout = () => {
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
               Your bank transfer details have been submitted
               successfully. Your order will remain pending while
-              AESTRA verifies the payment.
+              we verify the payment.
             </p>
 
             {bankTransferReference && (
@@ -1896,7 +1896,7 @@ const Checkout = () => {
 
                         <p className="mt-1 text-xs leading-5 text-muted-foreground">
                           Transfer the exact amount below to the
-                          AESTRA account. Your order will remain
+                          the company account. Your order will remain
                           pending until the payment is verified.
                         </p>
                       </div>
@@ -1919,7 +1919,7 @@ const Checkout = () => {
                             </span>
 
                             <span className="font-semibold">
-                              AESTRA TECHNOLOGIES
+                              SHOP2EASY Technologies
                             </span>
                           </div>
 

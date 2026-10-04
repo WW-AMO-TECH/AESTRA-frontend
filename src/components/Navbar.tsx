@@ -63,8 +63,8 @@ const Navbar=()=>{
         {/* LOGO */}
         <Link to="/" className="shrink-0">
           <img
-            src="/AESTRA LOGO-navbar.png"
-            alt="AESTRA"
+            src="/LOGO-navbar.png"
+            alt="SHOP2EASY Logo"
             className="h-7 w-auto object-contain sm:h-8"
           />
         </Link>
@@ -212,11 +212,11 @@ const Navbar=()=>{
           </div>
 
           <SheetContent
-            side="left"
-            className="w-[75%] max-w-[320px] overflow-y-auto border-l border-border bg-background p-0"
+            side="right"
+            className="w-[75%] max-w-[320px] overflow-y-auto"
           >
             {/* MOBILE HEADER */}
-            <SheetHeader className="border-b border-border px-5 py-3"></SheetHeader>
+            <SheetHeader className="border-b border-border px-5 py-4"></SheetHeader>
 
             <div className="px-2 py-3">
               {/* NAVIGATION */}
@@ -365,7 +365,7 @@ const Navbar=()=>{
                     <div>
                       <p className="text-sm font-bold">Become a Seller</p>
                       <p className="mt-0.5 text-[10px] text-primary-foreground/75">
-                        Start selling on AESTRA
+                        Click here to start selling your products.
                       </p>
                     </div>
                   </div>
@@ -378,7 +378,7 @@ const Navbar=()=>{
 
               <div className="py-6 text-center">
                 <p className="text-[10px] text-muted-foreground">
-                  © 2026 AESTRA
+                  © 2026 SHOP2EASY. All rights reserved.
                 </p>
                 <p className="mt-1 text-[9px] text-muted-foreground">
                   Shop smart. Live better.

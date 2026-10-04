@@ -83,7 +83,7 @@ const GoogleAuthSuccess = () => {
             </div>
 
             <span className="text-[28px] font-extrabold tracking-[0.04em] text-[#142638]">
-              AESTRA
+              SHOP2EASY
             </span>
           </div>
         </div>
@@ -124,7 +124,7 @@ const GoogleAuthSuccess = () => {
             </h1>
 
             <p className="mx-auto mt-2 max-w-[320px] text-[14px] leading-6 text-[#68798b]">
-              We're securely connecting your Google account to AESTRA.
+              We're securely connecting your Google account to SHOP2EASY.
             </p>
           </div>
 
@@ -178,7 +178,7 @@ const GoogleAuthSuccess = () => {
 
         {/* FOOTER */}
         <p className="mt-6 text-center text-[11px] text-[#8793a0]">
-          © {new Date().getFullYear()} AESTRA. Secure shopping starts here.
+          © {new Date().getFullYear()} SHOP2EASY. Secure shopping starts here.
         </p>
       </div>
     </main>

@@ -80,7 +80,7 @@ const Contact = () => {
                 <h2 className="font-display text-lg font-bold mb-4">Contact Information</h2>
                 <div className="space-y-4">
                   {[
-                    { icon: Mail, label: "Email", value: "help@aestra-tech.com", sub: "We respond within 24 hours" },
+                    { icon: Mail, label: "Email", value: "help@SHOP2EASY.com", sub: "We respond within 24 hours" },
                     { icon: Phone, label: "Phone", value: "+234 (0) 812 345 6789", sub: "Mon-Sat, 8am - 8pm WAT" },
                     { icon: MapPin, label: "Address", value: "Ikeja City Mall, Lagos", sub: "Visit our showroom" },
                     { icon: Clock, label: "Business Hours", value: "Mon - Sat: 8am - 8pm", sub: "Sunday: 10am - 4pm" },
@@ -141,7 +141,7 @@ const Contact = () => {
         {/* Trust & Support */}
         {activeSection === "trust" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <h2 className="font-display text-lg font-bold mb-6 text-center">Why Trust AESTRA-TECH?</h2>
+            <h2 className="font-display text-lg font-bold mb-6 text-center">Why Trust Us?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
               {trustPoints.map(t => (
                 <div key={t.title} className="glass-card p-5 rounded-2xl hover:shadow-xl border-1.5 border-primary text-center">
@@ -157,7 +157,7 @@ const Contact = () => {
             <div className="glass-card p-5 md:p-8 rounded-2xl border border-primary max-w-2xl mx-auto text-center">
               <h3 className="font-display font-bold text-base mb-2">Our Commitment</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                At AESTRA-TECH, customer satisfaction is our top priority. We ensure every product is genuine, every transaction is secure, and every customer is supported. With over 10,000 happy customers across Nigeria, we're building the most trusted tech marketplace in West Africa.
+                At SHOP2EASY, customer satisfaction is our top priority. We ensure every product is genuine, every transaction is secure, and every customer is supported. With over 10,000 happy customers across Nigeria, we're building the most trusted tech marketplace in West Africa.
               </p>
             </div>
           </motion.div>

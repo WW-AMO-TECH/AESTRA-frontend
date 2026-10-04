@@ -168,7 +168,7 @@ const Sidebar = ({ user }: SidebarProps) => {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-3 border-b">
-            <img className="lg:h-8 lg:w-25 h-5" src="/AESTRA LOGO-navbar.png" alt=""/>
+            <img className="lg:h-8 lg:w-25 h-5" src="/LOGO-navbar.png" alt="SHOP2EASY Logo"/>
 
           <button
             onClick={() => setSidebarOpen(false)}
