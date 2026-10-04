@@ -4,7 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
   ArrowRight, ChevronLeft, ChevronRight,
-  ArrowUpRight,
+  ArrowUp,
   CheckCircle2,
   CreditCard,
   Headset,
@@ -872,13 +872,8 @@ const SellerBanner = () => (
 
       <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[1fr_1.2fr_1fr]">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wider text-primary">
-            Sell on AESTRA
-          </p>
-
           <h2 className="mt-2 text-2xl font-bold leading-tight sm:text-3xl">
-            Grow Your Business
-            <span className="block">With AESTRA</span>
+            Grow Your Busines
           </h2>
 
           <p className="mt-3 max-w-sm text-xs leading-5 text-muted-foreground">
@@ -940,7 +935,7 @@ const SellerBanner = () => (
                 </p>
 
                 <p className="mt-1 text-sm font-bold">
-                  ₦2,480,000
+                  ₦12,480,000
                 </p>
 
                 <p className="mt-1 text-[9px] text-primary">
@@ -960,7 +955,7 @@ const SellerBanner = () => (
                 </p>
 
                 <p className="mt-1 text-sm font-bold">
-                  248
+                  42
                 </p>
 
                 <p className="mt-1 text-[9px] text-primary">
@@ -1050,7 +1045,7 @@ const AppBanner = () => (
 
         <div>
           <h2 className="text-xl font-bold sm:text-2xl">
-            Shop AESTRA Anywhere
+            Shop Anywhere
           </h2>
 
           <p className="mt-2 text-xs text-muted-foreground">
@@ -1100,7 +1095,7 @@ const Newsletter = () => (
 
           <div>
             <h3 className="text-xs font-bold sm:text-sm">
-              Stay Updated With AESTRA
+              Stay Updated
             </h3>
 
             <p className="text-[9px] text-muted-foreground sm:text-[10px]">
@@ -1128,17 +1123,53 @@ const Newsletter = () => (
   </section>
 );
 
+// BACK TO TOP
+const BackToTop = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(window.scrollY > 500);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  if (!visible) return null;
+
+  return (
+    <button
+      type="button"
+      onClick={scrollToTop}
+      aria-label="Back to top"
+      className="fixed bottom-5 right-5 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:bottom-7 sm:right-7"
+    >
+      <ArrowUp size={18} />
+    </button>
+  );
+};
+
 // FOOTER
 const Footer = () => (
   <footer className="bg-[#20272e] text-white">
     <div className="mx-auto max-w-[1500px] px-5 pt-8 pb-5 sm:px-8 lg:px-10">
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]">
-        <div>
+      <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]">
+        <div className="col-span-2 sm:col-span-1">
           <Link to="/">
             <img
-              src="/AESTRA LOGO-navbar.png"
+              src="/AESTRA LOGO-footer.png"
               alt="AESTRA"
-              className="h-8 w-auto object-contain brightness-0 invert"
+              className="h-8 w-auto object-contain"
             />
           </Link>
 
@@ -1516,6 +1547,7 @@ const Index = () => {
         <AppBanner />
         <Newsletter />
         <Footer />
+        <BackToTop />
       </div>
     </div>
   );

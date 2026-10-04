@@ -58,7 +58,7 @@ const SellerSignup=()=>{
             <section className="relative hidden min-h-[780px] overflow-hidden bg-primary/10 lg:block">
               <img
                 src="/images/seller-login.jpg"
-                alt="Sell on AESTRA"
+                alt="Sell on Shop2easy"
                 className="absolute inset-0 h-[480px] w-full object-cover"
               />
 
@@ -66,7 +66,7 @@ const SellerSignup=()=>{
 
               <div className="absolute bottom-0 left-0 right-0 bg-primary/10 px-8 pb-9 pt-8 xl:px-10">
                 <p className="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-primary">
-                  JOIN AESTRA
+                  JOIN <span className="italic">Shop2easy</span>
                 </p>
 
                 <h2 className="max-w-lg text-3xl font-extrabold leading-tight text-foreground xl:text-[38px]">
@@ -77,7 +77,7 @@ const SellerSignup=()=>{
 
                 <p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground">
                   Create your seller account and connect your products with
-                  thousands of customers shopping on AESTRA.
+                  thousands of customers.
                 </p>
 
                 <div className="mt-7 space-y-4">
@@ -100,7 +100,7 @@ const SellerSignup=()=>{
                     <div>
                       <p className="text-xs font-bold text-foreground">Reach More Buyers</p>
                       <p className="mt-0.5 text-[10px] text-muted-foreground">
-                        Connect with AESTRA customers
+                        Connect with customers
                       </p>
                     </div>
                   </div>
